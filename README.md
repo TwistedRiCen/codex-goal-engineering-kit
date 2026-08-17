@@ -1,5 +1,7 @@
 # Codex Goal Engineering Kit
 
+[English](README.md) | [简体中文](README.zh-CN.md)
+
 ## What
 
 A small, reusable operating kit for turning a high-level product goal into discovered, designed, implemented, independently reviewed, and system-accepted software. The repository stores the lifecycle and durable state; it does not provide an agent runtime or a business application.
