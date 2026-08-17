@@ -4,7 +4,7 @@
 
 ## 是什么
 
-这是一套小型、可复用的工程运行工具包，用于将高层产品目标逐步转化为经过发现、设计、实现、独立审查和系统验收的软件。仓库保存项目生命周期协议和持久状态，但不提供 Agent 运行时或具体业务应用。
+这是一套小型、可复用的工程运行工具包，用于将高层产品目标逐步转化为经过发现、设计、实现、独立审查和系统验收的软件。它还提供可选的、按角色路由模型的 Codex Custom Agent Profiles，用于经济地执行 Multi-Agent 工程任务。仓库保存生命周期、持久状态和 Agent Profile 契约，但不提供 Agent 运行时或具体业务应用。
 
 ## 为什么
 
@@ -13,6 +13,7 @@
 | 全局/项目级 `AGENTS.md` | 持久工程行为与仓库约定 |
 | `goal-driven-engineering` Skill | 产品项目生命周期与门禁 |
 | 项目 `PLAN.md` | 跨会话事实、决策、里程碑、验收与已验证状态 |
+| 命名 Custom Agent Profiles | 用于证据收集、验证、审查或常规实现的有界执行基础设施 |
 | Prompt | 当前入口或变更请求 |
 | `/goal` | 架构与里程碑稳定后的长周期执行 |
 
@@ -33,6 +34,36 @@
 ```
 
 仅在明确要丢弃旧副本时使用 `-ConflictAction Overwrite`。`-WhatIf` 可以预览会产生修改的安装操作。脚本不会修改全局 `AGENTS.md`、其他 Skill，也不需要管理员权限。只有在更新后的 Skill 没有自动出现时才需要重启 Codex。
+
+## 可选的角色化 Agents
+
+[`agents/`](agents/) 中的 Profiles 实现“强主协调者 + 经济型证据 Worker + 强验证”。它们使用 OpenAI 当前文档规定的独立 Custom Agent TOML 格式。
+
+| 命名 Agent | 模型 / Reasoning | 权限 | 用途 |
+| --- | --- | --- | --- |
+| `explorer` | `gpt-5.6-luna` / medium | read-only | 定位文件和符号、追踪路径并收集仓库证据 |
+| `docs_researcher` | `gpt-5.6-luna` / medium | read-only | 核对权威 API 和版本特定文档 |
+| `test_analyst` | `gpt-5.6-terra` / high | read-only | 识别回归风险、边界路径和缺失验证 |
+| `reviewer` | `gpt-5.6-terra` / high | read-only | 独立审查正确性、安全性、验收、回归和测试 |
+| `routine_worker` | `gpt-5.6-terra` / medium | workspace-write | 作为唯一 Writer 完成一个范围明确、已理解的常规实现 |
+
+将且仅将这五个受管 Profile 安装或同步到 `$HOME/.codex/agents/`：
+
+```powershell
+.\scripts\install-agents.ps1
+```
+
+内容相同不会产生变化；内容不同默认拒绝。若要把冲突的受管文件保留到带时间戳的 `$HOME/.codex/agent-backups/` 目录后安装 Kit 版本，请运行：
+
+```powershell
+.\scripts\install-agents.ps1 -ConflictAction Backup
+```
+
+使用 `-WhatIf` 预览变更。安装器会保留不相关的 Agent，且不会编辑全局 `AGENTS.md` 或 `$HOME/.codex/config.toml`；尤其不会设置 `agents.default_subagent_model` 或并发参数。项目级 `AGENTS.md` 仍提供优先级更高的仓库特定约束。
+
+路由依据是认知复杂度，而不是模型声望：Luna 负责有界、高吞吐量的只读工作；Terra 负责需要更强判断力的验证、审查和有界实现；主 Sol Thread 负责复杂推理与收敛。不要仅仅因为存在 Subagent 就选择更强模型，也不要让 Luna 承担最终架构决策或安全关键审查。
+
+项目可以直接点名请求，例如：`Have explorer map the affected paths and test_analyst identify missing coverage; converge their evidence before implementation.` 验证完成后可要求使用 `reviewer` 审查。主 Sol Thread 继续负责目标解释、架构、证据收敛、冲突解决、规划、关键决策、复杂或敏感实现和最终验收；不要创建额外的 Sol Coordinator Subagent。琐碎任务不要生成 Subagent。工作流默认最多同时运行三个只读 Agent，且最多一个活跃 Writer；这是建议，不是 Codex 平台上限声明。Subagent 会独立执行模型与工具工作，因此消耗额外 Tokens。参见 OpenAI 官方文档：[Subagents 与 Custom Agents](https://learn.chatgpt.com/docs/agent-configuration/subagents)。
 
 ## 新项目
 
