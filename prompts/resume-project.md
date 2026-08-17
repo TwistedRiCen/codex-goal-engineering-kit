@@ -1,0 +1,5 @@
+# Resume a Goal-Driven Project
+
+```text
+Use $goal-driven-engineering to resume this repository without relying on prior chat history. Read applicable AGENTS.md files, PLAN.md, Git branch/status/history/current diff, the current milestone implementation, and relevant tests. Reconcile PLAN.md with repository evidence; repository evidence wins, and PLAN.md must be corrected before new work if they differ. Establish the required recovery readout, verify recorded gate/decision authority, then continue from the first unmet Acceptance Criterion permitted by the current phase. Preserve Frozen Decisions, do not bypass gates, verify changes, and record only durable verified progress. Pause for a canonical hard stop: missing or irreconcilable project state, a material human decision, an irreversible/destructive action or new authority, an unavailable external dependency after safe alternatives are exhausted, or acceptance that cannot be verified. Otherwise repair ordinary failures autonomously and continue.
+```

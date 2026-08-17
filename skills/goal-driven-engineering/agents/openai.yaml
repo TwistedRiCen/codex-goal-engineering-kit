@@ -1,0 +1,4 @@
+interface:
+  display_name: "Goal-Driven Engineering"
+  short_description: "Drive product goals from discovery through acceptance"
+  default_prompt: "Use $goal-driven-engineering to start or resume this product-level software goal."
