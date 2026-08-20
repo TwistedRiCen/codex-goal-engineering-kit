@@ -41,11 +41,11 @@ The profiles in [`agents/`](agents/) implement a strong main coordinator, econom
 
 | Named agent | Model / reasoning | Access | Use |
 | --- | --- | --- | --- |
-| `explorer` | `gpt-5.6-luna` / medium | read-only | Locate files and symbols, trace paths, and gather repository evidence |
-| `docs_researcher` | `gpt-5.6-luna` / medium | read-only | Verify authoritative APIs and version-specific documentation |
-| `test_analyst` | `gpt-5.6-terra` / high | read-only | Find regression risks, edge paths, and missing verification |
-| `reviewer` | `gpt-5.6-terra` / high | read-only | Independently review correctness, security, acceptance, regressions, and tests |
-| `routine_worker` | `gpt-5.6-terra` / medium | workspace-write | Make one bounded, well-understood implementation change as the single writer |
+| `explorer` | `gpt-5.6-luna` / xhigh | read-only | Locate files and symbols, trace paths, and gather repository evidence |
+| `docs_researcher` | `gpt-5.6-luna` / xhigh | read-only | Verify authoritative APIs and version-specific documentation |
+| `test_analyst` | `gpt-5.6-luna` / xhigh | read-only | Find regression risks, edge paths, and missing verification |
+| `reviewer` | `gpt-5.6-luna` / xhigh | read-only | Independently review correctness, security, acceptance, regressions, and tests |
+| `routine_worker` | `gpt-5.6-luna` / xhigh | workspace-write | Make one bounded, well-understood implementation change as the single writer |
 
 Install or synchronize only these five managed profiles into `$HOME/.codex/agents/`:
 
@@ -61,7 +61,7 @@ Identical files are a no-op. Different content is refused by default. To retain 
 
 Use `-WhatIf` to preview changes. The installer preserves unrelated agents and does not edit global `AGENTS.md` or `$HOME/.codex/config.toml`; in particular, it does not set `agents.default_subagent_model` or concurrency. Project `AGENTS.md` instructions still provide higher-priority repository-specific constraints.
 
-Route by cognitive complexity, not model prestige: Luna handles bounded, high-volume read work; Terra handles verification, review, and bounded implementation that needs stronger judgment; the main Sol thread handles complex reasoning and convergence. Do not select a stronger model merely because a subagent exists, and do not use Luna for final architecture decisions or security-critical review.
+Route by task boundary and cost efficiency: all named worker profiles use `gpt-5.6-luna` with `xhigh` reasoning, while the main Sol thread retains complex reasoning, convergence, critical decisions, sensitive implementation, and final acceptance. The Luna assignment is a cost-efficiency choice, not a transfer of final authority; do not treat any subagent as the final architecture or security decision-maker.
 
 Ask Codex for named agents directly, for example: `Have explorer map the affected paths and test_analyst identify missing coverage; converge their evidence before implementation.` For a review, ask it to use `reviewer` after verification. The main Sol thread retains goal interpretation, architecture, evidence convergence, conflict resolution, planning, critical decisions, complex or sensitive implementation, and final acceptance; do not create a separate Sol coordinator subagent. Do not spawn subagents for trivial work. As workflow defaults, use at most three concurrent read-only agents and one active writer; these are recommendations, not platform-limit claims. Subagents perform their own model and tool work and therefore consume additional tokens. See the official OpenAI documentation for [Subagents and custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents).
 

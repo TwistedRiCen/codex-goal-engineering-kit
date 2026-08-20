@@ -116,7 +116,7 @@ foreach ($alignedAgentDocTerm in @(
     'reviewer',
     'routine_worker',
     'gpt-5.6-luna',
-    'gpt-5.6-terra',
+    'xhigh',
     '.\scripts\install-agents.ps1',
     '-ConflictAction Backup',
     '-WhatIf',
