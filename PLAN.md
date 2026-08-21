@@ -7,7 +7,7 @@
 - Plan Version: 1
 - Last Updated: 2026-08-21
 - Current Phase: PROJECT COMPLETE
-- Last Verified Commit: e41ba56 (pre-change baseline; balanced routing verified in the working tree and local commit follows)
+- Last Verified Commit: 29020bb (balanced routing update and verification baseline)
 
 Allowed phases: `GOAL DEFINITION`, `DISCOVERY`, `DISCOVERY GATE`, `ARCHITECTURE`, `ARCHITECTURE GATE`, `MILESTONE PLANNING`, `EXECUTION`, `MILESTONE ACCEPTANCE`, `SYSTEM VERIFICATION`, `FINAL ADVERSARIAL REVIEW`, `PROJECT COMPLETE`.
 
@@ -81,9 +81,9 @@ Use `NOT READY`, `PASSED`, or `FAILED`.
 | Gate or review | Status | Criteria and evidence | Authority/reviewer | Date and repository baseline |
 | --- | --- | --- | --- | --- |
 | DISCOVERY GATE | PASSED | Official custom-agent schema/model evidence and all repository lifecycle, prompt, documentation, example, and installer artifacts were inspected; scope and ownership boundaries are explicit with no material unknowns. | Codex; user supplied product decisions | 2026-08-17 @ 65805bb |
-| ARCHITECTURE GATE | PASSED | The authorized balanced routing assigns model capacity and reasoning effort by role risk without changing ownership, sandbox boundaries, installer scope, or main-thread authority. | User request, official OpenAI guidance, and Codex review | 2026-08-21 @ e41ba56 working tree |
-| MILESTONE ACCEPTANCE: M1 | PASSED | M1-AC-01 through M1-AC-04 remain verified after the balanced-routing update by profile, installer, lifecycle, documentation, and review evidence. | Codex | 2026-08-21 working tree based on e41ba56 |
-| SYSTEM VERIFICATION | PASSED | SA-01 through SA-06 revalidated after the balanced-routing update; profile, lifecycle, installer, documentation, and Git checks passed. | Codex | 2026-08-21 working tree based on e41ba56 |
+| ARCHITECTURE GATE | PASSED | The authorized balanced routing assigns model capacity and reasoning effort by role risk without changing ownership, sandbox boundaries, installer scope, or main-thread authority. | User request, official OpenAI guidance, and Codex review | 2026-08-21 @ 29020bb |
+| MILESTONE ACCEPTANCE: M1 | PASSED | M1-AC-01 through M1-AC-04 remain verified after the balanced-routing update by profile, installer, lifecycle, documentation, and review evidence. | Codex | 2026-08-21 @ 29020bb |
+| SYSTEM VERIFICATION | PASSED | SA-01 through SA-06 revalidated after the balanced-routing update; profile, lifecycle, installer, documentation, and Git checks passed. | Codex | 2026-08-21 @ 29020bb |
 | FINAL ADVERSARIAL REVIEW | PASSED | Initial link-safety, undeclared-Python, exact-file-boundary, and PS 5.1 findings repaired; re-review reported no remaining material findings. | Independent `gpt-5.6-terra` / high reviewer | 2026-08-17 working tree based on 65805bb |
 
 ## Architecture Summary
@@ -142,7 +142,7 @@ Read-only roles set `sandbox_mode = "read-only"`. The installer never deletes un
 | Date | Accepted outcome or criterion | Verification evidence | Commit/baseline |
 | --- | --- | --- | --- |
 | 2026-08-17 | M1 and SA-01 through SA-06 accepted. | Profile/TOML validation, PowerShell 5.1 and 7 installer suites, lifecycle validation, Git checks, and independent Terra/high review passed. | Working tree based on 65805bb; local commit follows acceptance. |
-| 2026-08-21 | Balanced model and reasoning routing accepted without changing lifecycle or sandbox boundaries. | Profile contract validator, Skill lifecycle validator, installer scenario suite, bilingual routing alignment, and `git diff --check` passed. | Working tree based on e41ba56; local commit follows acceptance. |
+| 2026-08-21 | Balanced model and reasoning routing accepted without changing lifecycle or sandbox boundaries. | Profile contract validator, Skill lifecycle validator, installer scenario suite, bilingual routing alignment, and `git diff --check` passed. | 29020bb |
 
 ## Repository and Verification State
 
