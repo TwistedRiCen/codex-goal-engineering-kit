@@ -41,11 +41,11 @@
 
 | 命名 Agent | 模型 / Reasoning | 权限 | 用途 |
 | --- | --- | --- | --- |
-| `explorer` | `gpt-5.6-luna` / xhigh | read-only | 定位文件和符号、追踪路径并收集仓库证据 |
-| `docs_researcher` | `gpt-5.6-luna` / xhigh | read-only | 核对权威 API 和版本特定文档 |
-| `test_analyst` | `gpt-5.6-luna` / xhigh | read-only | 识别回归风险、边界路径和缺失验证 |
-| `reviewer` | `gpt-5.6-luna` / xhigh | read-only | 独立审查正确性、安全性、验收、回归和测试 |
-| `routine_worker` | `gpt-5.6-luna` / xhigh | workspace-write | 作为唯一 Writer 完成一个范围明确、已理解的常规实现 |
+| `explorer` | `gpt-5.6-luna` / medium | read-only | 定位文件和符号、追踪路径并收集仓库证据 |
+| `docs_researcher` | `gpt-5.6-luna` / medium | read-only | 核对权威 API 和版本特定文档 |
+| `test_analyst` | `gpt-5.6-terra` / high | read-only | 识别回归风险、边界路径和缺失验证 |
+| `reviewer` | `gpt-5.6-terra` / high | read-only | 独立审查正确性、安全性、验收、回归和测试 |
+| `routine_worker` | `gpt-5.6-luna` / high | workspace-write | 作为唯一 Writer 完成一个范围明确、已理解的常规实现 |
 
 将且仅将这五个受管 Profile 安装或同步到 `$HOME/.codex/agents/`：
 
@@ -61,7 +61,7 @@
 
 使用 `-WhatIf` 预览变更。安装器会保留不相关的 Agent，且不会编辑全局 `AGENTS.md` 或 `$HOME/.codex/config.toml`；尤其不会设置 `agents.default_subagent_model` 或并发参数。项目级 `AGENTS.md` 仍提供优先级更高的仓库特定约束。
 
-路由依据是任务边界与成本效率：所有命名 Worker Profile 都使用 `gpt-5.6-luna` 和 `xhigh` 推理强度；主 Sol Thread 继续负责复杂推理、证据收敛、关键决策、敏感实现和最终验收。选择 Luna 是成本效率决策，不代表把最终责任交给子代理；任何子代理都不能替代最终架构或安全决策者。
+路由依据是任务边界、风险与“完成一次可验收结果”的总成本：Luna/medium 负责有界、高吞吐量的证据工作，Luna/high 负责常规实现，Terra/high 负责测试分析和独立审查，因为这些角色的漏检成本可能高于模型溢价。主 Sol Thread 继续负责复杂推理、证据收敛、关键决策、敏感实现和最终验收；任何子代理都不能替代最终架构或安全决策者。
 
 项目可以直接点名请求，例如：`Have explorer map the affected paths and test_analyst identify missing coverage; converge their evidence before implementation.` 验证完成后可要求使用 `reviewer` 审查。主 Sol Thread 继续负责目标解释、架构、证据收敛、冲突解决、规划、关键决策、复杂或敏感实现和最终验收；不要创建额外的 Sol Coordinator Subagent。琐碎任务不要生成 Subagent。工作流默认最多同时运行三个只读 Agent，且最多一个活跃 Writer；这是建议，不是 Codex 平台上限声明。Subagent 会独立执行模型与工具工作，因此消耗额外 Tokens。参见 OpenAI 官方文档：[Subagents 与 Custom Agents](https://learn.chatgpt.com/docs/agent-configuration/subagents)。
 

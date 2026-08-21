@@ -69,31 +69,31 @@ $expected = [ordered]@{
     'docs-researcher.toml' = @{
         name = 'docs_researcher'
         model = 'gpt-5.6-luna'
-        model_reasoning_effort = 'xhigh'
+        model_reasoning_effort = 'medium'
         sandbox_mode = 'read-only'
     }
     'explorer.toml' = @{
         name = 'explorer'
         model = 'gpt-5.6-luna'
-        model_reasoning_effort = 'xhigh'
+        model_reasoning_effort = 'medium'
         sandbox_mode = 'read-only'
     }
     'reviewer.toml' = @{
         name = 'reviewer'
-        model = 'gpt-5.6-luna'
-        model_reasoning_effort = 'xhigh'
+        model = 'gpt-5.6-terra'
+        model_reasoning_effort = 'high'
         sandbox_mode = 'read-only'
     }
     'routine-worker.toml' = @{
         name = 'routine_worker'
         model = 'gpt-5.6-luna'
-        model_reasoning_effort = 'xhigh'
+        model_reasoning_effort = 'high'
         sandbox_mode = 'workspace-write'
     }
     'test-analyst.toml' = @{
         name = 'test_analyst'
-        model = 'gpt-5.6-luna'
-        model_reasoning_effort = 'xhigh'
+        model = 'gpt-5.6-terra'
+        model_reasoning_effort = 'high'
         sandbox_mode = 'read-only'
     }
 }

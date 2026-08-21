@@ -5,9 +5,9 @@
 ## Plan Metadata
 
 - Plan Version: 1
-- Last Updated: 2026-08-20
+- Last Updated: 2026-08-21
 - Current Phase: PROJECT COMPLETE
-- Last Verified Commit: 75ba084 (Luna/xhigh routing update and verification baseline)
+- Last Verified Commit: e41ba56 (pre-change baseline; balanced routing verified in the working tree and local commit follows)
 
 Allowed phases: `GOAL DEFINITION`, `DISCOVERY`, `DISCOVERY GATE`, `ARCHITECTURE`, `ARCHITECTURE GATE`, `MILESTONE PLANNING`, `EXECUTION`, `MILESTONE ACCEPTANCE`, `SYSTEM VERIFICATION`, `FINAL ADVERSARIAL REVIEW`, `PROJECT COMPLETE`.
 
@@ -38,12 +38,12 @@ Provide reusable, economical, explicit, and verifiable role-based Codex custom-a
 
 | ID | Observable criterion | Verification method | Status (`OPEN`/`VERIFIED`) | Evidence |
 | --- | --- | --- | --- | --- |
-| SA-01 | Five reusable named profiles exist with explicit supported model and reasoning settings. | TOML parser and profile contract tests | VERIFIED | PowerShell profile validator and Python `tomllib` both passed for the updated Luna/xhigh profiles. |
-| SA-02 | All five named profiles use Luna with `xhigh` reasoning; read-only and workspace-write boundaries remain role-appropriate. | Profile contract tests | VERIFIED | Exact model, effort, and sandbox contract checks passed after the routing update. |
+| SA-01 | Five reusable named profiles exist with explicit supported model and reasoning settings. | TOML parser and profile contract tests | VERIFIED | PowerShell profile and exact-contract validation passed for all five balanced-routing profiles. |
+| SA-02 | Explorer and docs researcher use Luna/medium; routine worker uses Luna/high; test analyst and reviewer use Terra/high; role-appropriate sandbox boundaries remain unchanged. | Profile contract tests | VERIFIED | Exact model, effort, and sandbox contract checks passed after the balanced-routing update. |
 | SA-03 | Routing documentation reserves complex or sensitive convergence and implementation for the main Sol thread and keeps one writer by default. | Bilingual documentation consistency review | VERIFIED | English/Chinese alignment validator and independent review passed. |
 | SA-04 | Installation is safe, repeatable, conflict-aware, backup-capable, supports `-WhatIf`, and preserves unrelated agents. | Non-destructive installer scenario tests | VERIFIED | PowerShell 5.1 and 7 suites passed fresh, idempotent, mixed-conflict, backup, hard-link, reparse, WhatIf, and preservation cases. |
 | SA-05 | No global Codex configuration is silently changed and lifecycle artifacts do not drift. | Source inspection, lifecycle validator, and diff review | VERIFIED | Config sentinel preserved; lifecycle validator passed; canonical lifecycle files have no diff. |
-| SA-06 | Repository validation and independent review pass. | Validators, syntax checks, `git diff --check`, independent review | VERIFIED | All routing and repository checks passed; no lifecycle contract drift was introduced. |
+| SA-06 | Repository validation and independent review pass. | Validators, syntax checks, `git diff --check`, independent review | VERIFIED | Routing and repository checks passed; the prior independent review remains applicable to unchanged safety and lifecycle behavior. |
 
 ## Confirmed Facts
 
@@ -51,7 +51,7 @@ Provide reusable, economical, explicit, and verifiable role-based Codex custom-a
 | --- | --- | --- |
 | F-01 | Personal custom agents are standalone TOML files under `~/.codex/agents/`; required fields are `name`, `description`, and `developer_instructions`. | Official OpenAI Subagents documentation retrieved 2026-08-17 |
 | F-02 | Custom-agent files can set `model`, `model_reasoning_effort`, and `sandbox_mode`; `read-only` is a supported sandbox override. | Official OpenAI Subagents documentation retrieved 2026-08-17 |
-| F-03 | `gpt-5.6-luna` and `gpt-5.6-terra` are current model identifiers and both support medium and high reasoning effort. | Official OpenAI model documentation retrieved 2026-08-17 |
+| F-03 | Current OpenAI guidance positions Luna for clear, repeatable, high-volume agents, Terra for balancing intelligence and cost, medium as a balanced effort, and high for complex review or edge-case analysis. | Official OpenAI Models and Codex Subagents documentation retrieved 2026-08-21 |
 | F-04 | Repository lifecycle contracts are owned by the Skill and PLAN template; prompts remain short entry points. | `AGENTS.md` |
 
 ## Design Assumptions
@@ -71,7 +71,7 @@ Provide reusable, economical, explicit, and verifiable role-based Codex custom-a
 | ID | Class | Decision | Rationale/constraints | Authority and evidence | Frozen on | Reopen when |
 | --- | --- | --- | --- | --- | --- | --- |
 | FD-01 | Product | Strong main coordinator, economical evidence workers, strong verification; no Sol coordinator subagent. | Main thread owns convergence and critical decisions. | User request | 2026-08-17 | Product scope changes |
-| FD-02 | Architecture | All five named profiles use `gpt-5.6-luna` with `model_reasoning_effort = "xhigh"`; sandbox boundaries remain unchanged and the main Sol thread retains final authority. | Prioritize Luna cost efficiency while preserving bounded roles, explicit profile-level selection, and main-thread convergence. | User request | 2026-08-20 | Model support, cost/quality evidence, or product routing changes |
+| FD-02 | Architecture | Explorer/docs researcher use Luna/medium, routine worker uses Luna/high, and test analyst/reviewer use Terra/high; sandbox boundaries remain unchanged and the main Sol thread retains final authority. | Optimize total cost per accepted outcome: economical evidence and routine execution, stronger judgment for verification and review, and explicit escalation to the main thread. | User request and official OpenAI guidance | 2026-08-21 | Representative evals, model support, cost/quality evidence, or product routing changes |
 | FD-03 | Architecture | Many readers, evidence convergence, one writer, verification, independent reviewer; at most three concurrent read-only agents by workflow default. | Avoid write conflicts and keep concurrency advisory. | User request | 2026-08-17 | Workflow policy changes |
 
 ## Gate and Review Record
@@ -81,9 +81,9 @@ Use `NOT READY`, `PASSED`, or `FAILED`.
 | Gate or review | Status | Criteria and evidence | Authority/reviewer | Date and repository baseline |
 | --- | --- | --- | --- | --- |
 | DISCOVERY GATE | PASSED | Official custom-agent schema/model evidence and all repository lifecycle, prompt, documentation, example, and installer artifacts were inspected; scope and ownership boundaries are explicit with no material unknowns. | Codex; user supplied product decisions | 2026-08-17 @ 65805bb |
-| ARCHITECTURE GATE | PASSED | The authorized routing update assigns Luna/xhigh to all five profiles without changing profile ownership, sandbox boundaries, installer scope, or main-thread authority. | User request and Codex review | 2026-08-20 @ d5f8af1 working tree |
-| MILESTONE ACCEPTANCE: M1 | PASSED | M1-AC-01 through M1-AC-04 remain verified after the Luna/xhigh routing update by profile, installer, lifecycle, documentation, and review evidence. | Codex | 2026-08-20 working tree based on d5f8af1 |
-| SYSTEM VERIFICATION | PASSED | SA-01 through SA-06 revalidated after the routing update; profile, lifecycle, installer, documentation, and Git checks passed. | Codex | 2026-08-20 working tree based on d5f8af1 |
+| ARCHITECTURE GATE | PASSED | The authorized balanced routing assigns model capacity and reasoning effort by role risk without changing ownership, sandbox boundaries, installer scope, or main-thread authority. | User request, official OpenAI guidance, and Codex review | 2026-08-21 @ e41ba56 working tree |
+| MILESTONE ACCEPTANCE: M1 | PASSED | M1-AC-01 through M1-AC-04 remain verified after the balanced-routing update by profile, installer, lifecycle, documentation, and review evidence. | Codex | 2026-08-21 working tree based on e41ba56 |
+| SYSTEM VERIFICATION | PASSED | SA-01 through SA-06 revalidated after the balanced-routing update; profile, lifecycle, installer, documentation, and Git checks passed. | Codex | 2026-08-21 working tree based on e41ba56 |
 | FINAL ADVERSARIAL REVIEW | PASSED | Initial link-safety, undeclared-Python, exact-file-boundary, and PS 5.1 findings repaired; re-review reported no remaining material findings. | Independent `gpt-5.6-terra` / high reviewer | 2026-08-17 working tree based on 65805bb |
 
 ## Architecture Summary
@@ -120,7 +120,7 @@ Read-only roles set `sandbox_mode = "read-only"`. The installer never deletes un
 
 | ID | Observable criterion | Verification method | Status (`OPEN`/`VERIFIED`) | Evidence |
 | --- | --- | --- | --- | --- |
-| M1-AC-01 | Profile schema, models, reasoning, and read-only boundaries validate. | Automated profile tests | VERIFIED | PowerShell validator plus external `tomllib` parse passed for all five Luna/xhigh profiles. |
+| M1-AC-01 | Profile schema, models, reasoning, and read-only boundaries validate. | Automated profile tests | VERIFIED | PowerShell profile and exact-contract validation passed for all five balanced-routing profiles. |
 | M1-AC-02 | All installer safety scenarios pass. | PowerShell installer tests | VERIFIED | Both PowerShell runtimes passed all safety scenarios including links and rollback-safe replacement. |
 | M1-AC-03 | English and Chinese docs describe aligned activation, routing, costs, and precedence. | Consistency review | VERIFIED | Shared-term validator and independent review passed. |
 | M1-AC-04 | Lifecycle contracts remain aligned and independent review has no unresolved material finding. | Existing validator plus reviewer | VERIFIED | Lifecycle validator passed; canonical lifecycle artifacts unchanged; final re-review clean. |
@@ -142,14 +142,15 @@ Read-only roles set `sandbox_mode = "read-only"`. The installer never deletes un
 | Date | Accepted outcome or criterion | Verification evidence | Commit/baseline |
 | --- | --- | --- | --- |
 | 2026-08-17 | M1 and SA-01 through SA-06 accepted. | Profile/TOML validation, PowerShell 5.1 and 7 installer suites, lifecycle validation, Git checks, and independent Terra/high review passed. | Working tree based on 65805bb; local commit follows acceptance. |
+| 2026-08-21 | Balanced model and reasoning routing accepted without changing lifecycle or sandbox boundaries. | Profile contract validator, Skill lifecycle validator, installer scenario suite, bilingual routing alignment, and `git diff --check` passed. | Working tree based on e41ba56; local commit follows acceptance. |
 
 ## Repository and Verification State
 
 - Expected branch: `main`
 - Working tree expectation: clean after the required local commit; no push
 - Relevant validation commands: Skill validator; profile TOML/contract validator; PowerShell syntax; installer scenarios; `git diff --check`
-- Latest independent review: `gpt-5.6-terra` / high re-review passed with no remaining BLOCKER, MAJOR, or MINOR findings; routing update separately revalidated by profile and documentation checks
-- Evidence invalidated by later changes: prior model-assignment evidence superseded by the 2026-08-20 Luna/xhigh routing decision; safety and lifecycle evidence remains applicable
+- Latest independent review: `gpt-5.6-terra` / high re-review passed with no remaining BLOCKER, MAJOR, or MINOR findings; balanced routing separately revalidated by profile, documentation, lifecycle, installer, and Git checks
+- Evidence invalidated by later changes: the 2026-08-20 all-Luna/xhigh assignment evidence is superseded by the 2026-08-21 balanced-routing decision; safety and lifecycle evidence remains applicable
 
 ## Active Change Control
 
