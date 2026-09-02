@@ -13,6 +13,7 @@ A small, reusable operating kit for turning a high-level product goal into disco
 | Global/project `AGENTS.md` | Durable engineering behavior and repository conventions |
 | `goal-driven-engineering` Skill | Product-project lifecycle and gates |
 | Project `PLAN.md` | Cross-session facts, decisions, milestones, acceptance, and verified state |
+| Active `.goal/execution-state.md` | Volatile, unverified recovery state for one atomic execution unit; absence means `IDLE` |
 | Named custom-agent profiles | Bounded execution infrastructure for evidence, verification, review, or routine implementation |
 | Prompt | The current entry point or change request |
 | `/goal` | Long-running execution after architecture and milestones are stable |
@@ -86,6 +87,12 @@ Add the product Goal, context, constraints, non-goals, and observable definition
 Confirm that Discovery and Architecture gate records passed with evidence and required authority, frozen decisions preserve their decision evidence, milestones are vertical and dependency-ordered, and the current milestone has measurable acceptance. Then paste [`prompts/start-execution-goal.md`](prompts/start-execution-goal.md). Its `/goal` objective points to the Skill and `PLAN.md` instead of duplicating the protocol.
 
 Do not start `/goal` directly from a vague business idea. Current Codex documentation says the goal text is both the first prompt and completion criterion and limits CLI goal objectives to 4,000 characters, so detailed state belongs in `PLAN.md`.
+
+## Interrupt-Resilient Execution
+
+Long-running work follows `Write Before Risk`: create `.goal/execution-state.md` before Writer mutation, record `VERIFYING` before validation, and write results to `PLAN.md` only when validation succeeds and the mutation fingerprint still matches. PLAN remains the durable verified authority; the journal exists only while one atomic unit is active, absence means `IDLE`, and it never becomes a second source of accepted progress.
+
+A fresh session reads repository instructions, PLAN, the optional journal, Git, and verification evidence, then derives exactly one of `CONTINUE`, `RETRY_SAFE_UNIT`, `VERIFY`, `FINALIZE`, or `BLOCKED`. Uncertainty in HEAD, scope, protected baseline, verified fingerprint, or an external non-idempotent result must fail closed. This mechanism does not automatically wait or resume and provides no quota prediction, timed checkpoints, background monitoring, or external transaction recovery.
 
 ## Resume
 

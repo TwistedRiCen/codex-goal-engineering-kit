@@ -1,6 +1,6 @@
 # Project Plan
 
-> Persistent source of truth for durable project state. Initialize this file when the project starts. Keep evidence and decisions, not chat transcripts or activity logs.
+> Persistent source of truth for durable project state. Initialize this file when the project starts. Keep evidence and decisions, not chat transcripts or activity logs. Volatile or unverified execution state does not belong in PLAN; keep it in `.goal/execution-state.md` only while an atomic unit is active, with journal absence representing `IDLE`.
 
 ## Plan Metadata
 

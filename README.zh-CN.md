@@ -13,6 +13,7 @@
 | 全局/项目级 `AGENTS.md` | 持久工程行为与仓库约定 |
 | `goal-driven-engineering` Skill | 产品项目生命周期与门禁 |
 | 项目 `PLAN.md` | 跨会话事实、决策、里程碑、验收与已验证状态 |
+| 活跃期 `.goal/execution-state.md` | 单个原子执行单元的易失、未验证恢复状态；文件不存在即 `IDLE` |
 | 命名 Custom Agent Profiles | 用于证据收集、验证、审查或常规实现的有界执行基础设施 |
 | Prompt | 当前入口或变更请求 |
 | `/goal` | 架构与里程碑稳定后的长周期执行 |
@@ -86,6 +87,12 @@ Use $goal-driven-engineering to start this product goal; initialize PLAN.md and 
 确认 Discovery 和 Architecture 门禁记录均已基于证据并由所需权限批准，冻结决策保留了决策依据，里程碑按依赖顺序纵向拆分，当前里程碑具有可度量验收条件。然后粘贴 [`prompts/start-execution-goal.md`](prompts/start-execution-goal.md)。其中的 `/goal` 目标指向 Skill 和 `PLAN.md`，不会重复完整协议。
 
 不要直接从模糊的业务想法启动 `/goal`。当前 Codex 文档说明，Goal 文本同时是首个 Prompt 和完成判据，且 CLI Goal 目标限制为 4,000 个字符，因此详细状态应保存在 `PLAN.md` 中。
+
+## Interrupt-Resilient Execution
+
+长任务按 `Write Before Risk` 在 Writer 修改前创建 `.goal/execution-state.md`，在验证前记录 `VERIFYING`，并只在验证成功且代码指纹仍匹配时把结果写入 `PLAN.md`。PLAN 始终只保存持久且已验证的项目状态；Journal 只在一个原子执行单元活跃时存在，文件不存在即 `IDLE`，不能作为已验收进度的第二来源。
+
+新会话按仓库指令、PLAN、可选 Journal、Git 和验证证据恢复，并只推导 `CONTINUE`、`RETRY_SAFE_UNIT`、`VERIFY`、`FINALIZE` 或 `BLOCKED`。HEAD、范围、保护基线、验证指纹或外部非幂等结果存在不确定性时会 fail closed。该能力不执行自动等待或自动 resume，也不提供 quota prediction、定时 checkpoint、后台监控或 external transaction recovery。
 
 ## 恢复项目
 
