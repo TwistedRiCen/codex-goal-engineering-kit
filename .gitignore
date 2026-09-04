@@ -1,0 +1,10 @@
+# IDE state (user-local, never tracked in this repository)
+.idea/
+
+# Transient goal-driven execution journal; file absence is logical IDLE
+.goal/
+
+# OS noise
+Thumbs.db
+Desktop.ini
+.DS_Store
