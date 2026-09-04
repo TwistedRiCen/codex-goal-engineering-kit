@@ -5,9 +5,9 @@
 ## Plan Metadata
 
 - Plan Version: 1
-- Last Updated: 2026-09-02
+- Last Updated: 2026-09-04
 - Current Phase: PROJECT COMPLETE
-- Last Verified Commit: 643ba72 (accepted M1 baseline; M2 accepted in the verified working tree and local commit follows acceptance)
+- Last Verified Commit: d13f701 (M2 accepted; interrupt-resilient execution recorded and published on origin/main)
 
 Allowed phases: `GOAL DEFINITION`, `DISCOVERY`, `DISCOVERY GATE`, `ARCHITECTURE`, `ARCHITECTURE GATE`, `MILESTONE PLANNING`, `EXECUTION`, `MILESTONE ACCEPTANCE`, `SYSTEM VERIFICATION`, `FINAL ADVERSARIAL REVIEW`, `PROJECT COMPLETE`.
 
@@ -184,11 +184,12 @@ Read-only roles set `sandbox_mode = "read-only"`. The installer never deletes un
 | 2026-09-02 | M2/U6-EN English Interrupt-Resilient Execution documentation and bilingual contract verified. | Required continuity terms/non-goals, full `validate-skill.ps1`, `git diff --check -- README.md`, protected-baseline preservation, and unchanged original `.idea` hashes passed. Verified Mutation Fingerprint `48eb45b4e1fb4abf60443163f5b01e6d131a31b4a25a47a01aaea3ddb913f356`. | Working tree based on 643ba72; full regression and M2 independent review remain. |
 | 2026-09-02 | Independent Review MAJOR findings repaired within the frozen M2 architecture. | Fingerprints now use length-prefixed UTF-8 records and entry count; conflict guards precede every finalize path; five finalized-with-conflict cases and delimiter-collision coverage raised the suite to 22 decision cases. PowerShell 7 and 5.1, full validator, and all regressions passed after repair. | Working tree based on 643ba72. |
 | 2026-09-02 | M2 accepted after independent re-review. | Reviewer `01a06160-cf96-7760-940c-44cd5b0e1705` confirmed both MAJOR findings resolved and no BLOCKER/MAJOR remains. Journal absent, `.idea/workspace.xml` absent, original five `.idea` hashes unchanged, and all SA-07 through SA-09 evidence verified. | M2 accepted in working tree based on 643ba72; local commit follows repository policy. |
+| 2026-09-04 | Repository state reconciled after completion. | `d13f701` pushed fast-forward to origin/main under explicit user authorization; PLAN Last Verified Commit backfilled from `643ba72`; IDE-regenerated untracked `.idea/workspace.xml` (2026-09-03) recorded as a post-completion local artifact. | Remote `643ba72..d13f701`; this PLAN correction committed locally. |
 
 ## Repository and Verification State
 
 - Expected branch: `main`
-- Working tree expectation: preserve the original five untracked `.idea` files exactly; `.idea/workspace.xml` remains absent; M2 changes must remain separable and no push is authorized
+- Working tree expectation: preserve the original five untracked `.idea` files exactly; `.idea/workspace.xml` reappeared as an IDE-generated untracked local file on 2026-09-03 after project completion; d13f701 was pushed to origin/main under explicit user authorization on 2026-09-04
 - Relevant validation commands: execution continuity recovery tests; Skill validator; profile TOML/contract validator; PowerShell syntax; installer scenarios; `git diff --check`
 - Latest independent review: M2 `reviewer` (`gpt-5.6-terra` / high) re-review passed with no BLOCKER or MAJOR after two MAJOR repairs
 - Evidence invalidated by later changes: the 2026-08-20 all-Luna/xhigh assignment evidence is superseded by the 2026-08-21 balanced-routing decision; M1 routing and installer evidence remains valid, while lifecycle and documentation evidence must be revalidated after M2
