@@ -67,4 +67,4 @@ This is an input fixture for the Goal-Driven workflow, not a specification or im
 
 ## COPY INTO THE START PROMPT
 
-Use this file as `CONTEXT`, keep the sections above as the initial Goal/Constraints/Non-Goals/Done When, and invoke `prompts/start-project.md`. Expected first behavior: initialize `PLAN.md`, enter Discovery, and avoid production coding until the required gates pass.
+Use this file as `CONTEXT`, keep the sections above as the initial Goal/Constraints/Non-Goals/Done When, and invoke `prompts/start-project.md`. This is a FULL-mode fixture because money, lesson-credit ownership, authorization, and workflow semantics are unresolved. Expected first behavior: initialize `PLAN.md`, enter Discovery, and avoid production coding until the required gates pass.

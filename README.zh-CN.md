@@ -4,7 +4,7 @@
 
 ## 是什么
 
-这是一套小型、可复用的工程运行工具包，用于将高层产品目标逐步转化为经过发现、设计、实现、独立审查和系统验收的软件。它还提供可选的、按角色路由模型的 Codex Custom Agent Profiles，用于经济地执行 Multi-Agent 工程任务。仓库保存生命周期、持久状态和 Agent Profile 契约，但不提供 Agent 运行时或具体业务应用。
+这是一套可复用的工程工具包，支持普通功能迭代和完整产品交付，根据不确定性、影响范围和可恢复性选择流程深度。它还提供可选的、按角色路由模型的 Codex Custom Agent Profiles，用于经济地执行 Multi-Agent 工程任务。仓库保存生命周期、持久状态和 Agent Profile 契约，但不提供 Agent 运行时或具体业务应用。
 
 ## 为什么
 
@@ -66,11 +66,25 @@
 
 项目可以直接点名请求，例如：`Have explorer map the affected paths and test_analyst identify missing coverage; converge their evidence before implementation.` 验证完成后可要求使用 `reviewer` 审查。主 Sol Thread 继续负责目标解释、架构、证据收敛、冲突解决、规划、关键决策、复杂或敏感实现和最终验收；不要创建额外的 Sol Coordinator Subagent。琐碎任务不要生成 Subagent。工作流默认最多同时运行三个只读 Agent，且最多一个活跃 Writer；这是建议，不是 Codex 平台上限声明。Subagent 会独立执行模型与工具工作，因此消耗额外 Tokens。参见 OpenAI 官方文档：[Subagents 与 Custom Agents](https://learn.chatgpt.com/docs/agent-configuration/subagents)。
 
+## 选择工作流程
+
+| Task Mode | 使用场景 | 状态与入口 |
+| --- | --- | --- |
+| DIRECT | 行为已明确、没有重大业务或安全决策的局部修改 | 普通工程流程，无需新建 PLAN 或执行日志 |
+| STANDARD | 默认用于既有可信架构内的有界功能迭代 | 精简 [PLAN](templates/PLAN.md) 和 [功能入口](prompts/start-feature.md) |
+| FULL | 新系统，或核心模型、安全、迁移、兼容性发生重大变化 | [完整 PLAN](templates/PLAN.full.md) 和 [项目入口](prompts/start-project.md) |
+
+旧 PLAN 没有 Task Mode 时保持 FULL 语义，不能静默降低活跃项目的流程要求。已有执行日志必须先恢复；活跃 /goal 或明确要求的严格执行会记录执行上下文，跨会话仍使用严格恢复。完成原范围后，新授权的有界迭代可以使用 STANDARD，同时保留历史决策与验收证据。
+
+Skill 入口只保留公共规则；FULL 按需读取 references/full-lifecycle.md，严格执行或存在日志时读取 references/execution-continuity.md。安装时两个引用文件会随 Skill 一起同步。
+
+检查范围与当前代码后复用有效的架构、门禁证据，STANDARD 无需重新走一轮发现和架构仪式。执行受影响的验证与仓库要求的检查；重大风险和重要里程碑使用独立审查。同一代码基线且覆盖范围充分时，可复用证据、合并里程碑和最终审查。验收结果只保存一份，详细日志通过链接引用。
+
 ## 新项目
 
 1. 创建或打开真正的项目工作区；不要在本 Kit 仓库内开发业务项目。
 2. 确认 Skill 已安装。
-3. 建议在打开 Codex 前，将 [`templates/PLAN.md`](templates/PLAN.md) 复制到新仓库根目录。如果没有复制，已安装的 Skill 也可以根据其必需状态模型创建等价的 `PLAN.md`，无需访问本 Kit。
+3. 建议在打开 Codex 前，将 [`templates/PLAN.full.md`](templates/PLAN.full.md) 复制到新仓库根目录并命名为 `PLAN.md`。如果没有复制，已安装的 Skill 也可以根据其必需状态模型创建等价的 `PLAN.md`，无需访问本 Kit。
 4. 填写 [`prompts/start-project.md`](prompts/start-project.md) 中的六个字段，并将 Prompt 粘贴到普通 Codex 会话。如果 `PLAN.md` 已存在，Codex 会补充它；否则会立即创建。
 5. 确认会话进入 Discovery，并在必需门禁通过前不进行生产实现。
 
@@ -84,19 +98,21 @@ Use $goal-driven-engineering to start this product goal; initialize PLAN.md and 
 
 ## 架构已批准
 
-确认 Discovery 和 Architecture 门禁记录均已基于证据并由所需权限批准，冻结决策保留了决策依据，里程碑按依赖顺序纵向拆分，当前里程碑具有可度量验收条件。然后粘贴 [`prompts/start-execution-goal.md`](prompts/start-execution-goal.md)。其中的 `/goal` 目标指向 Skill 和 `PLAN.md`，不会重复完整协议。
+FULL 需要已通过的 Discovery 和 Architecture 门禁、冻结决策、按依赖排序的纵向里程碑和可度量验收条件。STANDARD 需要确认既有架构适用、当前范围及验收条件明确。有效门禁证据可以复用，无需重复索取相同批准。然后粘贴 [`prompts/start-execution-goal.md`](prompts/start-execution-goal.md)。其中的 `/goal` 目标指向 Skill 和 `PLAN.md`，不会重复完整协议。
 
 不要直接从模糊的业务想法启动 `/goal`。当前 Codex 文档说明，Goal 文本同时是首个 Prompt 和完成判据，且 CLI Goal 目标限制为 4,000 个字符，因此详细状态应保存在 `PLAN.md` 中。
 
 ## Interrupt-Resilient Execution
 
-长任务按 `Write Before Risk` 在 Writer 修改前创建 `.goal/execution-state.md`，在验证前记录 `VERIFYING`，并只在验证成功且代码指纹仍匹配时把结果写入 `PLAN.md`。PLAN 始终只保存持久且已验证的项目状态；Journal 只在一个原子执行单元活跃时存在，文件不存在即 `IDLE`，不能作为已验收进度的第二来源。
+FULL 执行、任何 /goal 执行和明确要求的严格恢复按 `Write Before Risk` 在 Writer 修改前创建 `.goal/execution-state.md`，在验证前记录 `VERIFYING`，并只在验证成功且代码指纹仍匹配时把结果写入 `PLAN.md`。PLAN 始终只保存持久且已验证的项目状态；Journal 只在一个原子执行单元活跃时存在，文件不存在即 `IDLE`，不能作为已验收进度的第二来源。
 
-新会话按仓库指令、PLAN、可选 Journal、Git 和验证证据恢复，并只推导 `CONTINUE`、`RETRY_SAFE_UNIT`、`VERIFY`、`FINALIZE` 或 `BLOCKED`。HEAD、范围、保护基线、验证指纹或外部非幂等结果存在不确定性时会 fail closed。该能力不执行自动等待或自动 resume，也不提供 quota prediction、定时 checkpoint、后台监控或 external transaction recovery。
+严格恢复按仓库指令、PLAN、可选 Journal、Git 和验证证据重建状态，并只推导 `CONTINUE`、`RETRY_SAFE_UNIT`、`VERIFY`、`FINALIZE` 或 `BLOCKED`。HEAD、范围、保护基线、验证指纹或外部非幂等结果存在不确定性时会 fail closed。该能力不执行自动等待或自动 resume，也不提供 quota prediction、定时 checkpoint、后台监控或 external transaction recovery。
+
+普通 STANDARD 工作按可验证批次推进，无需为每次修改维护日志或指纹；批次包含普通修复及受影响的复验。严格恢复继续保留 clean Allowed Paths 和全部冲突检查，不会为了开始下个批次强制提交或覆盖已有修改。目前恢复能力由指令协议与决策/指纹测试组成，未提供通用恢复 CLI。
 
 ## 恢复项目
 
-粘贴 [`prompts/resume-project.md`](prompts/resume-project.md)。Codex 会根据适用的 `AGENTS.md`、`PLAN.md`、Git/仓库证据、当前里程碑代码和测试重建状态。如果计划已过时，以仓库证据为准。
+粘贴 [`prompts/resume-project.md`](prompts/resume-project.md)。Codex 会先识别已有模式和恢复要求，再根据适用的 `AGENTS.md`、`PLAN.md`、Git/仓库证据、当前里程碑代码和测试重建状态。如果计划已过时，以仓库证据为准。
 
 ## 变更请求
 

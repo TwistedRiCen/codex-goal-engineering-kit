@@ -5,9 +5,12 @@
 ## Plan Metadata
 
 - Plan Version: 1
-- Last Updated: 2026-09-04
+- Last Updated: 2026-09-08
+- Task Mode: STANDARD
+- Mode reason: authorized bounded workflow maintenance after completed M2
+- Execution context: ordinary
 - Current Phase: PROJECT COMPLETE
-- Last Verified Commit: d13f701 (M2 accepted; interrupt-resilient execution recorded and published on origin/main)
+- Last Verified Commit: ec06ca7 (base of the verified optimization diff; its delivery commit contains this updated PLAN)
 
 Allowed phases: `GOAL DEFINITION`, `DISCOVERY`, `DISCOVERY GATE`, `ARCHITECTURE`, `ARCHITECTURE GATE`, `MILESTONE PLANNING`, `EXECUTION`, `MILESTONE ACCEPTANCE`, `SYSTEM VERIFICATION`, `FINAL ADVERSARIAL REVIEW`, `PROJECT COMPLETE`.
 
@@ -198,3 +201,34 @@ Read-only roles set `sandbox_mode = "read-only"`. The installer never deletes un
 
 | ID | Classification | Status | Requested/proposed change | Impact and proposed contract updates | Decision authority/evidence | Required gate |
 | --- | --- | --- | --- | --- | --- | --- |
+
+## Current Optimization Batch
+
+- Task Mode: STANDARD (explicitly scoped maintenance after completed M2; historic gates and acceptance remain intact).
+- Status: ACCEPTED.
+- Authorization: 2026-09-08 user approved the proposed workflow simplification and synchronization to Codex.
+- Scope: task tiers, reusable gates, compact PLAN, proportional review, short entry prompts, conditional references, aligned validation and backup-safe Skill synchronization.
+- Preserved: strict recovery state/action model and conflict guards; model profiles, installers, global instructions/configuration, and remote Git state.
+- Acceptance: see the scoped ledger below; legacy M1/M2 criteria are historical evidence, not acceptance of this iteration.
+- Next work: none for implementation or installation; local delivery commit follows repository Git policy.
+
+| ID | Observable result | Verification method | Status (OPEN/VERIFIED) | Evidence and baseline |
+| --- | --- | --- | --- | --- |
+| OPT-01 | DIRECT, STANDARD, and FULL choose proportionate work while preserving legacy and active strict recovery. | Independent scenario walkthrough and contract validation. | VERIFIED | Independent workflow_final_check read all artifacts and walked eight scenarios; no remaining actionable findings after repairs. Working tree based on ec06ca7. |
+| OPT-02 | All entry prompts, templates, bilingual guides, fixture, and packaged references express a coherent usable contract. | Skill validator, basic Skill validation, independent artifact review. | VERIFIED | Lifecycle and basic Skill validators passed; full read-only artifact review passed. Repaired feature-entry legacy routing and documented persistent strict context. |
+| OPT-03 | Strict recovery semantics, role profiles, and installer behavior remain compatible. | Exact decision-table/state/action comparison; PS7 and PS5.1 recovery/profile/installer suites. | VERIFIED | 22 continuity cases, profile validation, both installer suites passed in both runtimes; six states, five actions, and recovery decision table unchanged against ec06ca7. |
+| OPT-04 | Codex receives the exact new Skill package with recoverable old copy; installation preserves configuration and agents. | Backup installation, full manifest readback, idempotence and protected-file hashes. | VERIFIED | Four installed files match source; old-package backup matches pre-install manifest; repeat install is a no-op; installed Skill validation passed. See installation record below. |
+| OPT-05 | Final task diff contains only authorized workflow changes and passes checks. | Final diff/status inspection and git diff --check. | VERIFIED | Reviewed task paths only; diff checks passed. One local delivery commit follows acceptance; no remote changes authorized. |
+
+Validation scope: scenario walkthroughs evaluate instructions statically; they are not live product executions or a measured speed/Token benchmark.
+
+
+### Verification and Installation Record
+
+- Executed in PowerShell 7 and Windows PowerShell 5.1: scripts/validate-skill.ps1, scripts/validate-agent-profiles.ps1, scripts/test-execution-continuity.ps1, scripts/test-install-agents.ps1, scripts/test-install-skill.ps1. All passed; affected Skill and package checks reran after review repairs.
+- Basic Skill validator passed for source and actual installed package; all PowerShell scripts parsed; git diff --check passed. Strict recovery decision table, six states, and five actions match ec06ca7 exactly. The shared Skill entry is 88 lines versus 261, with conditional references; no runtime or Token saving is claimed.
+- Independent review: workflow_review provided a partial static review and identified the missing scoped ledger; workflow_final_check completed artifact review plus eight scenario walkthroughs and confirmed the feature-entry routing repair. No remaining actionable finding. These are static checks, not live product workflow executions.
+- Installed: C:/Users/98053/.agents/skills/goal-driven-engineering (4 files, complete manifest equality).
+- Retained backup: C:/Users/98053/.agents/skills/goal-driven-engineering.backup-20260908-053846-6896010b. Backup manifest matched the pre-install package. Repeat synchronization reported Already synchronized; no changes made.
+- Global AGENTS.md and five installed agent profiles match the original task baseline. config.toml differs from the old pre-interruption hash, but its last-write time 2026-09-08T01:14:52Z predates installation at 05:38:46Z. That existing drift was preserved; configuration stayed unchanged during final readback. The unchanged installer has no global-configuration write path.
+- Git delivery: local commit only, after acceptance. Obtain the delivery hash from git log -1 -- PLAN.md; no push or remote mutation performed.

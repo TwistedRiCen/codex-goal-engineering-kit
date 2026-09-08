@@ -4,7 +4,7 @@
 
 ## What
 
-A small, reusable operating kit for turning a high-level product goal into discovered, designed, implemented, independently reviewed, and system-accepted software. It also provides optional role-based Codex custom-agent profiles for economical multi-agent execution. The repository stores lifecycle, durable-state, and agent-profile contracts; it does not provide an agent runtime or a business application.
+A reusable kit for verified feature iterations and product delivery, with workflow depth selected by uncertainty, impact, and recoverability. It also provides optional role-based Codex custom-agent profiles for economical multi-agent execution. The repository stores lifecycle, durable-state, and agent-profile contracts; it does not provide an agent runtime or a business application.
 
 ## Why
 
@@ -66,11 +66,25 @@ Route by task boundary, risk, and total cost to an accepted outcome: Luna/medium
 
 Ask Codex for named agents directly, for example: `Have explorer map the affected paths and test_analyst identify missing coverage; converge their evidence before implementation.` For a review, ask it to use `reviewer` after verification. The main Sol thread retains goal interpretation, architecture, evidence convergence, conflict resolution, planning, critical decisions, complex or sensitive implementation, and final acceptance; do not create a separate Sol coordinator subagent. Do not spawn subagents for trivial work. As workflow defaults, use at most three concurrent read-only agents and one active writer; these are recommendations, not platform-limit claims. Subagents perform their own model and tool work and therefore consume additional tokens. See the official OpenAI documentation for [Subagents and custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents).
 
+## Choose the workflow
+
+| Task Mode | Use | State and entry |
+| --- | --- | --- |
+| DIRECT | Isolated, understood local changes without material business/security decisions | Ordinary engineering; no new PLAN or journal |
+| STANDARD | Default for bounded features within verified architecture | Compact [PLAN](templates/PLAN.md) and [start-feature](prompts/start-feature.md) |
+| FULL | New systems or material core-model, security, migration, or compatibility changes | [Full PLAN](templates/PLAN.full.md) and [start-project](prompts/start-project.md) |
+
+Existing PLAN files without Task Mode keep FULL semantics. Do not silently downgrade an active project. An existing execution journal is always reconciled first; an active /goal or explicitly requested strict execution retains its recorded context across sessions. A newly authorized bounded iteration after completed work may use STANDARD without rewriting historical decisions and acceptance.
+
+The Skill entrypoint holds shared rules. It loads references/full-lifecycle.md only for FULL, and references/execution-continuity.md only for strict execution or an existing journal. Both references are installed with the Skill.
+
+Reuse applicable architecture and gate evidence after checking scope and current code. STANDARD does not require a fresh discovery/architecture ceremony. Verify affected behavior and required repository checks; use independent review for material risk and significant milestones. Reuse matching evidence and combine milestone/final review when coverage and baseline match. Keep one acceptance ledger and link detailed logs.
+
 ## New Project
 
 1. Create/open the real project workspace; do not build it inside this Kit repository.
 2. Ensure the Skill is installed.
-3. Prefer copying [`templates/PLAN.md`](templates/PLAN.md) to the new repository root before opening Codex. If you do not, the installed Skill can create an equivalent `PLAN.md` from its required state model without access to this Kit.
+3. Prefer copying [`templates/PLAN.full.md`](templates/PLAN.full.md) to the new repository root as `PLAN.md` before opening Codex. If you do not, the installed Skill can create an equivalent `PLAN.md` from its required state model without access to this Kit.
 4. Fill the six fields in [`prompts/start-project.md`](prompts/start-project.md) and paste the prompt into a normal Codex session. If `PLAN.md` already exists, Codex fills it; otherwise it creates it immediately.
 5. Confirm the session enters Discovery and avoids production implementation until the required gates pass.
 
@@ -84,19 +98,21 @@ Add the product Goal, context, constraints, non-goals, and observable definition
 
 ## Architecture Approved
 
-Confirm that Discovery and Architecture gate records passed with evidence and required authority, frozen decisions preserve their decision evidence, milestones are vertical and dependency-ordered, and the current milestone has measurable acceptance. Then paste [`prompts/start-execution-goal.md`](prompts/start-execution-goal.md). Its `/goal` objective points to the Skill and `PLAN.md` instead of duplicating the protocol.
+For FULL, confirm passed Discovery and Architecture gates, frozen decisions, dependency-ordered vertical milestones, and measurable acceptance. For STANDARD, verify the existing architecture applies and scoped criteria are ready. Reuse valid gate evidence instead of requesting the same approval again. Then paste [`prompts/start-execution-goal.md`](prompts/start-execution-goal.md). Its `/goal` objective points to the Skill and `PLAN.md` instead of duplicating the protocol.
 
 Do not start `/goal` directly from a vague business idea. Current Codex documentation says the goal text is both the first prompt and completion criterion and limits CLI goal objectives to 4,000 characters, so detailed state belongs in `PLAN.md`.
 
 ## Interrupt-Resilient Execution
 
-Long-running work follows `Write Before Risk`: create `.goal/execution-state.md` before Writer mutation, record `VERIFYING` before validation, and write results to `PLAN.md` only when validation succeeds and the mutation fingerprint still matches. PLAN remains the durable verified authority; the journal exists only while one atomic unit is active, absence means `IDLE`, and it never becomes a second source of accepted progress.
+FULL execution, any /goal execution, and explicitly requested strict recovery follow `Write Before Risk`: create `.goal/execution-state.md` before Writer mutation, record `VERIFYING` before validation, and write results to `PLAN.md` only when validation succeeds and the mutation fingerprint still matches. PLAN remains the durable verified authority; the journal exists only while one atomic unit is active, absence means `IDLE`, and it never becomes a second source of accepted progress.
 
-A fresh session reads repository instructions, PLAN, the optional journal, Git, and verification evidence, then derives exactly one of `CONTINUE`, `RETRY_SAFE_UNIT`, `VERIFY`, `FINALIZE`, or `BLOCKED`. Uncertainty in HEAD, scope, protected baseline, verified fingerprint, or an external non-idempotent result must fail closed. This mechanism does not automatically wait or resume and provides no quota prediction, timed checkpoints, background monitoring, or external transaction recovery.
+Strict recovery reads repository instructions, PLAN, the optional journal, Git, and verification evidence, then derives exactly one of `CONTINUE`, `RETRY_SAFE_UNIT`, `VERIFY`, `FINALIZE`, or `BLOCKED`. Uncertainty in HEAD, scope, protected baseline, verified fingerprint, or an external non-idempotent result must fail closed. This mechanism does not automatically wait or resume and provides no quota prediction, timed checkpoints, background monitoring, or external transaction recovery.
+
+Ordinary STANDARD work uses coherent verified batches without per-edit journals or fingerprints. A batch includes ordinary repairs and affected revalidation. Strict recovery retains clean Allowed Paths and all conflict checks; it does not force commits or overwrite dirty paths to start another batch. Recovery is an instruction contract with decision/fingerprint test fixtures, not a shipped generic recovery CLI.
 
 ## Resume
 
-Paste [`prompts/resume-project.md`](prompts/resume-project.md). Codex will rebuild state from applicable `AGENTS.md`, `PLAN.md`, Git/repository evidence, current milestone code, and tests. Repository evidence wins if the plan is stale.
+Paste [`prompts/resume-project.md`](prompts/resume-project.md). Codex selects the existing mode and continuity requirements, then rebuilds state from applicable `AGENTS.md`, `PLAN.md`, Git/repository evidence, current milestone code, and tests. Repository evidence wins if the plan is stale.
 
 ## Change Request
 

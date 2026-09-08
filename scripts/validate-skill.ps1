@@ -6,7 +6,11 @@ $ErrorActionPreference = 'Stop'
 
 $repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $skillPath = Join-Path $repositoryRoot 'skills\goal-driven-engineering\SKILL.md'
-$templatePath = Join-Path $repositoryRoot 'templates\PLAN.md'
+$templatePath = Join-Path $repositoryRoot 'templates\PLAN.full.md'
+$compactTemplatePath = Join-Path $repositoryRoot 'templates\PLAN.md'
+$skillRoot = Split-Path -Parent $skillPath
+$lifecyclePath = Join-Path $skillRoot 'references\full-lifecycle.md'
+$recoveryPath = Join-Path $skillRoot 'references\execution-continuity.md'
 $agentYamlPath = Join-Path $repositoryRoot 'skills\goal-driven-engineering\agents\openai.yaml'
 $readmePath = Join-Path $repositoryRoot 'README.md'
 $readmeZhPath = Join-Path $repositoryRoot 'README.zh-CN.md'
@@ -15,7 +19,11 @@ $startExecutionPromptPath = Join-Path $repositoryRoot 'prompts\start-execution-g
 $resumePromptPath = Join-Path $repositoryRoot 'prompts\resume-project.md'
 $continuityTestPath = Join-Path $repositoryRoot 'scripts\test-execution-continuity.ps1'
 
-$skill = Get-Content -Raw -LiteralPath $skillPath
+$entrypoint = Get-Content -Raw -LiteralPath $skillPath
+$lifecycle = Get-Content -Raw -LiteralPath $lifecyclePath
+$recovery = Get-Content -Raw -LiteralPath $recoveryPath
+$skill = $entrypoint + [Environment]::NewLine + $lifecycle + [Environment]::NewLine + $recovery
+$compactTemplate = Get-Content -Raw -LiteralPath $compactTemplatePath
 $template = Get-Content -Raw -LiteralPath $templatePath
 $agentYaml = Get-Content -Raw -LiteralPath $agentYamlPath
 $readme = Get-Content -Raw -LiteralPath $readmePath
@@ -169,14 +177,46 @@ if (Test-Path -LiteralPath (Join-Path $repositoryRoot 'skills\goal-driven-engine
     throw 'A persistent IDLE execution-state asset must not exist.'
 }
 
-foreach ($term in @('clean Allowed Paths', 'Prepared HEAD', 'PREPARED', 'VERIFYING', 'VERIFIED', 'FINALIZE', 'journal absence is IDLE')) {
-    if ($startExecutionPrompt.IndexOf($term, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
-        throw "Execution prompt is missing continuity instruction: $term"
+# Entry prompts select the canonical protocol; they must not duplicate its state machine.
+foreach ($promptPath in @($startExecutionPromptPath, $resumePromptPath)) {
+    $content = Get-Content -Raw -LiteralPath $promptPath
+    if (-not $content.Contains('references/execution-continuity.md')) {
+        throw "Strict execution/resume entry does not route to its installed contract: $promptPath"
+    }
+    if ($content.Length -gt 1400) {
+        throw "Execution/resume entry is too large; keep lifecycle detail in the Skill: $promptPath"
     }
 }
-foreach ($term in @('PLAN.md', '.goal/execution-state.md', 'Git branch/HEAD/status/history/current diff', 'verification evidence', 'exactly one action', 'at most one read-only reader')) {
-    if ($resumePrompt.IndexOf($term, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
-        throw "Resume prompt is missing continuity instruction: $term"
+if (-not $startProject.Contains('references/full-lifecycle.md')) {
+    throw 'New-product entry does not route to the full lifecycle.'
+}
+
+# Supporting references must resolve inside the installed Skill, without Kit access.
+foreach ($doc in Get-ChildItem -LiteralPath $skillRoot -Recurse -File -Filter '*.md') {
+    $content = Get-Content -Raw -LiteralPath $doc.FullName
+    foreach ($link in [regex]::Matches($content, '\[[^\]]+\]\(([^)]+)\)')) {
+        $target = $link.Groups[1].Value
+        if ($target -match '^(https?://|#)') { continue }
+        $targetPath = [System.IO.Path]::GetFullPath((Join-Path $doc.DirectoryName ($target -split '#')[0]))
+        $rootPrefix = [System.IO.Path]::GetFullPath($skillRoot).TrimEnd([char[]]'\/') + [System.IO.Path]::DirectorySeparatorChar
+        if (-not $targetPath.StartsWith($rootPrefix, [System.StringComparison]::OrdinalIgnoreCase) -or
+            -not (Test-Path -LiteralPath $targetPath -PathType Leaf)) {
+            throw "Installed Skill reference is missing or escapes its package: $target"
+        }
+    }
+}
+
+foreach ($mode in @('DIRECT', 'STANDARD', 'FULL')) {
+    if (-not $entrypoint.Contains($mode) -or -not $readme.Contains($mode) -or -not $readmeZh.Contains($mode)) {
+        throw "Workflow mode is missing from an entrypoint or user guide: $mode"
+    }
+}
+if (-not $compactTemplate.Contains('Task Mode: STANDARD') -or -not $template.Contains('Task Mode: FULL')) {
+    throw 'Compact and full templates must declare their workflow modes.'
+}
+foreach ($heading in @('Plan Metadata', 'Project Goal / Scope', 'Acceptance Criteria', 'Current Work', 'Decisions and Blockers', 'Repository and Verification State')) {
+    if ($compactTemplate -cnotmatch "(?m)^## $([regex]::Escape($heading))$") {
+        throw "Compact PLAN is missing its persistent-state section: $heading"
     }
 }
 
