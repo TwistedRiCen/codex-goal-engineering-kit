@@ -67,6 +67,6 @@ Users do not need to write a brief this complete before starting. See [INTAKE-WA
 - 排课资源模型、冲突规则、时区和跨日课程处理。
 - 经营指标定义、时间归属、冲正方式和审计保留要求。
 
-## OPTIONAL COMPLETE-INPUT PATH
+## 已有完整材料时
 
-Use this file as `CONTEXT`, keep the sections above as the initial Goal/Constraints/Non-Goals/Done When, and invoke `prompts/start-project.md`. This is a FULL-mode fixture because money, lesson-credit ownership, authorization, and workflow semantics are unresolved. Expected first behavior: initialize `PLAN.md`, enter Discovery, and avoid production coding until the required gates pass.
+将本文件附在[统一开始入口](../../prompts/start-here.md)后即可，无需再填写表格。这里资金、课时所有权、授权和核心流程语义尚未解决，因此 Skill 应选择 FULL。预期首先创建 PLAN.md、进入 Discovery，在所需门禁通过前不编写业务代码。本文件仍是工作流示例，不授权在 Kit 仓库实施教培系统。

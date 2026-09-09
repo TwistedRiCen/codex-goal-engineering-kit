@@ -16,9 +16,14 @@ The agent reads available evidence, asks one useful main question at a time, and
 
 | Entry | Use |
 | --- | --- |
-| [Start here](prompts/start-here.md), default | A rough idea needing conversational guidance |
-| [From materials](prompts/from-materials.md) | Existing requirements, prototypes, spreadsheets, or code |
-| [Complete project goal](prompts/start-project.md) / [feature goal](prompts/start-feature.md) | Prepared structured input; skip unnecessary interviewing |
+| [Start here](prompts/start-here.md), default | A sentence, existing materials, or a complete goal; shared by projects and features |
+| [Resume](prompts/resume-project.md) | Continue from PLAN and repository evidence, including interrupted work |
+| [Long-running execution](prompts/start-execution-goal.md), optional | An approved, measurable scope executed with /goal |
+| [Change a requirement](prompts/change-control.md), optional | Describe a change and assess its impact |
+
+Use the default entry for everyday starts; attach prepared information to skip unnecessary interviewing. The former material, project, and feature starters are merged. Users do not need to select a workflow mode.
+
+Prompt templates and the Codex default starter use Simplified Chinese. This English guide does not introduce a second set of English templates. Filenames, Skill identifiers, commands, and PLAN state identifiers remain stable. Users may request another conversation language without translating protocol identifiers.
 
 The agent progressively maintains the selected mode's PLAN and leaves unknowns explicit. Discussion-only/no-file-change requests keep the brief in the conversation without initializing PLAN. Agreeing to a brief does not approve pending business rules or automatically authorize coding; existing explicit authorization does not need redundant confirmation.
 
@@ -91,12 +96,12 @@ Ask Codex for named agents directly, for example: `Have explorer map the affecte
 | Task Mode | Use | State and entry |
 | --- | --- | --- |
 | DIRECT | Isolated, understood local changes without material business/security decisions | Ordinary engineering; no new PLAN or journal |
-| STANDARD | Default for bounded features within verified architecture | Compact [PLAN](templates/PLAN.md) and [start-feature](prompts/start-feature.md) |
-| FULL | New systems or material core-model, security, migration, or compatibility changes | [Full PLAN](templates/PLAN.full.md) and [start-project](prompts/start-project.md) |
+| STANDARD | Default for bounded features within verified architecture | Compact [PLAN](templates/PLAN.md) and [shared starter](prompts/start-here.md) |
+| FULL | New systems or material core-model, security, migration, or compatibility changes | [Full PLAN](templates/PLAN.full.md) and [shared starter](prompts/start-here.md) |
 
 Existing PLAN files without Task Mode keep FULL semantics. Do not silently downgrade an active project. An existing execution journal is always reconciled first; an active /goal or explicitly requested strict execution retains its recorded context across sessions. A newly authorized bounded iteration after completed work may use STANDARD without rewriting historical decisions and acceptance.
 
-The Skill entrypoint holds shared rules. It loads references/full-lifecycle.md only for FULL, and references/execution-continuity.md only for strict execution or an existing journal. Both references are installed with the Skill.
+The Skill entrypoint holds shared rules. It loads references/full-lifecycle.md only for FULL, and references/execution-continuity.md only for strict execution or an existing journal. Guided intake reads references/guided-intake.md as needed; all three references are installed with the Skill.
 
 Reuse applicable architecture and gate evidence after checking scope and current code. STANDARD does not require a fresh discovery/architecture ceremony. Verify affected behavior and required repository checks; use independent review for material risk and significant milestones. Reuse matching evidence and combine milestone/final review when coverage and baseline match. Keep one acceptance ledger and link detailed logs.
 
@@ -105,16 +110,8 @@ Reuse applicable architecture and gate evidence after checking scope and current
 1. Create/open the real project workspace; do not build it inside this Kit repository.
 2. Ensure the Skill is installed.
 3. Templates are optional. To pre-seed a full PLAN, copy [`templates/PLAN.full.md`](templates/PLAN.full.md) to the new repository root as `PLAN.md` before opening Codex. If you do not, the installed Skill can create an equivalent `PLAN.md` from its required state model without access to this Kit.
-4. Prefer [guided intake](prompts/start-here.md) with one sentence or existing materials; the six-field entry is optional for prepared input. Authorized project work creates or extends PLAN progressively; discussion-only work does not write files.
+4. Prefer [guided intake](prompts/start-here.md) with one sentence or existing materials; attach a complete goal directly when available. Authorized project work creates or extends PLAN progressively; discussion-only work does not write files.
 5. Confirm the session enters Discovery and avoids production implementation until the required gates pass.
-
-The first sentence can be as small as:
-
-```text
-Use $goal-driven-engineering to start this product goal; initialize PLAN.md and begin Discovery before implementation.
-```
-
-Add whatever is already known; the agent gathers missing key information through questions and evidence.
 
 ## Architecture Approved
 

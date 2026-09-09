@@ -14,7 +14,7 @@ $recoveryPath = Join-Path $skillRoot 'references\execution-continuity.md'
 $agentYamlPath = Join-Path $repositoryRoot 'skills\goal-driven-engineering\agents\openai.yaml'
 $readmePath = Join-Path $repositoryRoot 'README.md'
 $readmeZhPath = Join-Path $repositoryRoot 'README.zh-CN.md'
-$startProjectPath = Join-Path $repositoryRoot 'prompts\start-project.md'
+$startPromptPath = Join-Path $repositoryRoot 'prompts\start-here.md'
 $startExecutionPromptPath = Join-Path $repositoryRoot 'prompts\start-execution-goal.md'
 $resumePromptPath = Join-Path $repositoryRoot 'prompts\resume-project.md'
 $intakePath = Join-Path $skillRoot 'references\guided-intake.md'
@@ -30,7 +30,7 @@ $template = Get-Content -Raw -LiteralPath $templatePath
 $agentYaml = Get-Content -Raw -LiteralPath $agentYamlPath
 $readme = Get-Content -Raw -LiteralPath $readmePath
 $readmeZh = Get-Content -Raw -LiteralPath $readmeZhPath
-$startProject = Get-Content -Raw -LiteralPath $startProjectPath
+$startPrompt = Get-Content -Raw -LiteralPath $startPromptPath
 $startExecutionPrompt = Get-Content -Raw -LiteralPath $startExecutionPromptPath
 $resumePrompt = Get-Content -Raw -LiteralPath $resumePromptPath
 $continuityTest = Get-Content -Raw -LiteralPath $continuityTestPath
@@ -172,8 +172,8 @@ if (-not $template.Contains('Volatile or unverified execution state does not bel
     throw 'PLAN template does not preserve the durable-state boundary or journal-absence semantics.'
 }
 
-if ($startProject.Contains('.goal/execution-state.md')) {
-    throw 'start-project must not initialize a persistent execution journal.'
+if ($startPrompt.Contains('.goal/execution-state.md')) {
+    throw 'The shared starter must not initialize a persistent execution journal.'
 }
 if (Test-Path -LiteralPath (Join-Path $repositoryRoot 'skills\goal-driven-engineering\assets\execution-state.md')) {
     throw 'A persistent IDLE execution-state asset must not exist.'
@@ -189,13 +189,13 @@ foreach ($promptPath in @($startExecutionPromptPath, $resumePromptPath)) {
         throw "Execution/resume entry is too large; keep lifecycle detail in the Skill: $promptPath"
     }
 }
-if (-not $startProject.Contains('references/full-lifecycle.md')) {
-    throw 'New-product entry does not route to the full lifecycle.'
+if (-not $entrypoint.Contains('references/full-lifecycle.md')) {
+    throw 'Skill mode routing does not expose the full lifecycle.'
 }
 
-foreach ($entryName in @('start-here.md', 'from-materials.md')) {
+foreach ($entryName in @('start-here.md', 'resume-project.md', 'start-execution-goal.md', 'change-control.md')) {
     if (-not (Test-Path -LiteralPath (Join-Path $repositoryRoot "prompts/$entryName") -PathType Leaf)) {
-        throw "Missing intake entry: $entryName"
+        throw "Missing workflow entry: $entryName"
     }
 }
 if (-not $entrypoint.Contains('references/guided-intake.md')) {

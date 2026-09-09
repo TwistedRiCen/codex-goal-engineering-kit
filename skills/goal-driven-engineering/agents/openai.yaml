@@ -1,4 +1,4 @@
 interface:
   display_name: "Goal-Driven Engineering"
-  short_description: "Guide an idea into a scoped, verifiable project"
-  default_prompt: "Use $goal-driven-engineering to help me shape this idea. Read available evidence, ask one useful question at a time when needed, and progressively draft the goal before implementation."
+  short_description: "通过问答将想法逐步整理为范围明确、可验证验收的项目目标"
+  default_prompt: "使用 $goal-driven-engineering 帮我梳理这个想法：先读可用材料，只对关键缺口一次问一个主要问题，逐步整理目标草案，暂不写业务代码。"

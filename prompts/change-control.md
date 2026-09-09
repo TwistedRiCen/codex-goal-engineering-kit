@@ -1,9 +1,9 @@
-# Classify and Control a Change
+# 调整需求
+
+直接描述哪里变了，已知的原因和限制可一起补充，无需填表。
 
 ```text
-CHANGE: <new or changed requirement>
-REASON: <business reason or new evidence>
-CONSTRAINTS: <compatibility, migration, security, and other boundaries>
-
-Use $goal-driven-engineering to inspect PLAN.md and affected repository evidence. Apply its change classification and decision rules. Reuse valid prior decisions, analyze downstream impact, and continue reversible details within approved scope. Prepare material changes for required adjudication before changing canonical scope or architecture. Preserve valid acceptance evidence and explicitly invalidate affected evidence after approved changes.
+使用 $goal-driven-engineering 处理这项变更：<要调整的需求；可附原因和限制>。
+先检查 PLAN.md 和相关仓库证据，按 Skill 的恢复、变更分类和决策规则分析影响。复用仍然有效的决定，在已授权范围内继续可逆细节。
+涉及范围或架构的重大变化，先形成可评审建议并取得所需裁决，再更新正式范围或决策。保留有效验收证据，获批变更应用后明确标记受影响的失效证据。
 ```

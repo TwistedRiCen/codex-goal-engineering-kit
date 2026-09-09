@@ -1,7 +1,8 @@
-# Start the Execution Goal
+# 启动长期执行（按需）
 
-Use after scope, decisions, and acceptance are ready. FULL requires passed Discovery and Architecture gates; STANDARD requires verified existing architecture and scoped acceptance. Any /goal execution uses strict continuity.
+仅在范围、关键决策和验收条件明确后使用。FULL 需要通过发现和架构门禁；STANDARD 需要核实既有架构适用、当前范围可验收。普通功能迭代无需使用 /goal；任何 /goal 执行都使用严格恢复。
 
 ```text
-/goal Use $goal-driven-engineering to complete the approved scope in PLAN.md with verification evidence. Reconcile repository state and the selected mode's readiness conditions. Record /goal execution context; read and follow references/execution-continuity.md within the installed Skill before mutation. Execute coherent batches, preserve frozen decisions, verify affected criteria, and use risk-based independent review. Resolve active recovery before further work; never downgrade it, expand scope or authority, or accept unverified work.
+/goal 使用 $goal-driven-engineering 完成 PLAN.md 中已批准的范围，并提供验收证据。先核对仓库现状和当前模式的执行条件，记录 /goal 执行上下文；修改前阅读并遵循已安装 Skill 内的 references/execution-continuity.md。
+按可验证批次实施，保留冻结决策，验证受影响的验收条件，按风险进行独立审查。先处理已有恢复状态，不降低恢复要求、不扩展范围或权限，不把未验证工作记录为完成。
 ```

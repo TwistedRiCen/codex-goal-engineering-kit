@@ -16,9 +16,14 @@ AI 会先读可用材料，再一次问一个主要问题，逐步整理目标�
 
 | 入口 | 用途 |
 | --- | --- |
-| [从一句话开始](prompts/start-here.md)，默认 | 只有想法，希望问答引导 |
-| [根据已有材料开始](prompts/from-materials.md) | 有需求、原型、表格或代码 |
-| [完整项目目标](prompts/start-project.md) / [功能目标](prompts/start-feature.md) | 已经准备好结构化信息，跳过不必要问答 |
+| [开始梳理](prompts/start-here.md)，默认 | 一句话、已有材料或完整目标；新项目和功能迭代共用 |
+| [继续已有项目](prompts/resume-project.md) | 从 PLAN 和仓库证据继续，处理被中断的工作 |
+| [启动长期执行](prompts/start-execution-goal.md)，按需 | 已批准且可验收的长期目标，使用 /goal |
+| [调整需求](prompts/change-control.md)，按需 | 说明需求变化及其原因，评估并处理影响 |
+
+日常只需使用默认入口；有完整信息时直接附上，AI 会跳过不必要的问答。原“材料、完整项目、功能”入口已合并，不再要求用户先选择流程模式。
+
+提示词模板和 Codex 默认启动提示统一使用简体中文；英文 README 仅为使用说明，不另建一套英文模板。文件名、Skill 标识、命令与 PLAN 状态标识保持稳定。可以明确要求 AI 用其他语言交流，协议标识保持不变。
 
 AI 按模式逐步维护 PLAN；未知项明确保留。用户要求“只讨论、不改文件”时，草案只留在对话中，不初始化 PLAN。确认草案不会自动批准未决业务规则，也不会自动授权编码；已经明确授权的工作无需再走一轮确认。
 
@@ -84,19 +89,19 @@ AI 按模式逐步维护 PLAN；未知项明确保留。用户要求“只讨论
 
 路由依据是任务边界、风险与“完成一次可验收结果”的总成本：Luna/medium 负责有界、高吞吐量的证据工作，Luna/high 负责常规实现，Terra/high 负责测试分析和独立审查，因为这些角色的漏检成本可能高于模型溢价。主 Sol Thread 继续负责复杂推理、证据收敛、关键决策、敏感实现和最终验收；任何子代理都不能替代最终架构或安全决策者。
 
-项目可以直接点名请求，例如：`Have explorer map the affected paths and test_analyst identify missing coverage; converge their evidence before implementation.` 验证完成后可要求使用 `reviewer` 审查。主 Sol Thread 继续负责目标解释、架构、证据收敛、冲突解决、规划、关键决策、复杂或敏感实现和最终验收；不要创建额外的 Sol Coordinator Subagent。琐碎任务不要生成 Subagent。工作流默认最多同时运行三个只读 Agent，且最多一个活跃 Writer；这是建议，不是 Codex 平台上限声明。Subagent 会独立执行模型与工具工作，因此消耗额外 Tokens。参见 OpenAI 官方文档：[Subagents 与 Custom Agents](https://learn.chatgpt.com/docs/agent-configuration/subagents)。
+项目可以直接点名请求，例如：`请 explorer 梳理受影响路径，test_analyst 识别缺失的验证，汇总证据后再实施。` 验证完成后可要求使用 `reviewer` 审查。主 Sol Thread 继续负责目标解释、架构、证据收敛、冲突解决、规划、关键决策、复杂或敏感实现和最终验收；不要创建额外的 Sol Coordinator Subagent。琐碎任务不要生成 Subagent。工作流默认最多同时运行三个只读 Agent，且最多一个活跃 Writer；这是建议，不是 Codex 平台上限声明。Subagent 会独立执行模型与工具工作，因此消耗额外 Tokens。参见 OpenAI 官方文档：[Subagents 与 Custom Agents](https://learn.chatgpt.com/docs/agent-configuration/subagents)。
 
 ## 选择工作流程
 
 | Task Mode | 使用场景 | 状态与入口 |
 | --- | --- | --- |
 | DIRECT | 行为已明确、没有重大业务或安全决策的局部修改 | 普通工程流程，无需新建 PLAN 或执行日志 |
-| STANDARD | 默认用于既有可信架构内的有界功能迭代 | 精简 [PLAN](templates/PLAN.md) 和 [功能入口](prompts/start-feature.md) |
-| FULL | 新系统，或核心模型、安全、迁移、兼容性发生重大变化 | [完整 PLAN](templates/PLAN.full.md) 和 [项目入口](prompts/start-project.md) |
+| STANDARD | 默认用于既有可信架构内的有界功能迭代 | 精简 [PLAN](templates/PLAN.md) 和 [统一入口](prompts/start-here.md) |
+| FULL | 新系统，或核心模型、安全、迁移、兼容性发生重大变化 | [完整 PLAN](templates/PLAN.full.md) 和 [统一入口](prompts/start-here.md) |
 
 旧 PLAN 没有 Task Mode 时保持 FULL 语义，不能静默降低活跃项目的流程要求。已有执行日志必须先恢复；活跃 /goal 或明确要求的严格执行会记录执行上下文，跨会话仍使用严格恢复。完成原范围后，新授权的有界迭代可以使用 STANDARD，同时保留历史决策与验收证据。
 
-Skill 入口只保留公共规则；FULL 按需读取 references/full-lifecycle.md，严格执行或存在日志时读取 references/execution-continuity.md。安装时两个引用文件会随 Skill 一起同步。
+Skill 入口只保留公共规则；FULL 按需读取 references/full-lifecycle.md，严格执行或存在日志时读取 references/execution-continuity.md。问答引导按需读取 references/guided-intake.md；安装时三个引用文件会随 Skill 一起同步。
 
 检查范围与当前代码后复用有效的架构、门禁证据，STANDARD 无需重新走一轮发现和架构仪式。执行受影响的验证与仓库要求的检查；重大风险和重要里程碑使用独立审查。同一代码基线且覆盖范围充分时，可复用证据、合并里程碑和最终审查。验收结果只保存一份，详细日志通过链接引用。
 
@@ -105,16 +110,8 @@ Skill 入口只保留公共规则；FULL 按需读取 references/full-lifecycle.
 1. 创建或打开真正的项目工作区；不要在本 Kit 仓库内开发业务项目。
 2. 确认 Skill 已安装。
 3. 模板为可选项。需要预置完整 PLAN 时，将 [`templates/PLAN.full.md`](templates/PLAN.full.md) 复制到新仓库根目录并命名为 `PLAN.md`。如果没有复制，已安装的 Skill 也可以根据其必需状态模型创建等价的 `PLAN.md`，无需访问本 Kit。
-4. 默认使用 [问答入口](prompts/start-here.md)，提供一句话或现有材料即可；六字段入口仅供已有完整信息时使用。授权项目工作后，Codex 会逐步创建或补充 PLAN；仅讨论时不写文件。
+4. 默认使用 [问答入口](prompts/start-here.md)，提供一句话或现有材料即可；已有完整目标可直接附上，不必另选模板。授权项目工作后，Codex 会逐步创建或补充 PLAN；仅讨论时不写文件。
 5. 确认会话进入 Discovery，并在必需门禁通过前不进行生产实现。
-
-第一句话可以简化为：
-
-```text
-Use $goal-driven-engineering to start this product goal; initialize PLAN.md and begin Discovery before implementation.
-```
-
-在其后补充已知信息即可；其他关键内容由 AI 通过问答和证据整理。
 
 ## 架构已批准
 

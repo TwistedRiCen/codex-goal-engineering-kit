@@ -253,3 +253,16 @@ Validation scope: scenario walkthroughs evaluate instructions statically; they a
 - Historical backup folders ending 20260908-053846-6896010b and 20260908-054207-f5c07f60 were moved intact to C:/Users/98053/.agents/skill-backups/. Previous effective version was backed up there as goal-driven-engineering.backup-20260909-010035-746d5fec.
 - New installer stores both staging and backups outside the supplied discovery root, retaining conflict refusal and explicit Backup/Overwrite behavior. Reparse/overlap checks, source/staging equality, target-drift refusal, and activation-failure rollback were verified in isolated tests.
 - Independent review's only deployment item (three live copies) is resolved by actual post-migration inventory of one. Question burden and authority were evaluated with six simulated scenarios; no runtime speed, confidence percentage, or user-study claim is made.
+
+## Prompt Consolidation and Chinese Entry Batch
+
+- Task Mode: STANDARD; bounded usability maintenance after c4facd9.
+- Authorization: user requested fewer prompt templates and a consistent Chinese or internationalized entry experience.
+- Scope: merge redundant starters, use Chinese for the four retained prompts and Codex default prompt, update guides/example references and existing validation.
+- Decision: maintain one Chinese template set; retain stable filenames and protocol identifiers, with optional conversation-language requests. No new localization framework.
+- Status: ACCEPTED.
+- Acceptance: four distinct short entries cover starting, resuming, long-running execution, and changes; no obsolete entry references in active guides; recovery and authority semantics preserved; validators and non-destructive installer tests pass; installed Skill matches source with one discoverable version.
+- Verification: source and installed basic Skill validators passed; lifecycle validator passed in PS7 and PS5.1; non-destructive Skill and Agent installer suites passed in PS7. Four Chinese entries and 39 local links checked; no obsolete entry references in active guides/examples. Final prompt review preserved legacy FULL, strict recovery, explicit implementation authority, discussion-only scope, and valid acceptance evidence. Static artifact checks, not live product workflow trials.
+- Installation: five installed files match source at C:/Users/98053/.agents/skills/goal-driven-engineering; exactly one discoverable Skill across user skill roots. Seven protected configuration/agent files unchanged, repeat synchronization a no-op.
+- Backup: C:/Users/98053/.agents/skill-backups/goal-driven-engineering.backup-20260909-011306-eb0990e0, outside discovery.
+- Delivery: one local commit after final diff checks; no push. No remaining implementation or installation work.
