@@ -6,6 +6,24 @@
 
 这是一套可复用的工程工具包，支持普通功能迭代和完整产品交付，根据不确定性、影响范围和可恢复性选择流程深度。它还提供可选的、按角色路由模型的 Codex Custom Agent Profiles，用于经济地执行 Multi-Agent 工程任务。仓库保存生命周期、持久状态和 Agent Profile 契约，但不提供 Agent 运行时或具体业务应用。
 
+## 从一句话开始（推荐）
+
+在真实业务项目的 Codex 任务中说：
+
+> 使用 $goal-driven-engineering 帮我梳理一个想法：我想做教培管理系统，收费和剩余课时现在靠 Excel。先通过问答引导我，暂不写业务代码。
+
+AI 会先读可用材料，再一次问一个主要问题，逐步整理目标草案。可以回答“不知道”或“请你建议”。已有信息不重复询问；信息足够进入下一步就停止追问，无需填写完整表格或回答固定数量的问题。
+
+| 入口 | 用途 |
+| --- | --- |
+| [从一句话开始](prompts/start-here.md)，默认 | 只有想法，希望问答引导 |
+| [根据已有材料开始](prompts/from-materials.md) | 有需求、原型、表格或代码 |
+| [完整项目目标](prompts/start-project.md) / [功能目标](prompts/start-feature.md) | 已经准备好结构化信息，跳过不必要问答 |
+
+AI 按模式逐步维护 PLAN；未知项明确保留。用户要求“只讨论、不改文件”时，草案只留在对话中，不初始化 PLAN。确认草案不会自动批准未决业务规则，也不会自动授权编码；已经明确授权的工作无需再走一轮确认。
+
+查看[教培问答示例](examples/training-system/INTAKE-WALKTHROUGH.md)。完整 PROJECT-GOAL.md 是可以逐步整理出的参考成果和测试材料，无需用户一次写完。
+
 ## 为什么
 
 | 层级 | 职责 |
@@ -33,6 +51,8 @@
 ```powershell
 .\scripts\install-skill.ps1 -ConflictAction Backup
 ```
+
+备份及临时安装目录存放在扫描目录之外：默认使用 $HOME/.agents/skill-backups/，自定义 -DestinationRoot 时使用其父目录下的 skill-backups/。仅将有效 Skill 保留在扫描目录，旧备份应移出该目录。安装器不会自动删除已有历史备份。
 
 仅在明确要丢弃旧副本时使用 `-ConflictAction Overwrite`。`-WhatIf` 可以预览会产生修改的安装操作。脚本不会修改全局 `AGENTS.md`、其他 Skill，也不需要管理员权限。只有在更新后的 Skill 没有自动出现时才需要重启 Codex。
 
@@ -84,8 +104,8 @@ Skill 入口只保留公共规则；FULL 按需读取 references/full-lifecycle.
 
 1. 创建或打开真正的项目工作区；不要在本 Kit 仓库内开发业务项目。
 2. 确认 Skill 已安装。
-3. 建议在打开 Codex 前，将 [`templates/PLAN.full.md`](templates/PLAN.full.md) 复制到新仓库根目录并命名为 `PLAN.md`。如果没有复制，已安装的 Skill 也可以根据其必需状态模型创建等价的 `PLAN.md`，无需访问本 Kit。
-4. 填写 [`prompts/start-project.md`](prompts/start-project.md) 中的六个字段，并将 Prompt 粘贴到普通 Codex 会话。如果 `PLAN.md` 已存在，Codex 会补充它；否则会立即创建。
+3. 模板为可选项。需要预置完整 PLAN 时，将 [`templates/PLAN.full.md`](templates/PLAN.full.md) 复制到新仓库根目录并命名为 `PLAN.md`。如果没有复制，已安装的 Skill 也可以根据其必需状态模型创建等价的 `PLAN.md`，无需访问本 Kit。
+4. 默认使用 [问答入口](prompts/start-here.md)，提供一句话或现有材料即可；六字段入口仅供已有完整信息时使用。授权项目工作后，Codex 会逐步创建或补充 PLAN；仅讨论时不写文件。
 5. 确认会话进入 Discovery，并在必需门禁通过前不进行生产实现。
 
 第一句话可以简化为：
@@ -94,7 +114,7 @@ Skill 入口只保留公共规则；FULL 按需读取 references/full-lifecycle.
 Use $goal-driven-engineering to start this product goal; initialize PLAN.md and begin Discovery before implementation.
 ```
 
-在其后补充产品目标、上下文、约束、非目标和可观察的完成定义。
+在其后补充已知信息即可；其他关键内容由 AI 通过问答和证据整理。
 
 ## 架构已批准
 
@@ -133,7 +153,7 @@ FULL 执行、任何 /goal 执行和明确要求的严格恢复按 `Write Before
 [`examples/training-system/PROJECT-GOAL.md`](examples/training-system/PROJECT-GOAL.md) 描述了一个贴近真实场景的线下培训 MVP，但不会预先规定尚未解决的业务语义。
 
 1. 为培训系统创建一个独立的空仓库。
-2. 让该工作区能够访问示例目标，并用它填写项目启动 Prompt。
+2. 从问答示例的一句话开始，或直接提供完整示例目标以测试材料入口；无需重新手填启动表格。
 3. 验证首次会话会创建根目录 `PLAN.md`，记录事实、假设和待决事项，并停留在 Discovery，而不是直接生成应用代码。
 4. 解决资金、课时、所有权、授权、退款、考勤和报表等关键决策；评审架构与里程碑。
 5. 只有两个门禁均通过后，才启动执行 Prompt，并按照已记录证据验收每个里程碑和最终业务闭环。

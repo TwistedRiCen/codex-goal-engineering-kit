@@ -1,4 +1,4 @@
 interface:
   display_name: "Goal-Driven Engineering"
-  short_description: "Scale feature and product workflows to their risk"
-  default_prompt: "Use $goal-driven-engineering to plan, execute, or resume this feature or product goal with proportionate workflow and verified acceptance."
+  short_description: "Guide an idea into a scoped, verifiable project"
+  default_prompt: "Use $goal-driven-engineering to help me shape this idea. Read available evidence, ask one useful question at a time when needed, and progressively draft the goal before implementation."

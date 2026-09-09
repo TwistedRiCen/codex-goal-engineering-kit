@@ -1,11 +1,17 @@
 ---
 name: goal-driven-engineering
-description: Plan, execute, and resume product goals or substantial feature iterations with repository-backed decisions and acceptance evidence in PLAN.md. Use for cross-session feature work, new systems, core domain or architecture changes, and system acceptance. Do not use for isolated fixes, small refactors, routine code explanations, or one-off reviews unless explicitly requested.
+description: Plan, execute, and resume product goals or substantial feature iterations with repository-backed decisions and acceptance evidence in PLAN.md. Use to clarify an incomplete product idea, and for cross-session feature work, new systems, core domain or architecture changes, and system acceptance. Do not use for isolated fixes, small refactors, routine code explanations, or one-off reviews unless explicitly requested.
 ---
 
 # Goal-Driven Engineering
 
 Turn the requested outcome into verified software. Apply repository instructions for engineering behavior, this Skill for workflow, PLAN.md for durable state, and the current request for scope and authority. Do not duplicate global policy or treat code volume, commits, chat history, or cleared TODOs as acceptance.
+
+## Start from what the user knows
+
+A sentence about a problem is enough to begin. When the user has an incomplete idea, asks for guidance, or supplies materials to interpret, read [guided-intake.md](references/guided-intake.md). Read existing evidence first, ask one useful main question at a time, and progressively draft the goal. Do not require a filled template, a fixed question count, or a confidence percentage. Complete inputs and clear local tasks skip unnecessary interviewing.
+
+This is an entry into GOAL DEFINITION/DISCOVERY, not another task mode or gate. Respect discussion-only and no-file-change requests before any PLAN initialization rule. Otherwise initialize the selected mode's PLAN early with known facts and explicit unknowns; the agent maintains it. Acknowledging a draft does not approve unresolved business semantics or authorize implementation by itself; existing explicit authorization still applies.
 
 ## Select the least sufficient workflow
 

@@ -4,7 +4,7 @@ Read only for FULL mode. Shared decision, verification, and review rules in SKIL
 
 ## Establish or recover state first
 
-For a new FULL project:
+For a new FULL project when project-file work is authorized (discussion-only requests remain in the conversation):
 
 1. Read applicable `AGENTS.md` files and inspect available product and repository evidence.
 2. Create repository-root `PLAN.md` immediately, before substantial discovery or implementation. Copy an accessible kit `templates/PLAN.full.md` when supplied; otherwise create the equivalent state directly from this section rather than delaying initialization.

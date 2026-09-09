@@ -1,6 +1,8 @@
 # Example Project Goal: Offline Training Management MVP
 
-This is an input fixture for the Goal-Driven workflow, not a specification or implementation project. Product and architecture semantics marked as unresolved must be discovered and adjudicated before execution.
+This is a worked goal brief and input fixture for the Goal-Driven workflow, not a specification or implementation project. Product and architecture semantics marked as unresolved must be discovered and adjudicated before execution.
+
+Users do not need to write a brief this complete before starting. See [INTAKE-WALKTHROUGH.md](INTAKE-WALKTHROUGH.md) for a one-sentence start and progressive clarification.
 
 ## PROJECT
 
@@ -65,6 +67,6 @@ This is an input fixture for the Goal-Driven workflow, not a specification or im
 - 排课资源模型、冲突规则、时区和跨日课程处理。
 - 经营指标定义、时间归属、冲正方式和审计保留要求。
 
-## COPY INTO THE START PROMPT
+## OPTIONAL COMPLETE-INPUT PATH
 
 Use this file as `CONTEXT`, keep the sections above as the initial Goal/Constraints/Non-Goals/Done When, and invoke `prompts/start-project.md`. This is a FULL-mode fixture because money, lesson-credit ownership, authorization, and workflow semantics are unresolved. Expected first behavior: initialize `PLAN.md`, enter Discovery, and avoid production coding until the required gates pass.

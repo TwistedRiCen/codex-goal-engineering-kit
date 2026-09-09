@@ -17,12 +17,14 @@ $readmeZhPath = Join-Path $repositoryRoot 'README.zh-CN.md'
 $startProjectPath = Join-Path $repositoryRoot 'prompts\start-project.md'
 $startExecutionPromptPath = Join-Path $repositoryRoot 'prompts\start-execution-goal.md'
 $resumePromptPath = Join-Path $repositoryRoot 'prompts\resume-project.md'
+$intakePath = Join-Path $skillRoot 'references\guided-intake.md'
 $continuityTestPath = Join-Path $repositoryRoot 'scripts\test-execution-continuity.ps1'
 
 $entrypoint = Get-Content -Raw -LiteralPath $skillPath
 $lifecycle = Get-Content -Raw -LiteralPath $lifecyclePath
 $recovery = Get-Content -Raw -LiteralPath $recoveryPath
 $skill = $entrypoint + [Environment]::NewLine + $lifecycle + [Environment]::NewLine + $recovery
+$intake = Get-Content -Raw -LiteralPath $intakePath
 $compactTemplate = Get-Content -Raw -LiteralPath $compactTemplatePath
 $template = Get-Content -Raw -LiteralPath $templatePath
 $agentYaml = Get-Content -Raw -LiteralPath $agentYamlPath
@@ -189,6 +191,15 @@ foreach ($promptPath in @($startExecutionPromptPath, $resumePromptPath)) {
 }
 if (-not $startProject.Contains('references/full-lifecycle.md')) {
     throw 'New-product entry does not route to the full lifecycle.'
+}
+
+foreach ($entryName in @('start-here.md', 'from-materials.md')) {
+    if (-not (Test-Path -LiteralPath (Join-Path $repositoryRoot "prompts/$entryName") -PathType Leaf)) {
+        throw "Missing intake entry: $entryName"
+    }
+}
+if (-not $entrypoint.Contains('references/guided-intake.md')) {
+    throw 'Guided intake is not discoverable from the Skill.'
 }
 
 # Supporting references must resolve inside the installed Skill, without Kit access.

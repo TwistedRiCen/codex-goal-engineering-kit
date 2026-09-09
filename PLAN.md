@@ -5,12 +5,12 @@
 ## Plan Metadata
 
 - Plan Version: 1
-- Last Updated: 2026-09-08
+- Last Updated: 2026-09-09
 - Task Mode: STANDARD
 - Mode reason: authorized bounded workflow maintenance after completed M2
 - Execution context: ordinary
 - Current Phase: PROJECT COMPLETE
-- Last Verified Commit: ec06ca7 (base of the verified optimization diff; its delivery commit contains this updated PLAN)
+- Last Verified Commit: 0408010 (base of the verified intake/installation diff; delivery commit contains this updated PLAN)
 
 Allowed phases: `GOAL DEFINITION`, `DISCOVERY`, `DISCOVERY GATE`, `ARCHITECTURE`, `ARCHITECTURE GATE`, `MILESTONE PLANNING`, `EXECUTION`, `MILESTONE ACCEPTANCE`, `SYSTEM VERIFICATION`, `FINAL ADVERSARIAL REVIEW`, `PROJECT COMPLETE`.
 
@@ -232,3 +232,24 @@ Validation scope: scenario walkthroughs evaluate instructions statically; they a
 - Retained backup: C:/Users/98053/.agents/skills/goal-driven-engineering.backup-20260908-053846-6896010b. Backup manifest matched the pre-install package. Repeat synchronization reported Already synchronized; no changes made.
 - Global AGENTS.md and five installed agent profiles match the original task baseline. config.toml differs from the old pre-interruption hash, but its last-write time 2026-09-08T01:14:52Z predates installation at 05:38:46Z. That existing drift was preserved; configuration stayed unchanged during final readback. The unchanged installer has no global-configuration write path.
 - Git delivery: local commit only, after acceptance. Obtain the delivery hash from git log -1 -- PLAN.md; no push or remote mutation performed.
+
+## Guided Intake and Single-Version Installation Batch
+
+- Task Mode: STANDARD; current authorized maintenance after 0408010. Historical records above remain intact.
+- Authorization: user approved conversational intake implementation and keeping only the effective installed Skill.
+- Scope: default conversational/material entries, progressive brief, aligned Skill/templates/examples, backups and staging outside skill discovery, relocation of two identified installed backup folders.
+- Non-goals: changing business code, agent models, global configuration, strict recovery semantics, or remote Git state.
+
+| ID | Observable result | Verification | Status | Evidence |
+| --- | --- | --- | --- | --- |
+| UX-01 | Vague ideas and existing materials lead to focused adaptive questions and a sourced draft without demanding a complete prompt. | Independent intake scenario review. | VERIFIED | intake_install_review walked six scenarios and found no blocking intake drift; static/simulated review, not live product execution. |
+| UX-02 | Discussion-only, existing authorization, complete inputs, and active recovery retain their boundaries. | Scenario review and contract regression. | VERIFIED | Review confirms discussion-only, explicit implementation authority, and legacy recovery behavior. Skill/basic validators and 22 unchanged continuity cases passed. |
+| UX-03 | Installation and backup never leave extra discoverable copies; failure restores prior state. | PS7/PS5.1 installation, failure, WhatIf, hash and single-copy tests. | VERIFIED | Both runtimes passed fresh/idempotent/conflict/backup/WhatIf/rollback/Overwrite/junction tests; agent installer regression also passed. |
+| UX-04 | Exactly one effective installed Skill matches source; identified old copies remain outside discovery. | Actual file inventory, full manifests, and protected-file baseline. | VERIFIED | Exactly one discovered Skill across user .agents/skills and .codex/skills; 5 installed files match source; two migrated backup manifests preserved; 7 protected files unchanged; repeat install no-op. |
+
+
+- Status: ACCEPTED; no implementation or installation work remains. Local commit follows repository policy; no remote changes.
+- Effective installation: C:/Users/98053/.agents/skills/goal-driven-engineering.
+- Historical backup folders ending 20260908-053846-6896010b and 20260908-054207-f5c07f60 were moved intact to C:/Users/98053/.agents/skill-backups/. Previous effective version was backed up there as goal-driven-engineering.backup-20260909-010035-746d5fec.
+- New installer stores both staging and backups outside the supplied discovery root, retaining conflict refusal and explicit Backup/Overwrite behavior. Reparse/overlap checks, source/staging equality, target-drift refusal, and activation-failure rollback were verified in isolated tests.
+- Independent review's only deployment item (three live copies) is resolved by actual post-migration inventory of one. Question burden and authority were evaluated with six simulated scenarios; no runtime speed, confidence percentage, or user-study claim is made.

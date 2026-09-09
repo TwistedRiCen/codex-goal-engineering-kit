@@ -2,6 +2,8 @@
 
 > Compact STANDARD state. Keep verified facts, decisions, acceptance evidence, and planned next work; never record speculative completion or mutation stages as accepted progress. Use [PLAN.full.md](PLAN.full.md) for FULL projects. Retain legacy decisions and ledgers instead of rewriting them.
 
+The agent fills this progressively from conversation and evidence; users need not complete the template. Keep unknowns explicit. For discussion-only or no-file-change requests, keep the draft in the conversation instead.
+
 ## Plan Metadata
 
 - Plan Version: 2

@@ -6,6 +6,24 @@
 
 A reusable kit for verified feature iterations and product delivery, with workflow depth selected by uncertainty, impact, and recoverability. It also provides optional role-based Codex custom-agent profiles for economical multi-agent execution. The repository stores lifecycle, durable-state, and agent-profile contracts; it does not provide an agent runtime or a business application.
 
+## Start with one sentence (recommended)
+
+In the real project's Codex task, say:
+
+> Use $goal-driven-engineering to help shape an idea: I want a training-center system because fees and remaining lesson credits are managed in Excel. Guide me with questions before writing application code.
+
+The agent reads available evidence, asks one useful main question at a time, and progressively drafts a goal brief. "I don't know" and "please suggest" are valid answers. It skips known facts and stops asking once the next step is supported; there is no required form or question count.
+
+| Entry | Use |
+| --- | --- |
+| [Start here](prompts/start-here.md), default | A rough idea needing conversational guidance |
+| [From materials](prompts/from-materials.md) | Existing requirements, prototypes, spreadsheets, or code |
+| [Complete project goal](prompts/start-project.md) / [feature goal](prompts/start-feature.md) | Prepared structured input; skip unnecessary interviewing |
+
+The agent progressively maintains the selected mode's PLAN and leaves unknowns explicit. Discussion-only/no-file-change requests keep the brief in the conversation without initializing PLAN. Agreeing to a brief does not approve pending business rules or automatically authorize coding; existing explicit authorization does not need redundant confirmation.
+
+See the [training intake walkthrough](examples/training-system/INTAKE-WALKTHROUGH.md). The full PROJECT-GOAL.md is a worked result and test fixture, not an entry requirement.
+
 ## Why
 
 | Layer | Responsibility |
@@ -33,6 +51,8 @@ The script prints the exact source and destination and only manages `goal-driven
 ```powershell
 .\scripts\install-skill.ps1 -ConflictAction Backup
 ```
+
+Backups and staging live outside discovery: by default under $HOME/.agents/skill-backups/, or in skill-backups/ under the parent of a custom -DestinationRoot. Keep only the effective Skill in the scanned directory. Move old in-directory backups outside discovery; the installer does not automatically delete historical backups.
 
 Use `-ConflictAction Overwrite` only when discarding the prior copy is intentional. `-WhatIf` previews a mutating install. The script does not modify global `AGENTS.md`, other Skills, or require administrator access. Restart Codex only if an updated Skill does not appear automatically.
 
@@ -84,8 +104,8 @@ Reuse applicable architecture and gate evidence after checking scope and current
 
 1. Create/open the real project workspace; do not build it inside this Kit repository.
 2. Ensure the Skill is installed.
-3. Prefer copying [`templates/PLAN.full.md`](templates/PLAN.full.md) to the new repository root as `PLAN.md` before opening Codex. If you do not, the installed Skill can create an equivalent `PLAN.md` from its required state model without access to this Kit.
-4. Fill the six fields in [`prompts/start-project.md`](prompts/start-project.md) and paste the prompt into a normal Codex session. If `PLAN.md` already exists, Codex fills it; otherwise it creates it immediately.
+3. Templates are optional. To pre-seed a full PLAN, copy [`templates/PLAN.full.md`](templates/PLAN.full.md) to the new repository root as `PLAN.md` before opening Codex. If you do not, the installed Skill can create an equivalent `PLAN.md` from its required state model without access to this Kit.
+4. Prefer [guided intake](prompts/start-here.md) with one sentence or existing materials; the six-field entry is optional for prepared input. Authorized project work creates or extends PLAN progressively; discussion-only work does not write files.
 5. Confirm the session enters Discovery and avoids production implementation until the required gates pass.
 
 The first sentence can be as small as:
@@ -94,7 +114,7 @@ The first sentence can be as small as:
 Use $goal-driven-engineering to start this product goal; initialize PLAN.md and begin Discovery before implementation.
 ```
 
-Add the product Goal, context, constraints, non-goals, and observable definition of done below it.
+Add whatever is already known; the agent gathers missing key information through questions and evidence.
 
 ## Architecture Approved
 
@@ -133,7 +153,7 @@ Review the printed backup location, test the new Skill in a fresh session, then 
 [`examples/training-system/PROJECT-GOAL.md`](examples/training-system/PROJECT-GOAL.md) describes a realistic offline-training MVP without prescribing its unresolved business semantics.
 
 1. Create a separate empty repository for the training system.
-2. Make the example goal available to that workspace and use it to fill the start-project prompt.
+2. Start from the walkthrough sentence, or supply the complete example goal to test the materials path; no form needs to be filled again.
 3. Verify the first session creates root `PLAN.md`, records facts/assumptions/pending decisions, and remains in Discovery rather than generating the application.
 4. Resolve material money, lesson-credit, ownership, authorization, refund, attendance, and reporting decisions; review the architecture and milestones.
 5. Only after both gates pass, start the execution prompt and assess each milestone plus the final business loop against recorded evidence.

@@ -2,6 +2,8 @@
 
 > Persistent source of truth for durable project state. Initialize this file when the project starts. Keep evidence and decisions, not chat transcripts or activity logs. Volatile or unverified execution state does not belong in PLAN; keep it in `.goal/execution-state.md` only while an atomic unit is active, with journal absence representing `IDLE`.
 
+The agent fills this progressively from conversation and evidence; users need not complete the template. Keep unknowns explicit. For discussion-only or no-file-change requests, keep the draft in the conversation instead.
+
 ## Plan Metadata
 
 - Plan Version: 2

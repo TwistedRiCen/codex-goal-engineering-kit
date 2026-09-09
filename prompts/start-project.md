@@ -1,6 +1,6 @@
 # Start a Goal-Driven Project
 
-Use for a new system or product goal. Fill only known fields.
+Use for a new system or product goal. Optional structured entry: fill only known fields. Prefer [start-here](start-here.md) for guided conversation or [from-materials](from-materials.md) for existing evidence.
 
 ```text
 PROJECT: <name>

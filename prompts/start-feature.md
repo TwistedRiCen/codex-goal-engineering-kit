@@ -1,6 +1,6 @@
 # Start a Bounded Feature Iteration
 
-Use for a feature within verified existing architecture. Fill what is known.
+Use for a feature within verified existing architecture. Optional structured entry: fill what is known. Prefer [start-here](start-here.md) when you want guided clarification; unknown fields are not blockers.
 
 ```text
 FEATURE: <observable outcome>
