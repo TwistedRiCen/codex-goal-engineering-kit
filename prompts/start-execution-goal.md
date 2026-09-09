@@ -1,6 +1,6 @@
 # 启动长期执行（按需）
 
-仅在范围、关键决策和验收条件明确后使用。FULL 需要通过发现和架构门禁；STANDARD 需要核实既有架构适用、当前范围可验收。普通功能迭代无需使用 /goal；任何 /goal 执行都使用严格恢复。
+这是支持 /goal 的 Codex 环境入口；其他宿主使用普通任务从 PLAN.md 继续，仍遵循 Skill 的恢复要求。仅在范围、关键决策和验收条件明确后使用。FULL 需要通过发现和架构门禁；STANDARD 需要核实既有架构适用、当前范围可验收。普通功能迭代无需使用 /goal；任何 /goal 执行都使用严格恢复。
 
 ```text
 /goal 使用 $goal-driven-engineering 完成 PLAN.md 中已批准的范围，并提供验收证据。先核对仓库现状和当前模式的执行条件，记录 /goal 执行上下文；修改前阅读并遵循已安装 Skill 内的 references/execution-continuity.md。

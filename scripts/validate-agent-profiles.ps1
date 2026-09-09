@@ -68,36 +68,27 @@ function ConvertFrom-FlatAgentToml {
 $expected = [ordered]@{
     'docs-researcher.toml' = @{
         name = 'docs_researcher'
-        model = 'gpt-5.6-luna'
-        model_reasoning_effort = 'medium'
         sandbox_mode = 'read-only'
     }
     'explorer.toml' = @{
         name = 'explorer'
-        model = 'gpt-5.6-luna'
-        model_reasoning_effort = 'medium'
         sandbox_mode = 'read-only'
     }
     'reviewer.toml' = @{
         name = 'reviewer'
-        model = 'gpt-5.6-terra'
-        model_reasoning_effort = 'high'
         sandbox_mode = 'read-only'
     }
     'routine-worker.toml' = @{
         name = 'routine_worker'
-        model = 'gpt-5.6-luna'
-        model_reasoning_effort = 'high'
         sandbox_mode = 'workspace-write'
     }
     'test-analyst.toml' = @{
         name = 'test_analyst'
-        model = 'gpt-5.6-terra'
-        model_reasoning_effort = 'high'
         sandbox_mode = 'read-only'
     }
 }
-$requiredKeys = @('name', 'description', 'developer_instructions', 'model', 'model_reasoning_effort', 'sandbox_mode')
+$requiredKeys = @('name', 'description', 'developer_instructions', 'sandbox_mode')
+$optionalKeys = @('model', 'model_reasoning_effort')
 $rootPath = (Resolve-Path -LiteralPath $Root).Path
 $actualFiles = @(Get-ChildItem -LiteralPath $rootPath -File -Filter '*.toml' | Sort-Object Name)
 $actualNames = @($actualFiles.Name)
@@ -114,16 +105,19 @@ foreach ($fileName in $expectedNames) {
     $profile = ConvertFrom-FlatAgentToml -Path $path
 
     $profileKeys = @($profile.Keys)
-    $keyDifference = @(Compare-Object -ReferenceObject $requiredKeys -DifferenceObject $profileKeys)
-    if ($keyDifference.Count -gt 0) {
-        throw "$fileName must contain exactly the supported keys: $($requiredKeys -join ', ')."
+    $missingKeys = @($requiredKeys | Where-Object { $_ -notin $profileKeys })
+    $unsupportedKeys = @($profileKeys | Where-Object { $_ -notin ($requiredKeys + $optionalKeys) })
+    if ($missingKeys.Count -gt 0 -or $unsupportedKeys.Count -gt 0) {
+        throw "$fileName has missing required keys or unsupported keys: $($missingKeys + $unsupportedKeys -join ', ')."
     }
 
-    foreach ($key in $requiredKeys) {
+    foreach ($key in $profileKeys) {
         if ([string]::IsNullOrWhiteSpace([string]$profile[$key])) {
-            throw "$fileName has an empty required value: $key"
+            throw "$fileName has an empty value: $key"
         }
     }
+    # Model availability and supported effort values belong to the host runtime,
+    # not a version-specific allowlist in this portable role validator.
 
     foreach ($key in $expected[$fileName].Keys) {
         if ([string]$profile[$key] -cne [string]$expected[$fileName][$key]) {

@@ -45,6 +45,40 @@ if (-not $testRootPath.StartsWith($requiredPrefix, [System.StringComparison]::Or
 [void](New-Item -ItemType Directory -Path $testRootPath -Force)
 
 try {
+    # Test the public -Root validator against isolated user customizations.
+    $customRoot = Join-Path $testRootPath 'custom-profiles'
+    [void](New-Item -ItemType Directory -Path $customRoot -Force)
+    Copy-Item -Path (Join-Path $sourceRoot '*.toml') -Destination $customRoot
+    $customPath = Join-Path $customRoot 'explorer.toml'
+    $baseProfile = Get-Content -Raw -LiteralPath $customPath
+    Assert-True -Condition ($baseProfile -notmatch '(?m)^model(?:_reasoning_effort)?\s*=') -Message 'default role must leave model selection to the host'
+
+    foreach ($override in @(
+        'model = "fixture-provider/custom-model"',
+        'model_reasoning_effort = "fixture-host-effort"',
+        ('model = "fixture-provider/custom-model"' + [Environment]::NewLine + 'model_reasoning_effort = "fixture-host-effort"')
+    )) {
+        Set-Content -LiteralPath $customPath -Value ($baseProfile + [Environment]::NewLine + $override)
+        & $profileValidator -Root $customRoot | Out-Null
+    }
+
+    $invalidProfiles = @(
+        ($baseProfile + [Environment]::NewLine + 'model = ""'),
+        ($baseProfile + [Environment]::NewLine + 'model_reasoning_effort = "   "'),
+        ($baseProfile + [Environment]::NewLine + 'model = "first"' + [Environment]::NewLine + 'model = "second"'),
+        ($baseProfile + [Environment]::NewLine + 'model = 123'),
+        ($baseProfile + [Environment]::NewLine + 'unexpected_key = "value"'),
+        ($baseProfile.Replace('sandbox_mode = "read-only"', 'sandbox_mode = "workspace-write"')),
+        ($baseProfile -replace '(?m)^description = .*\r?\n', ''),
+        ($baseProfile.Replace('name = "explorer"', 'name = "reviewer"'))
+    )
+    foreach ($invalidProfile in $invalidProfiles) {
+        Set-Content -LiteralPath $customPath -Value $invalidProfile
+        $invalidRefused = $false
+        try { & $profileValidator -Root $customRoot 2>$null | Out-Null } catch { $invalidRefused = $true }
+        Assert-True -Condition $invalidRefused -Message 'malformed, incomplete, or unsafe custom role must fail validation'
+    }
+
     $destinationRoot = Join-Path $testRootPath 'home\.codex\agents'
     $codexRoot = Split-Path -Parent $destinationRoot
     [void](New-Item -ItemType Directory -Path $destinationRoot -Force)
@@ -161,7 +195,7 @@ try {
     & $installer -DestinationRoot $whatIfRoot -WhatIf | Out-Null
     Assert-True -Condition (-not (Test-Path -LiteralPath $whatIfRoot)) -Message '-WhatIf must not create the destination'
 
-    Write-Output 'Agent installer tests passed: profile validation, syntax, fresh install, idempotency, conflict refusal, backup, links, WhatIf, and preservation.'
+    Write-Output 'Agent installer tests passed: optional model overrides, invalid-role rejection, profile validation, syntax, fresh install, idempotency, conflict refusal, backup, links, WhatIf, and preservation.'
 } finally {
     $resolvedTestRoot = [System.IO.Path]::GetFullPath($testRootPath)
     if (-not $resolvedTestRoot.StartsWith($requiredPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {

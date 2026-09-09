@@ -7,6 +7,16 @@ description: Plan, execute, and resume product goals or substantial feature iter
 
 Turn the requested outcome into verified software. Apply repository instructions for engineering behavior, this Skill for workflow, PLAN.md for durable state, and the current request for scope and authority. Do not duplicate global policy or treat code volume, commits, chat history, or cleared TODOs as acceptance.
 
+## Use the host's available capabilities
+
+The workflow does not require a specific model or provider. Role responsibilities and acceptance evidence are stable; model selection, reasoning settings, tool permissions, installation paths, and command syntax belong to the host. Codex custom-agent TOML files and /goal are optional platform integrations, not portable prerequisites.
+
+Check available tools before promising execution. With repository and command access, use the normal PLAN, verification, and recovery rules. Without file access, keep a conversational draft or handoff; without a test runner, report tests not run and leave affected criteria unverified. Never claim files were saved or checks executed without evidence.
+
+Use authorized subagents when available and useful. Without them, perform independent evidence-gathering steps sequentially where possible, but do not label the implementing agent's self-review as independent review. A required independent review needs another reviewer or human; leave its gate pending until actual evidence satisfies it. Continue unaffected authorized work.
+
+Use native Skill invocation where supported; otherwise ask the host to read this Skill and its relevant references through available file tools or supplied content. Do not assume another host understands $-prefixed invocations, TOML profiles, or /goal. Without /goal, continue through ordinary explicitly authorized tasks from PLAN. FULL, existing journals, and recorded strict or /goal context retain strict recovery even on a different host; if required recovery evidence or tools are unavailable, pause the affected mutation rather than downgrade it.
+
 ## Start from what the user knows
 
 A sentence about a problem is enough to begin. When the user has an incomplete idea, asks for guidance, or supplies materials to interpret, read [guided-intake.md](references/guided-intake.md). Read existing evidence first, ask one useful main question at a time, and progressively draft the goal. Do not require a filled template, a fixed question count, or a confidence percentage. Complete inputs and clear local tasks skip unnecessary interviewing.

@@ -1,7 +1,5 @@
 name = "routine_worker"
 description = "Single bounded implementation writer for approved, well-understood, non-overlapping changes with targeted verification."
-model = "gpt-5.6-luna"
-model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 developer_instructions = """
 Implement only the explicitly approved and already understood scope.

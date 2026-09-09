@@ -4,7 +4,7 @@
 
 ## 是什么
 
-这是一套可复用的工程工具包，支持普通功能迭代和完整产品交付，根据不确定性、影响范围和可恢复性选择流程深度。它还提供可选的、按角色路由模型的 Codex Custom Agent Profiles，用于经济地执行 Multi-Agent 工程任务。仓库保存生命周期、持久状态和 Agent Profile 契约，但不提供 Agent 运行时或具体业务应用。
+这是一套可复用的工程工具包，支持普通功能迭代和完整产品交付，根据不确定性、影响范围和可恢复性选择流程深度。它还提供可选的、按角色路由模型的 Codex Custom Agent Profiles，用于按职责分工执行 Multi-Agent 工程任务。仓库保存生命周期、持久状态和 Agent Profile 契约，但不提供 Agent 运行时或具体业务应用。
 
 ## 从一句话开始（推荐）
 
@@ -63,15 +63,15 @@ AI 按模式逐步维护 PLAN；未知项明确保留。用户要求“只讨论
 
 ## 可选的角色化 Agents
 
-[`agents/`](agents/) 中的 Profiles 实现“强主协调者 + 经济型证据 Worker + 强验证”。它们使用 OpenAI 当前文档规定的独立 Custom Agent TOML 格式。
+[`agents/`](agents/) 中的 Profiles 是可选的 Codex 平台配置，只定义角色职责与权限。默认省略 model 和 model_reasoning_effort，不固定厂商、型号或推理档位；无需安装这些角色即可使用核心 Skill。
 
-| 命名 Agent | 模型 / Reasoning | 权限 | 用途 |
-| --- | --- | --- | --- |
-| `explorer` | `gpt-5.6-luna` / medium | read-only | 定位文件和符号、追踪路径并收集仓库证据 |
-| `docs_researcher` | `gpt-5.6-luna` / medium | read-only | 核对权威 API 和版本特定文档 |
-| `test_analyst` | `gpt-5.6-terra` / high | read-only | 识别回归风险、边界路径和缺失验证 |
-| `reviewer` | `gpt-5.6-terra` / high | read-only | 独立审查正确性、安全性、验收、回归和测试 |
-| `routine_worker` | `gpt-5.6-luna` / high | workspace-write | 作为唯一 Writer 完成一个范围明确、已理解的常规实现 |
+| 命名 Agent | 权限 | 用途 |
+| --- | --- | --- |
+| `explorer` | read-only | 定位文件和符号、追踪路径并收集仓库证据 |
+| `docs_researcher` | read-only | 核对权威 API 和版本特定文档 |
+| `test_analyst` | read-only | 识别回归风险、边界路径和缺失验证 |
+| `reviewer` | read-only | 独立审查正确性、安全性、验收、回归和测试 |
+| `routine_worker` | workspace-write | 作为唯一 Writer 完成一个范围明确、已理解的常规实现 |
 
 将且仅将这五个受管 Profile 安装或同步到 `$HOME/.codex/agents/`：
 
@@ -87,9 +87,25 @@ AI 按模式逐步维护 PLAN；未知项明确保留。用户要求“只讨论
 
 使用 `-WhatIf` 预览变更。安装器会保留不相关的 Agent，且不会编辑全局 `AGENTS.md` 或 `$HOME/.codex/config.toml`；尤其不会设置 `agents.default_subagent_model` 或并发参数。项目级 `AGENTS.md` 仍提供优先级更高的仓库特定约束。
 
-路由依据是任务边界、风险与“完成一次可验收结果”的总成本：Luna/medium 负责有界、高吞吐量的证据工作，Luna/high 负责常规实现，Terra/high 负责测试分析和独立审查，因为这些角色的漏检成本可能高于模型溢价。主 Sol Thread 继续负责复杂推理、证据收敛、关键决策、敏感实现和最终验收；任何子代理都不能替代最终架构或安全决策者。
+模型与推理设置由 Codex 运行环境解析：显式调用设置优先于全局 Agent 默认值，再回退到父会话。角色文件中显式填写的 model 或 model_reasoning_effort 会覆盖对应解析结果。需要控制成本时，可以在自己的配置中选择可用型号；同时确认模型支持对应推理档位。省略设置不保证最低成本，也不表示角色一定使用相同模型。参见[官方模型配置规则](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents)。
 
-项目可以直接点名请求，例如：`请 explorer 梳理受影响路径，test_analyst 识别缺失的验证，汇总证据后再实施。` 验证完成后可要求使用 `reviewer` 审查。主 Sol Thread 继续负责目标解释、架构、证据收敛、冲突解决、规划、关键决策、复杂或敏感实现和最终验收；不要创建额外的 Sol Coordinator Subagent。琐碎任务不要生成 Subagent。工作流默认最多同时运行三个只读 Agent，且最多一个活跃 Writer；这是建议，不是 Codex 平台上限声明。Subagent 会独立执行模型与工具工作，因此消耗额外 Tokens。参见 OpenAI 官方文档：[Subagents 与 Custom Agents](https://learn.chatgpt.com/docs/agent-configuration/subagents)。
+校验器检查角色集合、必需字段、非空值和权限边界；model、model_reasoning_effort 为可选非空字符串，不限制具体型号。账号是否可用、参数组合是否受支持由运行环境验证。安装会复制仓库版本；若已自行修改同名角色，默认拒绝冲突，Backup 会保留旧配置再安装默认版本，并不会合并个人选模设置。
+
+主任务负责目标解释、关键决策、证据汇总和最终验收。需要时可说：“请 explorer 梳理受影响路径，test_analyst 识别缺失验证”；验证后可请 reviewer 审查。只为有独立价值的工作分派角色，避免琐碎任务和重复协调；修改相同文件时保持一个写入者。
+
+## 其他模型与工具平台
+
+核心工程流程按宿主能力使用；模型品牌不能决定工具是否可用。本仓库当前提供 Codex 安装适配，其他平台尚未完成运行验证，不声明配置文件可以直接通用。
+
+| 宿主能力 | 使用方式 |
+| --- | --- |
+| 可读写仓库并执行命令 | 正常使用 PLAN、验证和恢复协议 |
+| 支持子代理 | 按职责分工，保留实际权限限制 |
+| 不支持子代理 | 顺序开展分析；自查不等于独立审查，必需审查由其他审查者或人工完成 |
+| 不支持 /goal | 从 PLAN 使用普通任务继续；已有严格上下文和 FULL 恢复要求仍保留 |
+| 仅支持聊天 | 梳理目标或准备交接材料；不声称保存文件、执行测试或完成工程验收 |
+
+支持 Skill 的平台使用其原生调用方式；其他平台可以通过可用文件工具读取 SKILL.md 和相关引用。不要直接照搬 Codex 的 $ 调用语法、TOML、安装路径或 /goal。缺少必需工具时暂停依赖它的修改或验收，继续不受影响的已授权工作。
 
 ## 选择工作流程
 

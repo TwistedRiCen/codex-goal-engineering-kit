@@ -4,7 +4,7 @@
 
 ## What
 
-A reusable kit for verified feature iterations and product delivery, with workflow depth selected by uncertainty, impact, and recoverability. It also provides optional role-based Codex custom-agent profiles for economical multi-agent execution. The repository stores lifecycle, durable-state, and agent-profile contracts; it does not provide an agent runtime or a business application.
+A reusable kit for verified feature iterations and product delivery, with workflow depth selected by uncertainty, impact, and recoverability. It also provides optional role-based Codex custom-agent profiles for role-based multi-agent execution. The repository stores lifecycle, durable-state, and agent-profile contracts; it does not provide an agent runtime or a business application.
 
 ## Start with one sentence (recommended)
 
@@ -63,15 +63,15 @@ Use `-ConflictAction Overwrite` only when discarding the prior copy is intention
 
 ## Optional role-based agents
 
-The profiles in [`agents/`](agents/) implement a strong main coordinator, economical evidence workers, and strong verification. They use the current standalone custom-agent TOML format documented by OpenAI.
+The profiles in [`agents/`](agents/) are optional Codex platform configuration defining responsibilities and permissions. They omit model and model_reasoning_effort by default. The core Skill does not require these profiles or a particular provider, model, or effort.
 
-| Named agent | Model / reasoning | Access | Use |
-| --- | --- | --- | --- |
-| `explorer` | `gpt-5.6-luna` / medium | read-only | Locate files and symbols, trace paths, and gather repository evidence |
-| `docs_researcher` | `gpt-5.6-luna` / medium | read-only | Verify authoritative APIs and version-specific documentation |
-| `test_analyst` | `gpt-5.6-terra` / high | read-only | Find regression risks, edge paths, and missing verification |
-| `reviewer` | `gpt-5.6-terra` / high | read-only | Independently review correctness, security, acceptance, regressions, and tests |
-| `routine_worker` | `gpt-5.6-luna` / high | workspace-write | Make one bounded, well-understood implementation change as the single writer |
+| Named agent | Access | Use |
+| --- | --- | --- |
+| `explorer` | read-only | Locate files and symbols, trace paths, and gather repository evidence |
+| `docs_researcher` | read-only | Verify authoritative APIs and version-specific documentation |
+| `test_analyst` | read-only | Find regression risks, edge paths, and missing verification |
+| `reviewer` | read-only | Independently review correctness, security, acceptance, regressions, and tests |
+| `routine_worker` | workspace-write | Make one bounded, well-understood implementation change as the single writer |
 
 Install or synchronize only these five managed profiles into `$HOME/.codex/agents/`:
 
@@ -87,9 +87,25 @@ Identical files are a no-op. Different content is refused by default. To retain 
 
 Use `-WhatIf` to preview changes. The installer preserves unrelated agents and does not edit global `AGENTS.md` or `$HOME/.codex/config.toml`; in particular, it does not set `agents.default_subagent_model` or concurrency. Project `AGENTS.md` instructions still provide higher-priority repository-specific constraints.
 
-Route by task boundary, risk, and total cost to an accepted outcome: Luna/medium handles bounded, high-volume evidence work; Luna/high handles routine implementation; Terra/high handles test analysis and independent review where missed defects cost more than the model premium. The main Sol thread retains complex reasoning, convergence, critical decisions, sensitive implementation, and final acceptance. No subagent replaces the final architecture or security decision-maker.
+Codex resolves model and effort from explicit spawn settings, then global agent defaults, then the parent session. Explicit model or model_reasoning_effort fields in a role file override the corresponding resolved settings. For cost tuning, choose models available in your environment and verify supported effort combinations. Omission guarantees neither minimum cost nor identical models across roles. See the [official configuration rules](https://learn.chatgpt.com/docs/agent-configuration/subagents#custom-agents).
 
-Ask Codex for named agents directly, for example: `Have explorer map the affected paths and test_analyst identify missing coverage; converge their evidence before implementation.` For a review, ask it to use `reviewer` after verification. The main Sol thread retains goal interpretation, architecture, evidence convergence, conflict resolution, planning, critical decisions, complex or sensitive implementation, and final acceptance; do not create a separate Sol coordinator subagent. Do not spawn subagents for trivial work. As workflow defaults, use at most three concurrent read-only agents and one active writer; these are recommendations, not platform-limit claims. Subagents perform their own model and tool work and therefore consume additional tokens. See the official OpenAI documentation for [Subagents and custom agents](https://learn.chatgpt.com/docs/agent-configuration/subagents).
+The validator checks the role set, required fields, nonempty values, and permission boundaries. Optional model and model_reasoning_effort strings are not restricted to specific versions; availability and supported combinations are validated by the host. Installation copies the repository profiles. Local customizations cause conflict refusal by default; Backup retains the old files and installs the defaults, without merging personal model choices.
+
+The main task retains goal interpretation, critical decisions, evidence convergence, and final acceptance. Delegate useful bounded work to explorer or test_analyst and request reviewer when needed. Avoid trivial delegation and duplicate coordination; keep one writer for overlapping files.
+
+## Other Models and Tool Hosts
+
+Use the core workflow according to host capabilities, not model brand. This repository currently provides a Codex installer; other hosts have not been runtime-validated and their configuration formats are not claimed to be interchangeable.
+
+| Host capability | Behavior |
+| --- | --- |
+| Repository writes and command execution | Use PLAN, verification, and recovery normally |
+| Subagents available | Delegate by role within actual permission boundaries |
+| No subagents | Analyze sequentially; self-review is not independent review, so required review needs another reviewer or human |
+| No /goal | Continue from PLAN through ordinary tasks; FULL and recorded strict context still require strict recovery |
+| Chat only | Clarify goals or prepare handoff material; do not claim saved files, executed tests, or engineering acceptance |
+
+Use native Skill invocation where available; otherwise read SKILL.md and relevant references through available file tools. Do not assume Codex $ invocation syntax, TOML, installation paths, or /goal work elsewhere. Missing tools block dependent mutation or acceptance, while unaffected authorized work can continue.
 
 ## Choose the workflow
 

@@ -266,3 +266,17 @@ Validation scope: scenario walkthroughs evaluate instructions statically; they a
 - Installation: five installed files match source at C:/Users/98053/.agents/skills/goal-driven-engineering; exactly one discoverable Skill across user skill roots. Seven protected configuration/agent files unchanged, repeat synchronization a no-op.
 - Backup: C:/Users/98053/.agents/skill-backups/goal-driven-engineering.backup-20260909-011306-eb0990e0, outside discovery.
 - Delivery: one local commit after final diff checks; no push. No remaining implementation or installation work.
+
+## Model-Neutral Roles and Host Capability Batch
+
+- Task Mode: STANDARD; authorized maintenance after 9933c3f.
+- Authorization: user approved decoupling model versions, optional Codex adaptation, validator changes, and explicit host capability boundaries.
+- Scope: five model-neutral role defaults, optional model/effort validation, focused regression cases, aligned guides and Skill capability rules, safe local synchronization.
+- Preserved: role responsibilities/permissions, strict recovery protocol and historical decisions. No automatic model router, other-host installer, global configuration edits, or remote changes.
+- Status: ACCEPTED.
+- Acceptance: default roles have no model/effort binding; custom nonempty values pass structural validation while malformed or unsafe roles fail; unavailable capabilities cannot falsely satisfy verification/review/recovery; installer regressions pass and installed artifacts match source.
+- Verification: PS7 and Windows PS5.1 both passed Skill/profile validation, Agent/Skill installer suites, and all 22 continuity cases. Optional model-only, effort-only, and combined overrides passed; eight malformed/incomplete/unsafe role cases were rejected. Basic Skill validation and local-link/diff checks passed.
+- Contract review: five role bodies and permission settings match the prior baseline exactly; only model/effort defaults were removed. Existing templates, prompts, example and strict recovery references were inspected. Host capability guidance preserves required independent review, unverified acceptance, and strict continuation boundaries. This was static review plus local regression, not runtime certification of other hosts or a model performance comparison.
+- Installed: five profiles match source at C:/Users/98053/.codex/agents and five Skill files match source at C:/Users/98053/.agents/skills/goal-driven-engineering. Exactly one discoverable Skill; both installers report no-op on repeat. Global config.toml and AGENTS.md hashes unchanged.
+- Backups: C:/Users/98053/.codex/agent-backups/codex-goal-engineering-kit-20260909-055505-96259283 and C:/Users/98053/.agents/skill-backups/goal-driven-engineering.backup-20260909-055505-5f9273bd.
+- Delivery: one local commit after final diff review, no push; no remaining implementation or synchronization work.

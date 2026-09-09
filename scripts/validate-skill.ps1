@@ -263,7 +263,7 @@ foreach ($fingerprintContractTerm in @('length-prefixed UTF-8 records', 'Never h
     }
 }
 
-if ($skill -cnotmatch '(?m)^name: goal-driven-engineering$') {
+if ($skill -cnotmatch '(?m)^name: goal-driven-engineering\r?$') {
     throw 'Skill frontmatter name is inconsistent.'
 }
 if (-not $agentYaml.Contains('Goal-Driven Engineering') -or
@@ -278,7 +278,7 @@ foreach ($prompt in Get-ChildItem -LiteralPath (Join-Path $repositoryRoot 'promp
     }
 }
 
-foreach ($modelRoutingTerm in @('gpt-5.6', 'docs_researcher', 'test_analyst', 'routine_worker')) {
+foreach ($modelRoutingTerm in @('model_reasoning_effort', 'docs_researcher', 'test_analyst', 'routine_worker')) {
     if ($skill.Contains($modelRoutingTerm)) {
         throw "Model-routing infrastructure leaked into the lifecycle Skill: $modelRoutingTerm"
     }
@@ -290,10 +290,6 @@ foreach ($alignedAgentDocTerm in @(
     'test_analyst',
     'reviewer',
     'routine_worker',
-    'gpt-5.6-luna',
-    'gpt-5.6-terra',
-    ' / medium',
-    ' / high',
     '.\scripts\install-agents.ps1',
     '-ConflictAction Backup',
     '-WhatIf',
