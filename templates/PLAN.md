@@ -58,3 +58,5 @@ Material changes use PROPOSED, APPROVED, REJECTED, APPLIED. Unapproved changes c
 Keep one acceptance ledger; link long logs and historical detail while preserving decision IDs and accepted evidence. STANDARD may use GOAL DEFINITION, DISCOVERY when needed, EXECUTION, MILESTONE ACCEPTANCE, PROJECT COMPLETE. Finish only the recorded scope.
 
 Volatile or unverified execution state does not belong in PLAN. Strict execution uses .goal/execution-state.md only while a batch is active, with journal absence representing logical IDLE. An existing journal must be reconciled under the strict protocol before mode changes. A legacy PLAN without Task Mode retains FULL semantics.
+
+For schema 2 strict execution, keep PLAN unchanged while a unit is active except for its exact verified receipt. A receipt is durable unit evidence until folded into the existing ledger after journal cleanup. Legacy journals retain their original rules; see the installed Skill continuity reference.

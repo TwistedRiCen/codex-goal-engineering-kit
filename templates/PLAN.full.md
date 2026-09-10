@@ -146,3 +146,5 @@ Unapproved proposals never replace canonical Goal, Scope, Non-Goals, Architectur
 
 | ID | Classification | Status | Requested/proposed change | Impact and proposed contract updates | Decision authority/evidence | Required gate |
 | --- | --- | --- | --- | --- | --- | --- |
+
+For schema 2 strict execution, keep PLAN unchanged while a unit is active except for its exact verified receipt. A receipt is durable unit evidence until folded into the existing ledger after journal cleanup. Legacy journals retain their original rules; see the installed Skill continuity reference.

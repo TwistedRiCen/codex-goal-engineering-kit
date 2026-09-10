@@ -18,20 +18,7 @@ function Get-Sha256 {
     return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash
 }
 
-function Assert-DirectChildPath {
-    param(
-        [Parameter(Mandatory = $true)][string]$Root,
-        [Parameter(Mandatory = $true)][string]$Child
-    )
-
-    $normalizedRoot = [System.IO.Path]::GetFullPath($Root).TrimEnd([char[]]'\/')
-    $normalizedChild = [System.IO.Path]::GetFullPath($Child)
-    $prefix = $normalizedRoot + [System.IO.Path]::DirectorySeparatorChar
-
-    if (-not $normalizedChild.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)) {
-        throw "Refusing to operate outside destination root: $normalizedChild"
-    }
-}
+. (Join-Path $PSScriptRoot 'path-safety.ps1')
 
 $sourceCandidate = Join-Path $PSScriptRoot '..\agents'
 $sourceRoot = (Resolve-Path -LiteralPath $sourceCandidate).Path
@@ -56,6 +43,16 @@ if ((Test-Path -LiteralPath $destinationRootPath) -and
     -not (Test-Path -LiteralPath $destinationRootPath -PathType Container)) {
     throw "Destination root exists but is not a directory: $destinationRootPath"
 }
+
+$backupRootPath = if ([string]::IsNullOrWhiteSpace($BackupRoot)) {
+    Join-Path (Split-Path -Parent $destinationRootPath) 'agent-backups'
+} else { [IO.Path]::GetFullPath($BackupRoot) }
+Assert-PlainTree -Root $sourceRoot
+Assert-PlainPath -Path $destinationRootPath
+Assert-PlainPath -Path $backupRootPath
+Assert-DisjointPaths $sourceRoot $destinationRootPath
+Assert-DisjointPaths $sourceRoot $backupRootPath
+Assert-DisjointPaths $destinationRootPath $backupRootPath
 
 $plan = @()
 foreach ($sourceFile in $sourceFiles) {
@@ -117,12 +114,15 @@ if (-not $PSCmdlet.ShouldProcess($destinationRootPath, $operation)) {
 }
 
 $runId = [Guid]::NewGuid().ToString('N')
-$stagingRoot = Join-Path $destinationRootPath ".codex-goal-engineering-kit.install-$runId"
-Assert-DirectChildPath -Root $destinationRootPath -Child $stagingRoot
+$stagingRoot = Join-Path $backupRootPath ".codex-goal-engineering-kit.install-$runId"
+Assert-DirectChildPath -Root $backupRootPath -Child $stagingRoot
 $backupRunRoot = $null
 $applied = @()
 try {
     [void](New-Item -ItemType Directory -Path $destinationRootPath -Force)
+    Assert-PlainPath -Path $destinationRootPath
+    Assert-PlainPath -Path $backupRootPath
+    [void](New-Item -ItemType Directory -Path $backupRootPath -Force)
     [void](New-Item -ItemType Directory -Path $stagingRoot)
 
     foreach ($item in $changes) {
@@ -134,18 +134,14 @@ try {
     }
 
     if ($conflicts.Count -gt 0) {
-        $backupRootPath = if ([string]::IsNullOrWhiteSpace($BackupRoot)) {
-            Join-Path (Split-Path -Parent $destinationRootPath) 'agent-backups'
-        } else {
-            [System.IO.Path]::GetFullPath($BackupRoot)
-        }
-
         $timestamp = [DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss')
         $backupRunRoot = Join-Path $backupRootPath "codex-goal-engineering-kit-$timestamp-$($runId.Substring(0, 8))"
         [void](New-Item -ItemType Directory -Path $backupRunRoot -Force)
     }
 
     foreach ($item in $changes) {
+        Assert-PlainPath -Path $destinationRootPath
+        Assert-PlainPath -Path $backupRootPath
         if ($item.Status -eq 'Missing') {
             if (Test-Path -LiteralPath $item.Destination) {
                 throw "Destination changed during installation; refusing to overwrite: $($item.Destination)"
@@ -169,6 +165,7 @@ try {
         if ($item.Status -eq 'Conflict') {
             $backupPath = Join-Path $backupRunRoot $item.Name
             Copy-Item -LiteralPath $item.Destination -Destination $backupPath
+            if ((Get-Sha256 -Path $backupPath) -cne $item.DestinationHash) { throw 'Backup content changed; refusing replacement.' }
         }
 
         $record = [pscustomobject]@{
@@ -193,6 +190,8 @@ try {
     for ($index = $applied.Count - 1; $index -ge 0; $index--) {
         $record = $applied[$index]
         try {
+            Assert-PlainPath -Path $destinationRootPath
+            Assert-PlainPath -Path $backupRootPath
             if ($record.Installed -and (Test-Path -LiteralPath $record.Destination)) {
                 $installedItem = Get-Item -LiteralPath $record.Destination -Force
                 $isReparsePoint = (($installedItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0)
@@ -217,6 +216,8 @@ try {
     throw
 } finally {
     if (Test-Path -LiteralPath $stagingRoot) {
+        Assert-DirectChildPath -Root $backupRootPath -Child $stagingRoot
+        Assert-PlainTree -Root $stagingRoot
         Remove-Item -LiteralPath $stagingRoot -Recurse -Force
     }
 }

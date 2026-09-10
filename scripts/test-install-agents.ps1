@@ -195,6 +195,59 @@ try {
     & $installer -DestinationRoot $whatIfRoot -WhatIf | Out-Null
     Assert-True -Condition (-not (Test-Path -LiteralPath $whatIfRoot)) -Message '-WhatIf must not create the destination'
 
+    foreach ($linkCase in @('destination-root','destination-ancestor','backup-root')) {
+        $caseBase = Join-Path $testRootPath $linkCase
+        $outside = Join-Path $caseBase 'outside'
+        [void](New-Item -ItemType Directory -Path $outside -Force)
+        $link = Join-Path $caseBase 'alias'
+        [void](New-Item -ItemType Junction -Path $link -Target $outside)
+        try {
+            $dest = if ($linkCase -eq 'destination-root') { $link } elseif ($linkCase -eq 'destination-ancestor') { Join-Path $link 'agents' } else { Join-Path $caseBase 'agents' }
+            $argsForInstall = @{ DestinationRoot=$dest; ConflictAction='Backup' }
+            if ($linkCase -eq 'backup-root') { $argsForInstall.BackupRoot=$link }
+            $rejected = $false
+            try { & $installer @argsForInstall | Out-Null } catch {
+                if ($_.Exception.Message -notmatch 'reparse-point') { throw }
+                $rejected = $true
+            }
+            Assert-True $rejected "linked $linkCase must be refused"
+            Assert-True (@(Get-ChildItem -LiteralPath $outside -Force).Count -eq 0) 'linked backing directory must remain untouched'
+        } finally {
+            Assert-True ([IO.Path]::GetFullPath($link).StartsWith($requiredPrefix, [StringComparison]::OrdinalIgnoreCase)) 'verified junction cleanup'
+            [IO.Directory]::Delete($link)
+        }
+    }
+    $overlapDest = Join-Path $testRootPath 'overlap/agents'
+    $overlapRefused = $false
+    try { & $installer -DestinationRoot $overlapDest -BackupRoot (Join-Path $overlapDest 'backup') | Out-Null } catch {
+        if ($_.Exception.Message -notmatch 'overlap') { throw }
+        $overlapRefused = $true
+    }
+    Assert-True $overlapRefused 'nested backups must be refused before mutation'
+    Assert-True (-not (Test-Path -LiteralPath $overlapDest)) 'overlap refusal must not create destination'
+
+    $rollbackRoot = Join-Path $testRootPath 'rollback/agents'
+    & $installer -DestinationRoot $rollbackRoot | Out-Null
+    $oldPaths = @{}
+    foreach ($file in Get-ChildItem -LiteralPath $rollbackRoot -File) {
+        [IO.File]::AppendAllText($file.FullName, '# previous version')
+        $oldPaths[$file.Name] = (Get-FileHash -LiteralPath $file.FullName).Hash
+    }
+    function Move-Item {
+        param([string]$LiteralPath, [string]$Destination)
+        if ($LiteralPath -like '*install-*' -and $LiteralPath -like '*reviewer.toml') { throw 'Injected agent activation failure' }
+        Microsoft.PowerShell.Management\Move-Item -LiteralPath $LiteralPath -Destination $Destination
+    }
+    $failed = $false
+    try { & $installer -DestinationRoot $rollbackRoot -ConflictAction Backup | Out-Null } catch {
+        if ($_.Exception.Message -notmatch 'Injected agent activation failure') { throw }
+        $failed = $true
+    } finally { Remove-Item Function:\Move-Item }
+    Assert-True $failed 'activation failure must be observed'
+    foreach ($name in $oldPaths.Keys) {
+        Assert-True ((Get-FileHash -LiteralPath (Join-Path $rollbackRoot $name)).Hash -ceq $oldPaths[$name]) 'rollback must preserve every prior profile'
+    }
+
     Write-Output 'Agent installer tests passed: optional model overrides, invalid-role rejection, profile validation, syntax, fresh install, idempotency, conflict refusal, backup, links, WhatIf, and preservation.'
 } finally {
     $resolvedTestRoot = [System.IO.Path]::GetFullPath($testRootPath)

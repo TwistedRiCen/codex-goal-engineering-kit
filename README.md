@@ -6,6 +6,14 @@
 
 A reusable kit for verified feature iterations and product delivery, with workflow depth selected by uncertainty, impact, and recoverability. It also provides optional role-based Codex custom-agent profiles for role-based multi-agent execution. The repository stores lifecycle, durable-state, and agent-profile contracts; it does not provide an agent runtime or a business application.
 
+## Three steps to start
+
+1. In this Kit's PowerShell, run `.\scripts\install-skill.ps1`; use `-ConflictAction Backup` when updating an existing installation.
+2. Open the real project and use [Start here](prompts/start-here.md) with a sentence or existing materials.
+3. Next time, use [Resume](prompts/resume-project.md) to continue from PLAN and repository evidence.
+
+Agents and /goal are optional. Run `.\scripts\check-installation.ps1` to inspect installation without changing files.
+
 ## Start with one sentence (recommended)
 
 In the real project's Codex task, say:
@@ -61,6 +69,81 @@ Backups and staging live outside discovery: by default under $HOME/.agents/skill
 
 Use `-ConflictAction Overwrite` only when discarding the prior copy is intentional. `-WhatIf` previews a mutating install. The script does not modify global `AGENTS.md`, other Skills, or require administrator access. Restart Codex only if an updated Skill does not appear automatically.
 
+## Check installation
+
+`.\scripts\check-installation.ps1` reports source revision, actual paths, Skill equality, duplicate copies, and role status. Use `-AsJson` for structured output or `-SkillRoot`, `-LegacySkillRoot`, and `-AgentsRoot` for custom locations.
+
+SYNCHRONIZED means identical bytes; DIFFERENT does not prove a personal edit; MISSING_OPTIONAL means an optional role is absent. Linked or unreadable paths are reported, never followed or modified. An incomplete scan cannot prove absence of duplicates. Disk equality does not prove the running Codex session reloaded its configuration.
+
+## Choose the workflow
+
+| Task Mode | Use | State and entry |
+| --- | --- | --- |
+| DIRECT | Isolated, understood local changes without material business/security decisions | Ordinary engineering; no new PLAN or journal |
+| STANDARD | Default for bounded features within verified architecture | Compact [PLAN](templates/PLAN.md) and [shared starter](prompts/start-here.md) |
+| FULL | New systems or material core-model, security, migration, or compatibility changes | [Full PLAN](templates/PLAN.full.md) and [shared starter](prompts/start-here.md) |
+
+Existing PLAN files without Task Mode keep FULL semantics. Do not silently downgrade an active project. An existing execution journal is always reconciled first; an active /goal or explicitly requested strict execution retains its recorded context across sessions. A newly authorized bounded iteration after completed work may use STANDARD without rewriting historical decisions and acceptance.
+
+The Skill entrypoint holds shared rules. It loads references/full-lifecycle.md only for FULL, and references/execution-continuity.md only for strict execution or an existing journal. Guided intake reads references/guided-intake.md as needed; all three references are installed with the Skill.
+
+Reuse applicable architecture and gate evidence after checking scope and current code. STANDARD does not require a fresh discovery/architecture ceremony. Verify affected behavior and required repository checks; use independent review for material risk and significant milestones. Reuse matching evidence and combine milestone/final review when coverage and baseline match. Keep one acceptance ledger and link detailed logs.
+
+## New Project
+
+1. Create/open the real project workspace; do not build it inside this Kit repository.
+2. Ensure the Skill is installed.
+3. Templates are optional. To pre-seed a full PLAN, copy [`templates/PLAN.full.md`](templates/PLAN.full.md) to the new repository root as `PLAN.md` before opening Codex. If you do not, the installed Skill can create an equivalent `PLAN.md` from its required state model without access to this Kit.
+4. Prefer [guided intake](prompts/start-here.md) with one sentence or existing materials; attach a complete goal directly when available. Authorized project work creates or extends PLAN progressively; discussion-only work does not write files.
+5. Confirm the session enters Discovery and avoids production implementation until the required gates pass.
+
+## Architecture Approved
+
+For FULL, confirm passed Discovery and Architecture gates, frozen decisions, dependency-ordered vertical milestones, and measurable acceptance. For STANDARD, verify the existing architecture applies and scoped criteria are ready. Reuse valid gate evidence instead of requesting the same approval again. Then paste [`prompts/start-execution-goal.md`](prompts/start-execution-goal.md). Its `/goal` objective points to the Skill and `PLAN.md` instead of duplicating the protocol.
+
+Do not start `/goal` directly from a vague business idea. Current Codex documentation says the goal text is both the first prompt and completion criterion and limits CLI goal objectives to 4,000 characters, so detailed state belongs in `PLAN.md`.
+
+## Interrupt-Resilient Execution
+
+New strict units use schema 2: PLAN bytes and its Git index state are protected independently, allowing only an exact verified receipt append. Recovery can finish cleanup after receipt persistence; extra goal, decision, code, or index changes still block it. Active legacy journals are not upgraded. See the [continuity contract](skills/goal-driven-engineering/references/execution-continuity.md).
+
+
+FULL execution, any /goal execution, and explicitly requested strict recovery follow `Write Before Risk`: create `.goal/execution-state.md` before Writer mutation, record `VERIFYING` before validation, and write results to `PLAN.md` only when validation succeeds and the mutation fingerprint still matches. PLAN remains the durable verified authority; the journal exists only while one atomic unit is active, absence means `IDLE`, and it never becomes a second source of accepted progress.
+
+Strict recovery reads repository instructions, PLAN, the optional journal, Git, and verification evidence, then derives exactly one of `CONTINUE`, `RETRY_SAFE_UNIT`, `VERIFY`, `FINALIZE`, or `BLOCKED`. Uncertainty in HEAD, scope, protected baseline, verified fingerprint, or an external non-idempotent result must fail closed. This mechanism does not automatically wait or resume and provides no quota prediction, timed checkpoints, background monitoring, or external transaction recovery.
+
+Ordinary STANDARD work uses coherent verified batches without per-edit journals or fingerprints. A batch includes ordinary repairs and affected revalidation. Strict recovery retains clean Allowed Paths and all conflict checks; it does not force commits or overwrite dirty paths to start another batch. Recovery is an instruction contract with decision/fingerprint test fixtures, not a shipped generic recovery CLI.
+
+## Resume
+
+Paste [`prompts/resume-project.md`](prompts/resume-project.md). Codex selects the existing mode and continuity requirements, then rebuilds state from applicable `AGENTS.md`, `PLAN.md`, Git/repository evidence, current milestone code, and tests. Repository evidence wins if the plan is stale.
+
+## Change Request
+
+Fill and paste [`prompts/change-control.md`](prompts/change-control.md). Reversible implementation or local-design changes continue autonomously. Architecture and product-scope changes remain proposals until required adjudication; only approved changes update canonical goal, scope, architecture, milestones, or acceptance.
+
+## Update Skill
+
+After editing this Kit and passing validation, synchronize with a retained backup:
+
+```powershell
+.\scripts\install-skill.ps1 -ConflictAction Backup
+```
+
+Review the printed backup location, test the new Skill in a fresh session, then remove an obsolete backup manually only when it is no longer needed.
+
+## Try the training-system fixture
+
+[`examples/training-system/PROJECT-GOAL.md`](examples/training-system/PROJECT-GOAL.md) describes a realistic offline-training MVP without prescribing its unresolved business semantics.
+
+1. Create a separate empty repository for the training system.
+2. Start from the walkthrough sentence, or supply the complete example goal to test the materials path; no form needs to be filled again.
+3. Verify the first session creates root `PLAN.md`, records facts/assumptions/pending decisions, and remains in Discovery rather than generating the application.
+4. Resolve material money, lesson-credit, ownership, authorization, refund, attendance, and reporting decisions; review the architecture and milestones.
+5. Only after both gates pass, start the execution prompt and assess each milestone plus the final business loop against recorded evidence.
+
+The fixture succeeds as a workflow test when a fresh Codex session can determine the real phase and next unmet criterion from repository files alone.
+
 ## Optional role-based agents
 
 The profiles in [`agents/`](agents/) are optional Codex platform configuration defining responsibilities and permissions. They omit model and model_reasoning_effort by default. The core Skill does not require these profiles or a particular provider, model, or effort.
@@ -107,68 +190,5 @@ Use the core workflow according to host capabilities, not model brand. This repo
 
 Use native Skill invocation where available; otherwise read SKILL.md and relevant references through available file tools. Do not assume Codex $ invocation syntax, TOML, installation paths, or /goal work elsewhere. Missing tools block dependent mutation or acceptance, while unaffected authorized work can continue.
 
-## Choose the workflow
 
-| Task Mode | Use | State and entry |
-| --- | --- | --- |
-| DIRECT | Isolated, understood local changes without material business/security decisions | Ordinary engineering; no new PLAN or journal |
-| STANDARD | Default for bounded features within verified architecture | Compact [PLAN](templates/PLAN.md) and [shared starter](prompts/start-here.md) |
-| FULL | New systems or material core-model, security, migration, or compatibility changes | [Full PLAN](templates/PLAN.full.md) and [shared starter](prompts/start-here.md) |
-
-Existing PLAN files without Task Mode keep FULL semantics. Do not silently downgrade an active project. An existing execution journal is always reconciled first; an active /goal or explicitly requested strict execution retains its recorded context across sessions. A newly authorized bounded iteration after completed work may use STANDARD without rewriting historical decisions and acceptance.
-
-The Skill entrypoint holds shared rules. It loads references/full-lifecycle.md only for FULL, and references/execution-continuity.md only for strict execution or an existing journal. Guided intake reads references/guided-intake.md as needed; all three references are installed with the Skill.
-
-Reuse applicable architecture and gate evidence after checking scope and current code. STANDARD does not require a fresh discovery/architecture ceremony. Verify affected behavior and required repository checks; use independent review for material risk and significant milestones. Reuse matching evidence and combine milestone/final review when coverage and baseline match. Keep one acceptance ledger and link detailed logs.
-
-## New Project
-
-1. Create/open the real project workspace; do not build it inside this Kit repository.
-2. Ensure the Skill is installed.
-3. Templates are optional. To pre-seed a full PLAN, copy [`templates/PLAN.full.md`](templates/PLAN.full.md) to the new repository root as `PLAN.md` before opening Codex. If you do not, the installed Skill can create an equivalent `PLAN.md` from its required state model without access to this Kit.
-4. Prefer [guided intake](prompts/start-here.md) with one sentence or existing materials; attach a complete goal directly when available. Authorized project work creates or extends PLAN progressively; discussion-only work does not write files.
-5. Confirm the session enters Discovery and avoids production implementation until the required gates pass.
-
-## Architecture Approved
-
-For FULL, confirm passed Discovery and Architecture gates, frozen decisions, dependency-ordered vertical milestones, and measurable acceptance. For STANDARD, verify the existing architecture applies and scoped criteria are ready. Reuse valid gate evidence instead of requesting the same approval again. Then paste [`prompts/start-execution-goal.md`](prompts/start-execution-goal.md). Its `/goal` objective points to the Skill and `PLAN.md` instead of duplicating the protocol.
-
-Do not start `/goal` directly from a vague business idea. Current Codex documentation says the goal text is both the first prompt and completion criterion and limits CLI goal objectives to 4,000 characters, so detailed state belongs in `PLAN.md`.
-
-## Interrupt-Resilient Execution
-
-FULL execution, any /goal execution, and explicitly requested strict recovery follow `Write Before Risk`: create `.goal/execution-state.md` before Writer mutation, record `VERIFYING` before validation, and write results to `PLAN.md` only when validation succeeds and the mutation fingerprint still matches. PLAN remains the durable verified authority; the journal exists only while one atomic unit is active, absence means `IDLE`, and it never becomes a second source of accepted progress.
-
-Strict recovery reads repository instructions, PLAN, the optional journal, Git, and verification evidence, then derives exactly one of `CONTINUE`, `RETRY_SAFE_UNIT`, `VERIFY`, `FINALIZE`, or `BLOCKED`. Uncertainty in HEAD, scope, protected baseline, verified fingerprint, or an external non-idempotent result must fail closed. This mechanism does not automatically wait or resume and provides no quota prediction, timed checkpoints, background monitoring, or external transaction recovery.
-
-Ordinary STANDARD work uses coherent verified batches without per-edit journals or fingerprints. A batch includes ordinary repairs and affected revalidation. Strict recovery retains clean Allowed Paths and all conflict checks; it does not force commits or overwrite dirty paths to start another batch. Recovery is an instruction contract with decision/fingerprint test fixtures, not a shipped generic recovery CLI.
-
-## Resume
-
-Paste [`prompts/resume-project.md`](prompts/resume-project.md). Codex selects the existing mode and continuity requirements, then rebuilds state from applicable `AGENTS.md`, `PLAN.md`, Git/repository evidence, current milestone code, and tests. Repository evidence wins if the plan is stale.
-
-## Change Request
-
-Fill and paste [`prompts/change-control.md`](prompts/change-control.md). Reversible implementation or local-design changes continue autonomously. Architecture and product-scope changes remain proposals until required adjudication; only approved changes update canonical goal, scope, architecture, milestones, or acceptance.
-
-## Update Skill
-
-After editing this Kit and passing validation, synchronize with a retained backup:
-
-```powershell
-.\scripts\install-skill.ps1 -ConflictAction Backup
-```
-
-Review the printed backup location, test the new Skill in a fresh session, then remove an obsolete backup manually only when it is no longer needed.
-
-## Try the training-system fixture
-
-[`examples/training-system/PROJECT-GOAL.md`](examples/training-system/PROJECT-GOAL.md) describes a realistic offline-training MVP without prescribing its unresolved business semantics.
-
-1. Create a separate empty repository for the training system.
-2. Start from the walkthrough sentence, or supply the complete example goal to test the materials path; no form needs to be filled again.
-3. Verify the first session creates root `PLAN.md`, records facts/assumptions/pending decisions, and remains in Discovery rather than generating the application.
-4. Resolve material money, lesson-credit, ownership, authorization, refund, attendance, and reporting decisions; review the architecture and milestones.
-5. Only after both gates pass, start the execution prompt and assess each milestone plus the final business loop against recorded evidence.
-
-The fixture succeeds as a workflow test when a fresh Codex session can determine the real phase and next unmet criterion from repository files alone.
+Maintainers can use the [behavior evaluation cases](examples/behavior-evaluation.md) to assess intake and recovery without adding user steps.

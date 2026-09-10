@@ -4,6 +4,11 @@ param()
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+function Read-ContractText {
+    param([string]$Path)
+    return ([IO.File]::ReadAllText($Path) -replace '\r\n?', [string][char]10)
+}
+
 $repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $skillPath = Join-Path $repositoryRoot 'skills\goal-driven-engineering\SKILL.md'
 $templatePath = Join-Path $repositoryRoot 'templates\PLAN.full.md'
@@ -20,20 +25,20 @@ $resumePromptPath = Join-Path $repositoryRoot 'prompts\resume-project.md'
 $intakePath = Join-Path $skillRoot 'references\guided-intake.md'
 $continuityTestPath = Join-Path $repositoryRoot 'scripts\test-execution-continuity.ps1'
 
-$entrypoint = Get-Content -Raw -LiteralPath $skillPath
-$lifecycle = Get-Content -Raw -LiteralPath $lifecyclePath
-$recovery = Get-Content -Raw -LiteralPath $recoveryPath
+$entrypoint = Read-ContractText $skillPath
+$lifecycle = Read-ContractText $lifecyclePath
+$recovery = Read-ContractText $recoveryPath
 $skill = $entrypoint + [Environment]::NewLine + $lifecycle + [Environment]::NewLine + $recovery
-$intake = Get-Content -Raw -LiteralPath $intakePath
-$compactTemplate = Get-Content -Raw -LiteralPath $compactTemplatePath
-$template = Get-Content -Raw -LiteralPath $templatePath
-$agentYaml = Get-Content -Raw -LiteralPath $agentYamlPath
-$readme = Get-Content -Raw -LiteralPath $readmePath
-$readmeZh = Get-Content -Raw -LiteralPath $readmeZhPath
-$startPrompt = Get-Content -Raw -LiteralPath $startPromptPath
-$startExecutionPrompt = Get-Content -Raw -LiteralPath $startExecutionPromptPath
-$resumePrompt = Get-Content -Raw -LiteralPath $resumePromptPath
-$continuityTest = Get-Content -Raw -LiteralPath $continuityTestPath
+$intake = Read-ContractText $intakePath
+$compactTemplate = Read-ContractText $compactTemplatePath
+$template = Read-ContractText $templatePath
+$agentYaml = Read-ContractText $agentYamlPath
+$readme = Read-ContractText $readmePath
+$readmeZh = Read-ContractText $readmeZhPath
+$startPrompt = Read-ContractText $startPromptPath
+$startExecutionPrompt = Read-ContractText $startExecutionPromptPath
+$resumePrompt = Read-ContractText $resumePromptPath
+$continuityTest = Read-ContractText $continuityTestPath
 
 $expectedPhases = @(
     'GOAL DEFINITION',
@@ -146,6 +151,7 @@ foreach ($field in @(
     'Verification Commands',
     'Pass Condition',
     'Verified Mutation Fingerprint',
+    'Plan Baseline Fingerprint',
     'Evidence',
     'Blocker Reason'
 )) {
@@ -181,7 +187,7 @@ if (Test-Path -LiteralPath (Join-Path $repositoryRoot 'skills\goal-driven-engine
 
 # Entry prompts select the canonical protocol; they must not duplicate its state machine.
 foreach ($promptPath in @($startExecutionPromptPath, $resumePromptPath)) {
-    $content = Get-Content -Raw -LiteralPath $promptPath
+    $content = Read-ContractText $promptPath
     if (-not $content.Contains('references/execution-continuity.md')) {
         throw "Strict execution/resume entry does not route to its installed contract: $promptPath"
     }
@@ -204,7 +210,7 @@ if (-not $entrypoint.Contains('references/guided-intake.md')) {
 
 # Supporting references must resolve inside the installed Skill, without Kit access.
 foreach ($doc in Get-ChildItem -LiteralPath $skillRoot -Recurse -File -Filter '*.md') {
-    $content = Get-Content -Raw -LiteralPath $doc.FullName
+    $content = Read-ContractText $doc.FullName
     foreach ($link in [regex]::Matches($content, '\[[^\]]+\]\(([^)]+)\)')) {
         $target = $link.Groups[1].Value
         if ($target -match '^(https?://|#)') { continue }
@@ -272,7 +278,7 @@ if (-not $agentYaml.Contains('Goal-Driven Engineering') -or
 }
 
 foreach ($prompt in Get-ChildItem -LiteralPath (Join-Path $repositoryRoot 'prompts') -File -Filter '*.md') {
-    $content = Get-Content -Raw -LiteralPath $prompt.FullName
+    $content = Read-ContractText $prompt.FullName
     if (-not $content.Contains('$goal-driven-engineering') -or -not $content.Contains('PLAN.md')) {
         throw "Prompt does not point to the Skill and PLAN.md: $($prompt.Name)"
     }
