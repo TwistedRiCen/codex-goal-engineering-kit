@@ -25,7 +25,9 @@ This is an entry into GOAL DEFINITION/DISCOVERY, not another task mode or gate. 
 
 ## Select the least sufficient workflow
 
-Inspect the request, relevant repository evidence, and existing PLAN. Select by uncertainty, impact, and recoverability, not line count. Honor explicit scope and stop points.
+Inspect the request, relevant repository evidence, and existing PLAN. By default, select the simplest sufficient workflow by uncertainty, impact, and recoverability, not line count; do not require the user to choose a mode. Briefly state the selected mode and reason.
+
+Honor an explicit mode choice or plain-language preference for workflow depth within the authorized scope and stop points. If it conflicts with required verification, review, or existing recovery requirements, explain the conflict and necessary steps instead of silently ignoring the choice or treating the mode label as a waiver. Use the applicable workflow below; reconcile active recovery state before any mode change.
 
 | Task Mode | When | Required work |
 | --- | --- | --- |

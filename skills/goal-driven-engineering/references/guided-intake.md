@@ -1,6 +1,6 @@
 # Guided Goal Intake
 
-Use only when an incomplete idea or supplied materials need interpretation. Keep the user in business language; select DIRECT/STANDARD/FULL using the shared Skill rather than asking the user to choose a mode.
+Use only when an incomplete idea or supplied materials need interpretation. Keep the user in business language; select DIRECT/STANDARD/FULL using the shared Skill without requiring a mode choice. If the user specifies a mode or workflow-depth preference, apply the shared selection rules and briefly explain the result.
 
 ## Read before asking
 

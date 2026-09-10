@@ -75,7 +75,11 @@ Use `-ConflictAction Overwrite` only when discarding the prior copy is intention
 
 SYNCHRONIZED means identical bytes; DIFFERENT does not prove a personal edit; MISSING_OPTIONAL means an optional role is absent. Linked or unreadable paths are reported, never followed or modified. An incomplete scan cannot prove absence of duplicates. Disk equality does not prove the running Codex session reloaded its configuration.
 
-## Choose the workflow
+## AI selects the workflow; you can specify a preference
+
+You do not need to choose a mode. AI selects the simplest sufficient workflow from the task and repository evidence, then briefly states the mode and reason. You can also specify DIRECT, STANDARD, or FULL, or ask for a lightweight process or the complete lifecycle in ordinary language. No extra selection form is required.
+
+AI honors your request. If it conflicts with required verification, review, or existing recovery requirements, AI explains why and which steps remain necessary; a mode label does not waive those checks, and your choice must not be silently ignored. For example: "Use STANDARD for this feature iteration" or "Use FULL for this new system."
 
 | Task Mode | Use | State and entry |
 | --- | --- | --- |
