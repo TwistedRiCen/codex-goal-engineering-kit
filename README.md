@@ -89,9 +89,9 @@ AI honors your request. If it conflicts with required verification, review, or e
 
 Existing PLAN files without Task Mode keep FULL semantics. Do not silently downgrade an active project. An existing execution journal is always reconciled first; an active /goal or explicitly requested strict execution retains its recorded context across sessions. A newly authorized bounded iteration after completed work may use STANDARD without rewriting historical decisions and acceptance.
 
-The Skill entrypoint holds shared rules. It loads references/full-lifecycle.md only for FULL, and references/execution-continuity.md only for strict execution or an existing journal. Guided intake reads references/guided-intake.md as needed; all three references are installed with the Skill.
+The Skill entrypoint holds shared rules. It loads references/full-lifecycle.md only for FULL, and references/execution-continuity.md only for strict execution or an existing journal. Guided intake reads references/guided-intake.md as needed. Conflicting evidence, non-obvious verification reuse, or external delivery reads references/evidence-and-delivery.md; all references ship with the Skill.
 
-Reuse applicable architecture and gate evidence after checking scope and current code. STANDARD does not require a fresh discovery/architecture ceremony. Verify affected behavior and required repository checks; use independent review for material risk and significant milestones. Reuse matching evidence and combine milestone/final review when coverage and baseline match. Keep one acceptance ledger and link detailed logs.
+Reuse applicable architecture and gate evidence after checking scope and current code. STANDARD does not require a fresh discovery/architecture ceremony. Verify affected behavior and required repository checks; use independent review for material risk and significant milestones. Reuse matching evidence and combine milestone/final review when coverage and baseline match. Keep one acceptance ledger and link detailed logs. DIRECT also checks required review before completion, without new workflow artifacts. Local readiness does not imply external delivery or remote validation; refresh relevant changeable prerequisites before external mutation.
 
 ## New Project
 

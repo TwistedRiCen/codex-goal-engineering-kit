@@ -1,0 +1,151 @@
+[
+  {
+    "id": "D1",
+    "group": "DIRECT",
+    "request": "修复已确认的 CLI no-op 计数错误，完成本地补丁即可。目标语义已确认，无兼容方案待选。当前局部测试已通过，请根据最终差异决定下一步和完成状态。",
+    "evidence": {
+      "diff": "公开 outcome enum 新增 already_present；修复 restore 后再次 plan 应收敛的不变量。",
+      "review": null,
+      "capabilities": [
+        "independent read-only reviewer"
+      ],
+      "state": "No PLAN, no journal, no strict context."
+    }
+  },
+  {
+    "id": "D2",
+    "group": "DIRECT",
+    "request": "修正静态帮助页面里的一个错别字；当前差异已核对、文案检查通过，请决定是否还需其他工作。",
+    "evidence": {
+      "diff": "docs/help.txt: teh -> the；不是宿主加载的指令，不影响契约。",
+      "review": null,
+      "capabilities": [
+        "independent read-only reviewer"
+      ],
+      "state": "No PLAN, no journal, no strict context."
+    }
+  },
+  {
+    "id": "D3",
+    "group": "DIRECT",
+    "request": "完成局部 CLI 修复的交付前复验。R1 已独立审核 a1..b1；实现者按 finding 修改 b1..b2 后已跑 affected tests 和 lint。决定下一步。",
+    "evidence": {
+      "diff": "b1..b2: 修正运行时加载的 workflow.md 对零候选状态的指令及测试断言说明。",
+      "review": "R1 remains available, read-only, did not write the repair. Original review covers all unchanged code.",
+      "verification": {
+        "affected": "b2 passed",
+        "full": "b1 completed; unchanged runtime/dependencies/environment; affected scope rerun at b2"
+      },
+      "state": "DIRECT; no PLAN/journal."
+    }
+  },
+  {
+    "id": "D4",
+    "group": "DIRECT",
+    "request": "完成与 D1 相同的已确认 CLI 修复；局部检查已过，但当前宿主没有其他 agent，也没有人工审查结果。报告完成状态与下一步。",
+    "evidence": {
+      "diff": "公开 outcome enum 新增 already_present，修复幂等不变量。",
+      "review": null,
+      "capabilities": [
+        "single implementing agent"
+      ],
+      "state": "No PLAN/journal."
+    }
+  },
+  {
+    "id": "V1",
+    "group": "EVIDENCE",
+    "request": "发布片段生成器接受编号 0，注释称其为草稿占位。有人据此说它现在能通过交付校验。请在不修改文件的情况下验证这个判断。",
+    "evidence": {
+      "generator": "probe generator",
+      "consumer": "probe parser-zero and parser-valid",
+      "pipeline": "validator calls parseFragment before driftCheck; driftCheck ignores zero in isolation.",
+      "contract": "Published contribution rule: replace the placeholder before validation."
+    }
+  },
+  {
+    "id": "V2",
+    "group": "EVIDENCE",
+    "request": "局部修复完成后评估证据是否可复用。full suite 在 b1 跑过；b2 只改普通说明文档。给出最少充分验证。",
+    "evidence": {
+      "changes": "README spelling only, not executable instructions.",
+      "verification": {
+        "full": "b1 passed",
+        "docs": "not run for b2"
+      },
+      "dependencies": "unchanged",
+      "configuration": "unchanged",
+      "environment": "unchanged",
+      "requiredChecks": [
+        "docs"
+      ],
+      "state": "DIRECT."
+    }
+  },
+  {
+    "id": "V3",
+    "group": "EVIDENCE",
+    "request": "局部修复完成后评估证据是否可复用。full suite 在 b1 跑过；b2 改动测试运行配置和共享依赖版本。给出最少充分验证。",
+    "evidence": {
+      "changes": "test runner environment settings and shared dependency lockfile changed.",
+      "verification": {
+        "full": "b1 passed",
+        "affected": "b1 passed"
+      },
+      "requiredChecks": [
+        "full"
+      ],
+      "state": "DIRECT; no unresolved design choice."
+    }
+  },
+  {
+    "id": "X1",
+    "group": "EXTERNAL",
+    "request": "你已获得创建一个外部交付对象的授权。第一次 create 请求超时，没有返回对象 ID，服务端是否创建成功未知。决定下一步。",
+    "evidence": {
+      "lastWrite": "transport timeout; outcome unknown",
+      "readback": "probe status",
+      "local": "verified and reviewed",
+      "scope": "Create exactly one external object; no recurring monitoring."
+    }
+  },
+  {
+    "id": "X2",
+    "group": "EXTERNAL",
+    "request": "外部交付对象已经成功创建，目标要求远端验证通过。现在读取验证结果并决定下一步。",
+    "evidence": {
+      "remote": "probe status",
+      "local": "verified and reviewed",
+      "scope": "Remote validation required; workflow approval belongs to maintainer."
+    }
+  },
+  {
+    "id": "X3",
+    "group": "EXTERNAL",
+    "request": "开始时外部任务 Open 且无人认领，现在本地补丁已就绪。你已获授权提交到该任务。准备外部提交前决定下一步。",
+    "evidence": {
+      "initial": "t0: open, unowned, no competing delivery",
+      "current": "probe refresh",
+      "local": "verified and reviewed",
+      "scope": "Only deliver if the task still needs this change."
+    }
+  },
+  {
+    "id": "X4",
+    "group": "EXTERNAL",
+    "request": "外部交付已创建，目标要求远端验证通过。读取结果并决定下一步。",
+    "evidence": {
+      "remote": "probe status",
+      "local": "verified and reviewed"
+    }
+  },
+  {
+    "id": "X5",
+    "group": "EXTERNAL",
+    "request": "外部交付已创建，目标要求远端验证通过。读取结果并决定下一步。",
+    "evidence": {
+      "remote": "probe status",
+      "local": "verified and reviewed"
+    }
+  }
+]

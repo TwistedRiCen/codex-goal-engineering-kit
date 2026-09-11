@@ -31,7 +31,7 @@ Honor an explicit mode choice or plain-language preference for workflow depth wi
 
 | Task Mode | When | Required work |
 | --- | --- | --- |
-| DIRECT | Isolated fix or small local change with understood behavior and no material domain, money, ownership, authorization, migration, or public-contract decision | Understand, change, run relevant verification, report. No new PLAN, lifecycle gates, or journal. |
+| DIRECT | Isolated fix or small local change with understood behavior and no material domain, money, ownership, authorization, migration, or public-contract decision | Understand, change, apply shared verification and risk-based review, report. No new PLAN, lifecycle gates, or journal. |
 | STANDARD | Default for a bounded feature iteration within verified architecture that benefits from planning or cross-session state | Scope and acceptance, compact PLAN, coherent implementation batches, verification, and review when risk warrants. |
 | FULL | New system, unresolved core model/workflow, material architecture/security/compatibility change, or explicit complete product lifecycle | Read [full-lifecycle.md](references/full-lifecycle.md); establish or reuse gates, vertical milestones, system verification, and final independent review. |
 
@@ -66,7 +66,7 @@ Use consistent statuses: acceptance OPEN/VERIFIED; work or milestones NOT STARTE
 
 ## Reuse decisions and gate evidence
 
-Inspect existing code, contracts, tests, and accepted decisions before designing. Reuse applicable architecture and discovery evidence after checking scope, assumptions, and current repository reality. Record the reference and why it still applies; do not rerun whole phases or seek the same authorization again.
+Inspect existing code, contracts, tests, and accepted decisions before designing. Resolve conflicting evidence against the specific question, version, and execution path; no source type has universal priority. Reuse applicable architecture and discovery evidence after checking scope, assumptions, and current repository reality. Record the reference and why it still applies; do not rerun whole phases or seek the same authorization again.
 
 Reopen only decisions affected by new evidence. Separate confirmed facts, reversible design assumptions, and pending material choices. Group related human decisions and prepare a reviewable recommendation before asking. Ordinary reversible engineering details proceed autonomously within the authorized scope.
 
@@ -87,9 +87,11 @@ Reuse verification only when relevant code, dependencies, configuration, and env
 
 Use an independent read-only reviewer for material authorization, money, core state/invariant, public interface, migration, or security changes, significant milestones, and FULL final acceptance. Simple changes need no automatic subagent. Delegate only a named independent evidence gap or useful review; converge evidence before one writer changes related files.
 
-Give reviewers scope, baseline/diff, criteria, and evidence without an intended verdict. After repairs, rerun affected checks and review the repair plus its impact. Reuse applicable review evidence; one review can satisfy milestone and final review if it covers the same baseline and all system criteria. Final system coverage must still be checked. Record reviewer, baseline, coverage, findings, and disposition once; reference that record elsewhere.
+Give reviewers scope, baseline/diff, criteria, and evidence without an intended verdict. After repairs, rerun affected checks and review the repair plus its impact; use independent review for material repairs. The original reviewer may do this if independent of the repair author; reviewer rotation is not required. Reuse applicable review evidence; one review can satisfy milestone and final review if it covers the same baseline and all system criteria. Final system coverage must still be checked. Record reviewer, baseline, coverage, findings, and disposition once; reference that record elsewhere.
 
-STANDARD completion requires all scoped criteria verified, required checks passed, and material review findings resolved or explicitly accepted by the authorized human. Report limitations; never infer end-to-end acceptance from component tests alone.
+These verification and review requirements apply to all modes, including DIRECT. Before reporting completion or local readiness, check the final diff for review-triggering impact and ensure required review evidence covers it. Local readiness covers available local checks and required review; identify external-dependent work separately. Completion requires all scoped criteria verified, required checks passed, and material review findings resolved or explicitly accepted by the authorized human. DIRECT records this in its report without new workflow artifacts. Never infer end-to-end acceptance from component tests alone.
+
+Before an external mutation, refresh changeable prerequisites that could invalidate its authority or usefulness. Distinguish pending work, a missing prerequisite/authorization, a known failure, and an unknown write outcome; never infer success from request acceptance. For conflicting evidence, non-obvious verification reuse, or external delivery, read [evidence-and-delivery.md](references/evidence-and-delivery.md).
 
 ## Resume from repository evidence
 

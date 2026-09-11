@@ -89,9 +89,9 @@ AI 会按你的要求选择；如指定模式与必要的验证、审查或已�
 
 旧 PLAN 没有 Task Mode 时保持 FULL 语义，不能静默降低活跃项目的流程要求。已有执行日志必须先恢复；活跃 /goal 或明确要求的严格执行会记录执行上下文，跨会话仍使用严格恢复。完成原范围后，新授权的有界迭代可以使用 STANDARD，同时保留历史决策与验收证据。
 
-Skill 入口只保留公共规则；FULL 按需读取 references/full-lifecycle.md，严格执行或存在日志时读取 references/execution-continuity.md。问答引导按需读取 references/guided-intake.md；安装时三个引用文件会随 Skill 一起同步。
+Skill 入口只保留公共规则；FULL 按需读取 references/full-lifecycle.md，严格执行或存在日志时读取 references/execution-continuity.md。问答引导按需读取 references/guided-intake.md；证据冲突、不明显的验证复用或外部交付按需读取 references/evidence-and-delivery.md。安装时全部引用文件随 Skill 同步。
 
-检查范围与当前代码后复用有效的架构、门禁证据，STANDARD 无需重新走一轮发现和架构仪式。执行受影响的验证与仓库要求的检查；重大风险和重要里程碑使用独立审查。同一代码基线且覆盖范围充分时，可复用证据、合并里程碑和最终审查。验收结果只保存一份，详细日志通过链接引用。
+检查范围与当前代码后复用有效的架构、门禁证据，STANDARD 无需重新走一轮发现和架构仪式。执行受影响的验证与仓库要求的检查；重大风险和重要里程碑使用独立审查。同一代码基线且覆盖范围充分时，可复用证据、合并里程碑和最终审查。验收结果只保存一份，详细日志通过链接引用。DIRECT 完成前同样核对必要审查，无需新增工作流文件。本地就绪不代表外部交付或远端验证完成；外部操作前刷新可能影响其授权或必要性的可变前置条件。
 
 ## 新项目
 

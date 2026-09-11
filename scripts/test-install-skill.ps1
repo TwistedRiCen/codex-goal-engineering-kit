@@ -42,7 +42,7 @@ try {
     Assert-True (-not (Test-Path -LiteralPath $backupRoot)) 'fresh WhatIf must not create external storage'
     & $installer -DestinationRoot $destinationRoot | Out-Null
     Assert-True ((Get-Manifest $source) -ceq (Get-Manifest $target)) 'fresh installation must include the entire package'
-    foreach ($reference in @('references/full-lifecycle.md', 'references/execution-continuity.md', 'references/guided-intake.md')) {
+    foreach ($reference in @('references/full-lifecycle.md', 'references/execution-continuity.md', 'references/guided-intake.md', 'references/evidence-and-delivery.md')) {
         Assert-True (Test-Path -LiteralPath (Join-Path $target $reference) -PathType Leaf) "installed reference must be available: $reference"
     }
 
