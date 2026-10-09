@@ -125,10 +125,6 @@ foreach ($fileName in $expectedNames) {
         }
     }
 
-    if ($profile['developer_instructions'].Length -lt 160) {
-        throw "$fileName developer_instructions are not sufficiently bounded."
-    }
-
     $agentName = [string]$profile['name']
     if ($seenAgentNames.ContainsKey($agentName)) {
         throw "Duplicate custom-agent name: $agentName"

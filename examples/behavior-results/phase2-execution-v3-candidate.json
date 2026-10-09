@@ -1,0 +1,389 @@
+{
+  "schema": 1,
+  "rubric": "execution-regression-v3",
+  "experiment": "real-codex-exec",
+  "source": {
+    "ref": "working-tree",
+    "digest": "86e3ab88c4367f2cb7d13a721de52b6fca9c753b8c3b6ea34aebc3e472460b89"
+  },
+  "model": "gpt-6.1-sol",
+  "effort": "high",
+  "host": {
+    "platform": "win32",
+    "node": "v24.19.0",
+    "cliVersion": "codex-cli 0.162.0-alpha.2"
+  },
+  "permissions": {
+    "sandbox": "workspace-write",
+    "approval": "automatic-review",
+    "ignoreUserConfig": true,
+    "ephemeral": true,
+    "rulesLoaded": true
+  },
+  "attemptsPerCase": 1,
+  "retries": 0,
+  "humanInterventions": 0,
+  "limitations": [
+    "Two independent fresh sessions per source, one observation per fixture; no stability, token or latency improvement claim.",
+    "Only visible native JSONL events are counted. Unsupported events/tools cannot PASS; hidden activity remains unknown and zero observed agents/questions is not proof of absence.",
+    "Question punctuation is a conservative review signal, not a semantic question classifier.",
+    "Command classification accepts exact literal fixture invocations, optionally one PowerShell/pwsh -Command wrapper; unsupported scripts remain unknown. The full-check counter detects extra runs/counter mutation, but is not a tamper-proof audit against deliberate restore.",
+    "Baseline evidence reuse is observed through preserved receipt/PLAN and unchanged seeded full-check counter, not inferred internal reasoning.",
+    "Host global instructions, Skill discovery, execpolicy rules and authentication remain in effect; identical host required for paired comparison.",
+    "Bootstrap failures remain failures; the runner never retries or changes credentials/configuration."
+  ],
+  "cases": [
+    {
+      "id": "direct-copy",
+      "attempt": 1,
+      "inputDigest": "92c95fe22e500420629472592e52064209b44030cfda8011c7b0c69701d1f32d",
+      "promptDigest": "3cc1d8ac1b3871b5393723fb113f3d4ac6aef0f0aaae6b9763c73806557809e5",
+      "fixtureBaseline": "006a996d60da60c7e8057933928fff0be5974cd2",
+      "priorReceiptDigest": "09cd41801524c875178ccc74c1148e171b74c985e47045106ae66254e3e5de78",
+      "wallClockMs": 77488,
+      "observed": {
+        "trace": {
+          "rawTraceDigest": "f9a7d643e5d9da0047a10991379e2078faa6b590833c0a2e123a796842ff431d",
+          "rawTraceBytes": 26037,
+          "jsonEvents": 22,
+          "malformedLines": 0,
+          "completedTurns": 1,
+          "commands": [
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "d33b14556fea6e120f12a2274cbce29c47d1829822780016dba81ee51f8fd02d",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "9ed6fea25f0b6b6505fce893cadbb83de0a3b9bf8c5b54c6f1b8d14f016988b4",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "c845c4dab1b19180c2eccfee2f8afa5b00fc8f7bf0713b404a4a8b368a658b79",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "c59e40ef568f574610862a613e061cfe3e251d50478f1ba29d8ed4e2d12afdec",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "ae3afa4eaaa86f7b702b9f6e56087b43fc418ffd969191b11204415f23834cdf",
+              "markers": [
+                "COPY_CHECK_PASS",
+                "FULL_CHECK_PASS"
+              ]
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "8b400783deb049ff2849f0d3e9e03b292086f56ab9978b57be74fca7715fa05b",
+              "markers": []
+            },
+            {
+              "kind": "focused-verification",
+              "invocation": {
+                "wrapper": "pwsh",
+                "executable": "node",
+                "fixtureArgv": [
+                  "scripts/check-copy.cjs"
+                ]
+              },
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "8c5f2af560a2ce51e970ab3b72c6297eb99b9a52e052544d25f0562ef49383ef",
+              "markers": [
+                "COPY_CHECK_PASS"
+              ]
+            }
+          ],
+          "visibleMessageCount": 3,
+          "questionMarks": 0,
+          "explicitQuestionTools": 0,
+          "agentToolEvents": 0,
+          "otherToolEvents": 0,
+          "unrecognizedEventTypes": [],
+          "modeMentions": [
+            "DIRECT"
+          ],
+          "cliErrorEvents": 0,
+          "failedCommandCount": 0,
+          "firstFailedCommand": null,
+          "additionalFocusedInvocations": 0
+        },
+        "process": {
+          "exitCode": 0,
+          "timedOut": false,
+          "overflow": false,
+          "launchFailed": false,
+          "stderrBytes": 277
+        },
+        "changedFiles": [
+          "copy.txt"
+        ],
+        "fullCheckRuns": {
+          "before": {
+            "valid": true,
+            "count": 1,
+            "digest": "b5004f26a852b0d60ec1237432c1a33c2307ff2458c374d9d99749d045c7feb9"
+          },
+          "after": {
+            "valid": true,
+            "count": 1,
+            "digest": "b5004f26a852b0d60ec1237432c1a33c2307ff2458c374d9d99749d045c7feb9"
+          }
+        },
+        "independentChecks": [
+          {
+            "command": "node scripts/check-copy.cjs",
+            "exitCode": 0,
+            "outputDigest": "8c5f2af560a2ce51e970ab3b72c6297eb99b9a52e052544d25f0562ef49383ef"
+          }
+        ],
+        "planExists": false,
+        "journalExists": false,
+        "sourceIntact": true,
+        "receiptIntact": true,
+        "headIntact": true,
+        "finalMessagePresent": true
+      },
+      "artifacts": [
+        {
+          "path": "<fixture>/copy.txt",
+          "bytes": 32,
+          "digest": "2dea1c80e7c46ecad50365da4c890dda222f9610df215b66231128b0aa6df183"
+        }
+      ],
+      "grading": {
+        "rubric": "execution-regression-v3",
+        "passed": true,
+        "errors": []
+      },
+      "firstFailure": null,
+      "retries": 0,
+      "humanInterventions": 0
+    },
+    {
+      "id": "standard-batch",
+      "attempt": 1,
+      "inputDigest": "922b5f909584a683db30bd0340c00577778fd9e25d306ef1a100d03f0f3e8681",
+      "promptDigest": "845c1842d32d81971a81c7a939275b13d68877a08b7f61a0a5626c0c55a8c2f5",
+      "fixtureBaseline": "5ca7e2ec7b32e52baf22732424173da22848c3b2",
+      "priorReceiptDigest": "82cbde75d0cb9d21df45c35242e463c6be3e3b9c713b5782f4e3a5a1e44506fb",
+      "wallClockMs": 192031,
+      "observed": {
+        "trace": {
+          "rawTraceDigest": "0dbe6341c1e294467f876cc6311c54d6ced1758692187e849db7039f8ac8684b",
+          "rawTraceBytes": 54094,
+          "jsonEvents": 26,
+          "malformedLines": 0,
+          "completedTurns": 1,
+          "commands": [
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "21bc7c5647e23f083e595c78b2407e5995b4bb79f558fc02e2c741d7dd444a9f",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "487cde767d5e06e5896f5f7027708bb48910f53dedf747c49969d087bc293d3e",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "5c3aedcc79794cb97fc0fc154928cc97819e7017cecf9a32386988996c0b7f71",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "03d93219ca611d1a1c1183a062e8e64b1a35997f26e148f3632c31c85f286dd7",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "a0bbe769e62f2f33742b1b357c44751f7c437fe313170629dc9d2876ed07b846",
+              "markers": [
+                "COPY_CHECK_PASS",
+                "FULL_CHECK_PASS"
+              ]
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "markers": []
+            },
+            {
+              "kind": "focused-verification",
+              "invocation": {
+                "wrapper": "pwsh",
+                "executable": "node",
+                "fixtureArgv": [
+                  "--test",
+                  "test/clamp.test.cjs"
+                ]
+              },
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "600c29b4a16b082cfa9fcc839969ea1064890ba8b7053eb76ff1aff499887753",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "58ee8bf59ec82e35a07765efaf328406fd66bd085e9bc2d3a6bdebb68ff0f3bd",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "invocation": null,
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "4db8bc4dfa5774ad64d60f19f87d643f5d1d311156967c6881880fea5166e49a",
+              "markers": []
+            }
+          ],
+          "visibleMessageCount": 3,
+          "questionMarks": 0,
+          "explicitQuestionTools": 0,
+          "agentToolEvents": 0,
+          "otherToolEvents": 0,
+          "unrecognizedEventTypes": [],
+          "modeMentions": [
+            "STANDARD"
+          ],
+          "cliErrorEvents": 0,
+          "failedCommandCount": 0,
+          "firstFailedCommand": null,
+          "additionalFocusedInvocations": 0
+        },
+        "process": {
+          "exitCode": 0,
+          "timedOut": false,
+          "overflow": false,
+          "launchFailed": false,
+          "stderrBytes": 277
+        },
+        "changedFiles": [
+          "PLAN.md",
+          "src/clamp.cjs",
+          "test/clamp.test.cjs"
+        ],
+        "fullCheckRuns": {
+          "before": {
+            "valid": true,
+            "count": 1,
+            "digest": "b5004f26a852b0d60ec1237432c1a33c2307ff2458c374d9d99749d045c7feb9"
+          },
+          "after": {
+            "valid": true,
+            "count": 1,
+            "digest": "b5004f26a852b0d60ec1237432c1a33c2307ff2458c374d9d99749d045c7feb9"
+          }
+        },
+        "independentChecks": [
+          {
+            "command": "node --test test/clamp.test.cjs",
+            "exitCode": 0,
+            "outputDigest": "2172cba6975e1fb315ebafebfd3d8b8a64631bfff6181868228bef5700e28f4c"
+          },
+          {
+            "command": "independent batch acceptance assertions",
+            "exitCode": 0,
+            "outputDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "planExists": true,
+        "journalExists": false,
+        "sourceIntact": true,
+        "receiptIntact": true,
+        "headIntact": true,
+        "finalMessagePresent": true
+      },
+      "artifacts": [
+        {
+          "path": "<fixture>/PLAN.md",
+          "bytes": 2636,
+          "digest": "60d5ea61a21d2d0dd85c43b651832029c8bdd7f21656f0a0aa596c0014d9fa25"
+        },
+        {
+          "path": "<fixture>/src/clamp.cjs",
+          "bytes": 433,
+          "digest": "0f086fbbd620ca064cc86e474d582238cacbd8a21ab9187673b55ae8a8f85aa2"
+        },
+        {
+          "path": "<fixture>/test/clamp.test.cjs",
+          "bytes": 2163,
+          "digest": "16de99365c57a7374bc4d23f4f56a33b675afba245ce80908b5fa96b2ced6992"
+        }
+      ],
+      "grading": {
+        "rubric": "execution-regression-v3",
+        "passed": true,
+        "errors": []
+      },
+      "firstFailure": null,
+      "retries": 0,
+      "humanInterventions": 0
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "denominator": 2
+  }
+}

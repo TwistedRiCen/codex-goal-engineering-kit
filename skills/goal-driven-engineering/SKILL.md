@@ -9,13 +9,13 @@ Turn the requested outcome into verified software. Apply repository instructions
 
 ## Use the host's available capabilities
 
-The workflow does not require a specific model or provider. Role responsibilities and acceptance evidence are stable; model selection, reasoning settings, tool permissions, installation paths, and command syntax belong to the host. Codex custom-agent TOML files and /goal are optional platform integrations, not portable prerequisites.
+The workflow is model/provider neutral; role responsibilities and acceptance evidence are stable. For host-specific invocation or capability gaps, read [host-capabilities.md](references/host-capabilities.md).
 
 Check available tools before promising execution. With repository and command access, use the normal PLAN, verification, and recovery rules. Without file access, keep a conversational draft or handoff; without a test runner, report tests not run and leave affected criteria unverified. Never claim files were saved or checks executed without evidence.
 
 Use authorized subagents when available and useful. Without them, perform independent evidence-gathering steps sequentially where possible, but do not label the implementing agent's self-review as independent review. A required independent review needs another reviewer or human; leave its gate pending until actual evidence satisfies it. Continue unaffected authorized work.
 
-Use native Skill invocation where supported; otherwise ask the host to read this Skill and its relevant references through available file tools or supplied content. Do not assume another host understands $-prefixed invocations, TOML profiles, or /goal. Without /goal, continue through ordinary explicitly authorized tasks from PLAN. FULL, existing journals, and recorded strict or /goal context retain strict recovery even on a different host; if required recovery evidence or tools are unavailable, pause the affected mutation rather than downgrade it.
+Without /goal, continue through ordinary explicitly authorized tasks from PLAN. FULL, existing journals, and recorded strict or /goal context retain strict recovery even on a different host. Unavailable required recovery evidence or tools pause the affected mutation; never downgrade it.
 
 ## Start from what the user knows
 
@@ -51,14 +51,7 @@ An atomic execution unit in strict mode is one coherent verifiable batch, includ
 
 Create root PLAN.md before substantial implementation when absent. Use an accessible kit template, or create this equivalent structure without requiring access to the Kit:
 
-- **Plan Metadata:** Task Mode and reason, Current Phase, execution context (ordinary, strict, or /goal), date, and last verified baseline.
-- **Project Goal / Scope:** observable outcome, included work, constraints, and non-goals.
-- **Acceptance Criteria:** ID, observable result, verification method, OPEN/VERIFIED status, and evidence with code baseline.
-- **Current Work:** current bounded batch or milestone, its status, and next unmet criterion. This is planned intent, never proof that implementation happened.
-- **Decisions and Blockers:** relevant confirmed facts and sources, labeled reversible assumptions, frozen decisions and authority, material pending decisions, and blockers. Omit empty tables.
-- **Repository and Verification State:** relevant branch/diff expectations, reproducible verification and review evidence, and evidence invalidated by subsequent changes.
-
-Keep one authoritative acceptance ledger. Store long test output or historical detail in repository evidence files and link from PLAN; preserve accepted criteria, decision IDs, and evidence when moving detail. Avoid duplicating results or writing activity logs. Record uncertain work as open or blocked, never verified. Transient mutation stages and speculative completion do not belong in PLAN.
+Read [standard-state.md](references/standard-state.md) when creating or updating STANDARD PLAN. Keep six persistent sections: metadata, scope, acceptance, current work, decisions/blockers, and verification state. Use one authoritative acceptance ledger; preserve accepted criteria, decision IDs, and evidence when linking detail. Planned intent is not proof of execution. Record uncertain work as open or blocked, never verified; transient mutation stages and speculative completion do not belong in PLAN.
 
 STANDARD uses existing phases as applicable: GOAL DEFINITION, DISCOVERY when needed, EXECUTION, MILESTONE ACCEPTANCE, and PROJECT COMPLETE. It need not visit unrelated phases. Completion covers only the recorded scope. FULL phases and extended PLAN sections are defined in the full-lifecycle reference.
 

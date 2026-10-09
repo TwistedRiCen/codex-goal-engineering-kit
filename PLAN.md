@@ -40,9 +40,9 @@ No M4 governance/CI work, model router, generic recovery runtime, Goal activatio
 
 ## Current Work
 
-- Current batch: Phase 2 M2 (bounded instruction/validator simplification).
+- Current batch: Phase 2 M3 (isolated recovery investigation only).
 - Status: IN PROGRESS
-- Next unmet criterion: P2-M2-01.
+- Next unmet criterion: P2-M3-01.
 - Historical completed work remains below and in the archive; only the Phase 2 acceptance ledger governs this iteration.
 
 ## Historical Installation and Verification State
@@ -79,8 +79,8 @@ No M4 governance/CI work, model router, generic recovery runtime, Goal activatio
 | P2-M1-02 | Rubric has a version; minimally retained observations distinguish claims, observed events and reviewed rationale. Historical results remain unchanged and both groups receive the same new-rubric assessment. | Schema/provenance tests; historical evidence availability recorded without fabrication. | VERIFIED | Both original groups 12/12 under 2.0; raw claims/probes independently checked and rationale attested; frozen v1 retained. |
 | P2-M1-03 | Isolated real DIRECT/STANDARD executions and actual journal/receipt path fixtures record first results, artifacts, verification, agents/questions and limits. | Fresh-session execution evidence and PS7/PS5.1 integration fixtures. | VERIFIED | Final v3 baseline 2/2; earlier failed/diagnostic attempts retained. Both PS runtimes: 16 actual persisted recovery cases, 85 assertions, 32 File.Replace; declared fixture limits. |
 | P2-M1-04 | M1 checkpoint passes relevant checks and independent review; freezes M2's evaluated baseline. | Final diff, hashes, review and local milestone commit. | VERIFIED | M1 checkpoint commit containing this ledger freezes scorer/input/runner; two-runtime related checks, basic Skill, links, diff and independent review passed. |
-| P2-M2-01 | Skill surface and validator coupling are reduced while authorization, acceptance/review, mode/recovery routing and legacy semantics remain equivalent. | M1 baseline/candidate regressions; semantic mapping; independent review. | OPEN | |
-| P2-M2-02 | Skill package, links and isolated installers remain valid on PS7/PS5.1. | Repository checks and local milestone commit. | OPEN | |
+| P2-M2-01 | Skill surface and validator coupling are reduced while authorization, acceptance/review, mode/recovery routing and legacy semantics remain equivalent. | M1 baseline/candidate regressions; semantic mapping; independent review. | VERIFIED | [M2 evidence and limits](examples/behavior-results/phase2-m2.md); v3 paired baseline/candidate each 2/2, same settings/inputs; core rules and original strict assets unchanged; independent semantic review. |
+| P2-M2-02 | Skill package, links and isolated installers remain valid on PS7/PS5.1. | Repository checks and local milestone commit. | VERIFIED | Both runtimes: validators, 37 positive/negative fixtures + encoding, isolated installers; basic Skill, links and diff checks. Separate M2 checkpoint commit; no real install. |
 | P2-M3-01 | Ordinary STANDARD, current strict Goal-style execution and hypothetical lightweight recovery are compared only in isolated fixtures. | Failure-mode matrix with observed costs, false BLOCKED/unsafe CONTINUE and reviewer assessment. | OPEN | |
 | P2-M3-02 | Formal recovery protocol and real installation/configuration stay untouched; conclusion permits KEEP or INCONCLUSIVE. | Protected-file comparisons, final status and evidence report. | OPEN | |
 
@@ -92,3 +92,4 @@ No M4 governance/CI work, model router, generic recovery runtime, Goal activatio
 - Phase 1 checks: 25 Node tests; both PowerShell runtimes passed validators, continuity/receipt, isolated installers, encoding and diagnosis. These are baseline evidence, not acceptance of new changes.
 - Actual installed Skill and five managed profiles matched baseline source before Phase 2; real installation remains separately unauthorized.
 - M1 validation/review: [evidence](examples/behavior-results/phase2-m1.md). Frozen M2 comparison: execution-regression-v3 baseline from bb921e5, Skill package digest 1a5b0d47421d32f0d16205c75ef7deded11e433ba47564a000e1840da47f2be9. 14 host protected file hashes unchanged; no real installation.
+- M1 commit: a1f4895fc81f3afb69bc59c34743e0f2e8119302. M2 evidence: [semantic mapping and paired results](examples/behavior-results/phase2-m2.md). M3 investigation cannot mutate formal recovery behavior.

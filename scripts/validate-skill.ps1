@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param()
+param([string]$Root)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -9,7 +9,8 @@ function Read-ContractText {
     return ([IO.File]::ReadAllText($Path) -replace '\r\n?', [string][char]10)
 }
 
-$repositoryRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
+if ([string]::IsNullOrWhiteSpace($Root)) { $Root = Join-Path $PSScriptRoot '..' }
+$repositoryRoot = (Resolve-Path -LiteralPath $Root).Path
 $skillPath = Join-Path $repositoryRoot 'skills\goal-driven-engineering\SKILL.md'
 $templatePath = Join-Path $repositoryRoot 'templates\PLAN.full.md'
 $compactTemplatePath = Join-Path $repositoryRoot 'templates\PLAN.md'
@@ -28,7 +29,7 @@ $continuityTestPath = Join-Path $repositoryRoot 'scripts\test-execution-continui
 $entrypoint = Read-ContractText $skillPath
 $lifecycle = Read-ContractText $lifecyclePath
 $recovery = Read-ContractText $recoveryPath
-$skill = $entrypoint + [Environment]::NewLine + $lifecycle + [Environment]::NewLine + $recovery
+$skill = (@(Get-ChildItem -LiteralPath $skillRoot -Recurse -File -Filter '*.md' | Sort-Object FullName | ForEach-Object { Read-ContractText $_.FullName }) -join "`n")
 $intake = Read-ContractText $intakePath
 $compactTemplate = Read-ContractText $compactTemplatePath
 $template = Read-ContractText $templatePath
@@ -54,19 +55,19 @@ $expectedPhases = @(
     'PROJECT COMPLETE'
 )
 
-$phaseBlock = [regex]::Match(
-    $skill,
-    'Use these phase names exactly:\s*```text\s*(?<body>.*?)```',
-    [System.Text.RegularExpressions.RegexOptions]::Singleline
-)
-if (-not $phaseBlock.Success) {
-    throw 'Skill phase block was not found.'
+function Assert-OrderedVocabulary {
+    param([string]$Text, [string[]]$Expected, [string]$Label)
+    $candidates = @()
+    foreach ($block in [regex]::Matches($Text, '(?m)^```text\s*\n(?<body>.*?)^```\s*$', [Text.RegularExpressions.RegexOptions]::Singleline)) {
+        $values = @($block.Groups['body'].Value -split '\n' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+        $overlap = @($values | Where-Object { $_ -cin $Expected }).Count
+        if ($overlap -ge [Math]::Ceiling($Expected.Count / 2)) { $candidates += ,$values }
+    }
+    if ($candidates.Count -ne 1 -or ($candidates[0] -join '|') -cne ($Expected -join '|')) {
+        throw "Skill $Label vocabulary or ordering drifted."
+    }
 }
-
-$skillPhases = @($phaseBlock.Groups['body'].Value -split '\r?\n' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
-if (($skillPhases -join '|') -cne ($expectedPhases -join '|')) {
-    throw 'Skill phase vocabulary or ordering drifted.'
-}
+Assert-OrderedVocabulary -Text $lifecycle -Expected $expectedPhases -Label 'phase'
 
 $allowedLine = [regex]::Match($template, 'Allowed phases: (?<body>.+)')
 if (-not $allowedLine.Success) {
@@ -112,34 +113,12 @@ foreach ($term in @('OPEN', 'VERIFIED', 'NOT STARTED', 'IN PROGRESS', 'BLOCKED',
 }
 
 $expectedExecutionStates = @('IDLE', 'PREPARED', 'MUTATED', 'VERIFYING', 'VERIFIED', 'BLOCKED')
-$stateBlock = [regex]::Match(
-    $skill,
-    'Use only these execution states:\s*```text\s*(?<body>.*?)```',
-    [System.Text.RegularExpressions.RegexOptions]::Singleline
-)
-if (-not $stateBlock.Success) {
-    throw 'Skill execution-state block was not found.'
-}
-$actualExecutionStates = @($stateBlock.Groups['body'].Value -split '\r?\n' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
-if (($actualExecutionStates -join '|') -cne ($expectedExecutionStates -join '|')) {
-    throw 'Skill execution-state vocabulary or ordering drifted.'
-}
+Assert-OrderedVocabulary -Text $recovery -Expected $expectedExecutionStates -Label 'execution-state'
 
 $expectedRecoveryActions = @('CONTINUE', 'RETRY_SAFE_UNIT', 'VERIFY', 'FINALIZE', 'BLOCKED')
-$actionBlock = [regex]::Match(
-    $skill,
-    'Use only these recovery actions:\s*```text\s*(?<body>.*?)```',
-    [System.Text.RegularExpressions.RegexOptions]::Singleline
-)
-if (-not $actionBlock.Success) {
-    throw 'Skill recovery-action block was not found.'
-}
-$actualRecoveryActions = @($actionBlock.Groups['body'].Value -split '\r?\n' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
-if (($actualRecoveryActions -join '|') -cne ($expectedRecoveryActions -join '|')) {
-    throw 'Skill recovery-action vocabulary or ordering drifted.'
-}
+Assert-OrderedVocabulary -Text $recovery -Expected $expectedRecoveryActions -Label 'recovery-action'
 
-foreach ($field in @(
+$expectedJournalFields = @(
     'Schema Version',
     'State',
     'Atomic Unit',
@@ -154,28 +133,11 @@ foreach ($field in @(
     'Plan Baseline Fingerprint',
     'Evidence',
     'Blocker Reason'
-)) {
-    if (-not $skill.Contains($field)) {
-        throw "Skill execution journal contract is missing field: $field"
-    }
-}
-
-foreach ($continuityPhrase in @(
-    'Journal absence is the conceptual `IDLE` state',
-    'write before risk',
-    'before Writer mutation',
-    'Write `VERIFYING` before each verification invocation',
-    'read back the persisted PLAN record, then delete the journal',
-    'at most one read-only reader'
-)) {
-    if ($skill.IndexOf($continuityPhrase, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
-        throw "Skill execution continuity contract is missing: $continuityPhrase"
-    }
-}
-
-if (-not $template.Contains('Volatile or unverified execution state does not belong in PLAN') -or
-    -not $template.Contains('journal absence representing `IDLE`')) {
-    throw 'PLAN template does not preserve the durable-state boundary or journal-absence semantics.'
+)
+$fieldBlock = [regex]::Match($recovery, ':\s*(?<body>Schema Version,\s*State,[^\r\n.]+)\.')
+$actualJournalFields = @($fieldBlock.Groups['body'].Value -split ',\s*(?:and\s+)?' | ForEach-Object { $_.Trim() })
+if (-not $fieldBlock.Success -or ($actualJournalFields -join '|') -cne ($expectedJournalFields -join '|')) {
+    throw 'Skill execution journal field vocabulary or ordering drifted.'
 }
 
 if ($startPrompt.Contains('.goal/execution-state.md')) {
@@ -237,41 +199,40 @@ foreach ($heading in @('Plan Metadata', 'Project Goal / Scope', 'Acceptance Crit
     }
 }
 
-foreach ($forbiddenTerm in @('RECONCILE_EXTERNAL', 'Commit Token', 'Finalize Mode', 'Idempotency Key', 'Readback Query')) {
-    foreach ($artifact in @($skill, $template, $startExecutionPrompt, $resumePrompt)) {
-        if ($artifact.Contains($forbiddenTerm)) {
-            throw "Forbidden M2 expansion detected: $forbiddenTerm"
-        }
-    }
-}
-
-foreach ($testContractTerm in @(
+$parseTokens = $null
+$parseErrors = $null
+$testAst = [Management.Automation.Language.Parser]::ParseFile($continuityTestPath, [ref]$parseTokens, [ref]$parseErrors)
+if ($parseErrors.Count -gt 0) { throw 'Execution continuity test source has PowerShell syntax errors.' }
+$testFunctions = @($testAst.FindAll({ param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] }, $true) | ForEach-Object { $_.Name })
+foreach ($testFunction in @(
     'Resolve-ExecutionContinuityAction',
     'Get-DeterministicFingerprint',
-    'ConvertTo-LengthPrefixedRecord',
-    'T1 PREPARED before mutation',
-    'T2 mutation exists while journal remains PREPARED',
-    'T3 VERIFYING interrupted',
-    'T4 VERIFIED before PLAN finalize',
-    'PLAN finalized with unexpected HEAD drift',
-    'delimiter-bearing entries must not collide',
-    'exactly one action',
-    'must not finalize without matching verified mutation evidence'
+    'ConvertTo-LengthPrefixedRecord'
 )) {
-    if (-not $continuityTest.Contains($testContractTerm)) {
-        throw "Execution continuity tests are missing contract evidence: $testContractTerm"
+    if ($testFunction -cnotin $testFunctions) {
+        throw "Execution continuity test source is missing a required function: $testFunction"
     }
 }
+# Static structure does not establish recovery behavior or semantic equivalence.
+# Run the continuity, persisted recovery-path, and receipt suites independently.
 
-foreach ($fingerprintContractTerm in @('length-prefixed UTF-8 records', 'Never hash raw newline-joined entries')) {
-    if (-not $skill.Contains($fingerprintContractTerm)) {
-        throw "Skill fingerprint contract is missing unambiguous encoding rule: $fingerprintContractTerm"
-    }
-}
-
-if ($skill -cnotmatch '(?m)^name: goal-driven-engineering\r?$') {
+$frontmatter = [regex]::Match($entrypoint, '\A\uFEFF?---[ \t]*\n(?<body>.*?)^---[ \t]*(?:\n|$)', [Text.RegularExpressions.RegexOptions]'Singleline,Multiline')
+if (-not $frontmatter.Success) { throw 'Skill opening frontmatter block is missing.' }
+$frontmatterNames = [regex]::Matches($frontmatter.Groups['body'].Value, '(?m)^name:[ \t]*(?<value>[^\n]*)$')
+if ($frontmatterNames.Count -ne 1 -or
+    $frontmatterNames[0].Groups['value'].Value.Trim() -cnotmatch '^(?:goal-driven-engineering|"goal-driven-engineering"|''goal-driven-engineering'')$') {
     throw 'Skill frontmatter name is inconsistent.'
 }
+$frontmatterDescriptions = [regex]::Matches($frontmatter.Groups['body'].Value, '(?m)^description:[ \t]*(?<value>[^\n]*)$')
+if ($frontmatterDescriptions.Count -ne 1) { throw 'Skill frontmatter must contain one nonempty description.' }
+$description = $frontmatterDescriptions[0].Groups['value'].Value.Trim()
+if ($description.StartsWith('"') -or $description.StartsWith("'")) {
+    if ($description.Length -lt 2 -or $description[$description.Length - 1] -cne $description[0]) {
+        throw 'Skill frontmatter description has unmatched quotes.'
+    }
+    $description = $description.Substring(1, $description.Length - 2).Trim()
+}
+if ([string]::IsNullOrWhiteSpace($description)) { throw 'Skill frontmatter description is empty.' }
 if (-not $agentYaml.Contains('Goal-Driven Engineering') -or
     -not $agentYaml.Contains('$goal-driven-engineering')) {
     throw 'Skill agent metadata is inconsistent with the Skill name or purpose.'
@@ -285,7 +246,7 @@ foreach ($prompt in Get-ChildItem -LiteralPath (Join-Path $repositoryRoot 'promp
 }
 
 foreach ($modelRoutingTerm in @('model_reasoning_effort', 'docs_researcher', 'test_analyst', 'routine_worker')) {
-    if ($skill.Contains($modelRoutingTerm)) {
+    if ($entrypoint.Contains($modelRoutingTerm)) {
         throw "Model-routing infrastructure leaked into the lifecycle Skill: $modelRoutingTerm"
     }
 }
