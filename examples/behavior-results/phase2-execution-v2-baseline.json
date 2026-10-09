@@ -1,0 +1,367 @@
+{
+  "schema": 1,
+  "rubric": "execution-regression-v2",
+  "experiment": "real-codex-exec",
+  "source": {
+    "ref": "bb921e5f584d3e99a325733901aa28ad95268a35",
+    "digest": "1a5b0d47421d32f0d16205c75ef7deded11e433ba47564a000e1840da47f2be9"
+  },
+  "model": "gpt-6.1-sol",
+  "effort": "high",
+  "host": {
+    "platform": "win32",
+    "node": "v24.19.0",
+    "cliVersion": "codex-cli 0.162.0-alpha.2"
+  },
+  "permissions": {
+    "sandbox": "workspace-write",
+    "approval": "automatic-review",
+    "ignoreUserConfig": true,
+    "ephemeral": true,
+    "rulesLoaded": true
+  },
+  "attemptsPerCase": 1,
+  "retries": 0,
+  "humanInterventions": 0,
+  "limitations": [
+    "Two independent fresh sessions per source, one observation per fixture; no stability, token or latency improvement claim.",
+    "Only visible native JSONL events are counted. Unsupported events/tools cannot PASS; hidden activity remains unknown and zero observed agents/questions is not proof of absence.",
+    "Question punctuation is a conservative review signal, not a semantic question classifier.",
+    "Command classification recognizes standalone fixture checks. The before/after full-check counter detects wrapped/compound full-check execution or counter mutation; it is fixture instrumentation, not a tamper-proof audit against deliberate restore.",
+    "Baseline evidence reuse is observed through preserved receipt/PLAN and unchanged seeded full-check counter, not inferred internal reasoning.",
+    "Host global instructions, Skill discovery, execpolicy rules and authentication remain in effect; identical host required for paired comparison.",
+    "Bootstrap failures remain failures; the runner never retries or changes credentials/configuration."
+  ],
+  "cases": [
+    {
+      "id": "direct-copy",
+      "attempt": 1,
+      "inputDigest": "92c95fe22e500420629472592e52064209b44030cfda8011c7b0c69701d1f32d",
+      "promptDigest": "3cc1d8ac1b3871b5393723fb113f3d4ac6aef0f0aaae6b9763c73806557809e5",
+      "fixtureBaseline": "006a996d60da60c7e8057933928fff0be5974cd2",
+      "priorReceiptDigest": "09cd41801524c875178ccc74c1148e171b74c985e47045106ae66254e3e5de78",
+      "wallClockMs": 75757,
+      "observed": {
+        "trace": {
+          "rawTraceDigest": "22c3fb37352dbe9e4d059ad0c7b9fac97fdb9838d72656bf7afea0ee766d073a",
+          "rawTraceBytes": 26270,
+          "jsonEvents": 22,
+          "malformedLines": 0,
+          "completedTurns": 1,
+          "commands": [
+            {
+              "kind": "file-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "0eee192ad7e30d86b7069df373ae495068aedf704565cc106c9ddae0d42d8059",
+              "markers": []
+            },
+            {
+              "kind": "git-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "6ad5be3db14555189869900e7e53eff6aba9e3b8b6f1732467065bcbb3610f12",
+              "markers": []
+            },
+            {
+              "kind": "git-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "87cd65ed1e491a37095662b275358dfbbec759c173ad9ff188925d4fec24a26c",
+              "markers": []
+            },
+            {
+              "kind": "file-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "0e0cc1565ba2426475dba4adc6466474e29b72977ca082a9530c393cacdf982a",
+              "markers": []
+            },
+            {
+              "kind": "file-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "038c648c6fdb20a8255a81ba9c86a30c509bd2cf24d5c711b688bd849bbed39f",
+              "markers": [
+                "COPY_CHECK_PASS",
+                "FULL_CHECK_PASS"
+              ]
+            },
+            {
+              "kind": "other",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "markers": []
+            },
+            {
+              "kind": "git-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "8b400783deb049ff2849f0d3e9e03b292086f56ab9978b57be74fca7715fa05b",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "8c5f2af560a2ce51e970ab3b72c6297eb99b9a52e052544d25f0562ef49383ef",
+              "markers": [
+                "COPY_CHECK_PASS"
+              ]
+            }
+          ],
+          "visibleMessageCount": 3,
+          "questionMarks": 0,
+          "explicitQuestionTools": 0,
+          "agentToolEvents": 0,
+          "otherToolEvents": 0,
+          "unrecognizedEventTypes": [],
+          "modeMentions": [
+            "DIRECT"
+          ],
+          "cliErrorEvents": 0,
+          "failedCommandCount": 0,
+          "firstFailedCommand": null,
+          "additionalFocusedInvocations": 0
+        },
+        "process": {
+          "exitCode": 0,
+          "timedOut": false,
+          "overflow": false,
+          "launchFailed": false,
+          "stderrBytes": 277
+        },
+        "changedFiles": [
+          "copy.txt"
+        ],
+        "fullCheckRuns": {
+          "before": {
+            "valid": true,
+            "count": 1,
+            "digest": "b5004f26a852b0d60ec1237432c1a33c2307ff2458c374d9d99749d045c7feb9"
+          },
+          "after": {
+            "valid": true,
+            "count": 1,
+            "digest": "b5004f26a852b0d60ec1237432c1a33c2307ff2458c374d9d99749d045c7feb9"
+          }
+        },
+        "independentChecks": [
+          {
+            "command": "node scripts/check-copy.cjs",
+            "exitCode": 0,
+            "outputDigest": "8c5f2af560a2ce51e970ab3b72c6297eb99b9a52e052544d25f0562ef49383ef"
+          }
+        ],
+        "planExists": false,
+        "journalExists": false,
+        "sourceIntact": true,
+        "receiptIntact": true,
+        "headIntact": true,
+        "finalMessagePresent": true
+      },
+      "artifacts": [
+        {
+          "path": "<fixture>/copy.txt",
+          "bytes": 32,
+          "digest": "2dea1c80e7c46ecad50365da4c890dda222f9610df215b66231128b0aa6df183"
+        }
+      ],
+      "grading": {
+        "rubric": "execution-regression-v2",
+        "passed": true,
+        "errors": []
+      },
+      "firstFailure": null,
+      "retries": 0,
+      "humanInterventions": 0
+    },
+    {
+      "id": "standard-batch",
+      "attempt": 1,
+      "inputDigest": "922b5f909584a683db30bd0340c00577778fd9e25d306ef1a100d03f0f3e8681",
+      "promptDigest": "845c1842d32d81971a81c7a939275b13d68877a08b7f61a0a5626c0c55a8c2f5",
+      "fixtureBaseline": "5ca7e2ec7b32e52baf22732424173da22848c3b2",
+      "priorReceiptDigest": "82cbde75d0cb9d21df45c35242e463c6be3e3b9c713b5782f4e3a5a1e44506fb",
+      "wallClockMs": 123855,
+      "observed": {
+        "trace": {
+          "rawTraceDigest": "1c59bd40a87827c0940d43230feca3a24f09a1b570eccd5359d6767d67fcb8e7",
+          "rawTraceBytes": 55520,
+          "jsonEvents": 28,
+          "malformedLines": 0,
+          "completedTurns": 1,
+          "commands": [
+            {
+              "kind": "file-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "7d25337f7c65c31c1c6e8ea9592223e4b1ba05b3e0aa19cb6ebd8e4e7a3433c7",
+              "markers": []
+            },
+            {
+              "kind": "file-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "9ed6766a213c61a3ce2eb99b4c0afe8c36c918bafae64512cb440290a1020321",
+              "markers": []
+            },
+            {
+              "kind": "file-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "6e8b3a3332a54b9743f7d563c31e94d6e9825af6c15fdba10d66d9a54939cd6c",
+              "markers": []
+            },
+            {
+              "kind": "git-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "6e138a14d17c7184236759857dc57957b45930c549257cd3a82c95c667cf9075",
+              "markers": []
+            },
+            {
+              "kind": "file-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "4f2a9121dc760dd524f0874ce54752dd9efd8b05cb43edf6dfa0561ef509447f",
+              "markers": [
+                "COPY_CHECK_PASS",
+                "FULL_CHECK_PASS"
+              ]
+            },
+            {
+              "kind": "file-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "e3b8948ec523341c35b7f610e3bf19a75b60e8eb04287946464cb94bef7bbc6f",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "markers": []
+            },
+            {
+              "kind": "git-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "92f3a9ae284cc1b717c1fd61e1ae697596a9c34c4c3ad025f08188b9e229a3ad",
+              "markers": []
+            },
+            {
+              "kind": "other",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "cbb5b5aad9513e999ff5cf5fe170ad498bd532c16555dd90589b06810907602d",
+              "markers": []
+            },
+            {
+              "kind": "git-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "markers": []
+            },
+            {
+              "kind": "git-inspection",
+              "status": "completed",
+              "exitCode": 0,
+              "stdoutDigest": "f3e7b543b2b8851b2a1103edff73c0e29ee82a1e2d5cfc92f1e71e0c1576f118",
+              "markers": []
+            }
+          ],
+          "visibleMessageCount": 3,
+          "questionMarks": 0,
+          "explicitQuestionTools": 0,
+          "agentToolEvents": 0,
+          "otherToolEvents": 0,
+          "unrecognizedEventTypes": [],
+          "modeMentions": [
+            "STANDARD"
+          ],
+          "cliErrorEvents": 0,
+          "failedCommandCount": 0,
+          "firstFailedCommand": null,
+          "additionalFocusedInvocations": 0
+        },
+        "process": {
+          "exitCode": 0,
+          "timedOut": false,
+          "overflow": false,
+          "launchFailed": false,
+          "stderrBytes": 277
+        },
+        "changedFiles": [
+          "PLAN.md",
+          "src/clamp.cjs",
+          "test/clamp.test.cjs"
+        ],
+        "fullCheckRuns": {
+          "before": {
+            "valid": true,
+            "count": 1,
+            "digest": "b5004f26a852b0d60ec1237432c1a33c2307ff2458c374d9d99749d045c7feb9"
+          },
+          "after": {
+            "valid": true,
+            "count": 1,
+            "digest": "b5004f26a852b0d60ec1237432c1a33c2307ff2458c374d9d99749d045c7feb9"
+          }
+        },
+        "independentChecks": [
+          {
+            "command": "node --test test/clamp.test.cjs",
+            "exitCode": 0,
+            "outputDigest": "be06ec485224fad19eef8c40ac5f04b570f1d50fd7f9b6ad5d8b066fa32091e2"
+          },
+          {
+            "command": "independent batch acceptance assertions",
+            "exitCode": 0,
+            "outputDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "planExists": true,
+        "journalExists": false,
+        "sourceIntact": true,
+        "receiptIntact": true,
+        "headIntact": true,
+        "finalMessagePresent": true
+      },
+      "artifacts": [
+        {
+          "path": "<fixture>/PLAN.md",
+          "bytes": 2524,
+          "digest": "a2ac270af9300abe12e08732f6e90f33adbe0334f5897f7a8083a347b30d7c30"
+        },
+        {
+          "path": "<fixture>/src/clamp.cjs",
+          "bytes": 433,
+          "digest": "0f086fbbd620ca064cc86e474d582238cacbd8a21ab9187673b55ae8a8f85aa2"
+        },
+        {
+          "path": "<fixture>/test/clamp.test.cjs",
+          "bytes": 2120,
+          "digest": "c263936e11b466003903079dfd2a59542423623db0319586590fddb84effa6d9"
+        }
+      ],
+      "grading": {
+        "rubric": "execution-regression-v2",
+        "passed": false,
+        "errors": [
+          "No successful proportionate verification/inspection observed"
+        ]
+      },
+      "firstFailure": "No successful proportionate verification/inspection observed",
+      "retries": 0,
+      "humanInterventions": 0
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "denominator": 2
+  }
+}

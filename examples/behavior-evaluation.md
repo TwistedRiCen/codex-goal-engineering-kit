@@ -28,7 +28,7 @@
 1. 先运行 `node --test scripts/test-behavior-fixtures.cjs`，验证 fixture 和评分器正反例。这些手写轨迹不是模型评估结果。
 2. 在临时目录复制被测 Skill（含 references）以及上述三个输入文件，不复制评分器或预期结果。使用无历史的新评估会话；只给 request.md、输入位置、Skill 位置及工具边界。
 3. 旧版和候选版使用相同输入、能力和宿主设置。记录源码版本及文件摘要、实际加载的 Skill、运行身份、探针调用和首次结构化结果，保留偏差，不能先纠偏再算首次通过。
-4. 将实际结果保存为临时 JSON，用 `node examples/behavior-fixtures/score.cjs <observations.json>` 评分。评分器校验记录完整性和关键决定，不通过措辞匹配判断推理。人工再核对 reason、真实工具轨迹、审查独立性及是否有多余动作。自报 probes 不构成工具执行的独立证明。
+4. 将原始 claim、独立采集的实际工具返回及独立理由审查保存为 [2.0 observation 包](behavior-fixtures/observation-contract.md)，用 `node examples/behavior-fixtures/score.cjs <bundle.json>` 评分。评分器分别校验决定、观察证据及绑定摘要的理由审查。自报 probes 不构成工具执行的独立证明；摘要也不认证来源，采集和 reviewer 独立性由维护者审查流程保证。
 5. 如评分词汇误拒等价且安全的行为，单独记录 rubric 修订，并用同一修订重评两组；不要将其误记成 Skill 改善。输入/探针改变则重新建立两组结果。
 6. 按需要重复独立运行以观察稳定性；单次通过不能证明低遗漏率、实际无人值守能力或其他宿主兼容性。固定输入/评分是 deterministic，模型输出不是。
 

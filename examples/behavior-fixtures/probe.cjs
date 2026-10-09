@@ -2,6 +2,10 @@
 
 // Offline inputs only: no network, filesystem mutation, installation or real delivery.
 const cases = require('./cases.json');
+const operations = Object.freeze(Object.fromEntries(cases.map(item => [item.id, Object.freeze([
+  'input', ...(item.id === 'V1' ? ['generator', 'parser-zero', 'parser-valid'] :
+    item.id === 'X3' ? ['refresh'] : /^X[1245]$/.test(item.id) ? ['status'] : [])
+])])));
 
 function parseFragment(text) {
   const match = /^pr: (\d+)\nbody: (.+)$/.exec(text);
@@ -13,6 +17,10 @@ function parseFragment(text) {
 }
 
 function probe(id, operation = 'input') {
+  if (typeof id !== 'string' || !Object.hasOwn(operations, id)) throw new Error('Unknown case: ' + String(id));
+  if (typeof operation !== 'string' || !operations[id].includes(operation)) {
+    throw new Error('Unsupported read-only probe for ' + id + ': ' + String(operation));
+  }
   const item = cases.find(item => item.id === id);
   if (!item) throw new Error('Unknown case: ' + id);
   if (operation === 'input') return item;
@@ -28,7 +36,7 @@ function probe(id, operation = 'input') {
     X4: { status: { status: 'queued', conclusion: null, requestAccepted: true } },
     X5: { status: { status: 'completed', conclusion: 'failure', testsExecuted: true, failure: 'assertion: expected no duplicate restore' } }
   };
-  if (responses[id] && responses[id][operation]) return responses[id][operation];
+  if (Object.hasOwn(responses, id) && Object.hasOwn(responses[id], operation)) return responses[id][operation];
   throw new Error('Unsupported read-only probe for ' + id + ': ' + operation);
 }
 
@@ -40,4 +48,4 @@ if (require.main === module) {
     process.exitCode = 1;
   }
 }
-module.exports = { cases, parseFragment, probe };
+module.exports = { cases, operations, parseFragment, probe };

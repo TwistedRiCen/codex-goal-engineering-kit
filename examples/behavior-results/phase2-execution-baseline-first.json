@@ -1,0 +1,175 @@
+{
+  "schema": 1,
+  "rubric": "execution-regression-v1",
+  "experiment": "real-codex-exec",
+  "source": {
+    "ref": "bb921e5f584d3e99a325733901aa28ad95268a35",
+    "digest": "1a5b0d47421d32f0d16205c75ef7deded11e433ba47564a000e1840da47f2be9"
+  },
+  "model": "gpt-6.1-sol",
+  "effort": "high",
+  "host": {
+    "platform": "win32",
+    "node": "v24.19.0",
+    "cliVersion": "codex-cli 0.162.0-alpha.2"
+  },
+  "permissions": {
+    "sandbox": "workspace-write",
+    "approval": "automatic-review",
+    "ignoreUserConfig": true,
+    "ephemeral": true,
+    "rulesLoaded": true
+  },
+  "attemptsPerCase": 1,
+  "retries": 0,
+  "humanInterventions": 0,
+  "limitations": [
+    "Two independent fresh sessions per source, one observation per fixture; no stability, token or latency improvement claim.",
+    "Only visible native JSONL events are counted. Hidden/unsupported tool activity is unknown; zero observed agents/questions is not proof of absence.",
+    "Question punctuation is a conservative review signal, not a semantic question classifier.",
+    "Command classification recognizes fixture check entry points. Equivalent wrappers or unreported tools require manual review.",
+    "Baseline evidence reuse is observed through preserved receipt/PLAN and absence of recognized full checks, not inferred internal reasoning.",
+    "Host global instructions, Skill discovery, execpolicy rules and authentication remain in effect; identical host required for paired comparison.",
+    "Bootstrap failures remain failures; the runner never retries or changes credentials/configuration."
+  ],
+  "cases": [
+    {
+      "id": "direct-copy",
+      "attempt": 1,
+      "inputDigest": "92c95fe22e500420629472592e52064209b44030cfda8011c7b0c69701d1f32d",
+      "promptDigest": "3cc1d8ac1b3871b5393723fb113f3d4ac6aef0f0aaae6b9763c73806557809e5",
+      "fixtureBaseline": "006a996d60da60c7e8057933928fff0be5974cd2",
+      "priorReceiptDigest": "09cd41801524c875178ccc74c1148e171b74c985e47045106ae66254e3e5de78",
+      "wallClockMs": 167,
+      "observed": {
+        "trace": {
+          "jsonEvents": 0,
+          "malformedLines": 0,
+          "completedTurns": 0,
+          "commands": [],
+          "visibleMessageCount": 0,
+          "questionMarks": 0,
+          "explicitQuestionTools": 0,
+          "agentToolEvents": 0,
+          "otherToolEvents": 0,
+          "unrecognizedEventTypes": [],
+          "modeMentions": [],
+          "cliErrorEvents": 0,
+          "failedCommandCount": 0,
+          "firstFailedCommand": null,
+          "additionalFocusedInvocations": 0
+        },
+        "process": {
+          "exitCode": 2,
+          "timedOut": false,
+          "overflow": false,
+          "launchFailed": false,
+          "stderrBytes": 206
+        },
+        "changedFiles": [],
+        "independentChecks": [
+          {
+            "command": "node scripts/check-copy.cjs",
+            "exitCode": 1,
+            "outputDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "planExists": false,
+        "journalExists": false,
+        "sourceIntact": true,
+        "receiptIntact": true,
+        "headIntact": true,
+        "finalMessagePresent": false
+      },
+      "artifacts": [],
+      "grading": {
+        "rubric": "execution-regression-v1",
+        "passed": false,
+        "errors": [
+          "No successful, usable native execution trace",
+          "CLI produced no final message",
+          "Required implementation/test/state change missing",
+          "Independent acceptance check missing or failed",
+          "No successful focused verification observed"
+        ]
+      },
+      "firstFailure": "No successful, usable native execution trace",
+      "retries": 0,
+      "humanInterventions": 0
+    },
+    {
+      "id": "standard-batch",
+      "attempt": 1,
+      "inputDigest": "922b5f909584a683db30bd0340c00577778fd9e25d306ef1a100d03f0f3e8681",
+      "promptDigest": "845c1842d32d81971a81c7a939275b13d68877a08b7f61a0a5626c0c55a8c2f5",
+      "fixtureBaseline": "5ca7e2ec7b32e52baf22732424173da22848c3b2",
+      "priorReceiptDigest": "82cbde75d0cb9d21df45c35242e463c6be3e3b9c713b5782f4e3a5a1e44506fb",
+      "wallClockMs": 321,
+      "observed": {
+        "trace": {
+          "jsonEvents": 0,
+          "malformedLines": 0,
+          "completedTurns": 0,
+          "commands": [],
+          "visibleMessageCount": 0,
+          "questionMarks": 0,
+          "explicitQuestionTools": 0,
+          "agentToolEvents": 0,
+          "otherToolEvents": 0,
+          "unrecognizedEventTypes": [],
+          "modeMentions": [],
+          "cliErrorEvents": 0,
+          "failedCommandCount": 0,
+          "firstFailedCommand": null,
+          "additionalFocusedInvocations": 0
+        },
+        "process": {
+          "exitCode": 2,
+          "timedOut": false,
+          "overflow": false,
+          "launchFailed": false,
+          "stderrBytes": 206
+        },
+        "changedFiles": [],
+        "independentChecks": [
+          {
+            "command": "node --test test/clamp.test.cjs",
+            "exitCode": 0,
+            "outputDigest": "41daefa0b2a334e4d68f321b1065e16d414c015cbd91410828b247c46d8b0722"
+          },
+          {
+            "command": "independent batch acceptance assertions",
+            "exitCode": 1,
+            "outputDigest": "3b0839ab9c00eeffbdf66266edef209ccf2ced7d6f33b9f15465bb9263a76154"
+          }
+        ],
+        "planExists": true,
+        "journalExists": false,
+        "sourceIntact": true,
+        "receiptIntact": true,
+        "headIntact": true,
+        "finalMessagePresent": false
+      },
+      "artifacts": [],
+      "grading": {
+        "rubric": "execution-regression-v1",
+        "passed": false,
+        "errors": [
+          "No successful, usable native execution trace",
+          "CLI produced no final message",
+          "Required implementation/test/state change missing",
+          "Independent acceptance check missing or failed",
+          "No successful focused verification observed",
+          "Compact acceptance ledger missing or incomplete"
+        ]
+      },
+      "firstFailure": "No successful, usable native execution trace",
+      "retries": 0,
+      "humanInterventions": 0
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "denominator": 2
+  }
+}
