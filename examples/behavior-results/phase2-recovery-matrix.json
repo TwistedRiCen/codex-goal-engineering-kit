@@ -1,0 +1,1299 @@
+{
+  "schemaVersion": 1,
+  "suite": "M3 isolated recovery investigation",
+  "passed": true,
+  "powerShellVersion": "7.6.5",
+  "cases": 36,
+  "assertions": 126,
+  "cleanupVerified": true,
+  "setupExcluded": {
+    "suite": "M1 recovery-paths",
+    "cases": 16,
+    "assertions": 85,
+    "atomicReplacements": 32,
+    "includedInMatrixCosts": false
+  },
+  "strategies": {
+    "A": "Ordinary STANDARD fixture: no repository journal or execution fingerprint routing; reread task authority, actual HEAD/staged diff/notes and PLAN text; bounded reads/verification and ownership confirmation before further writes on restart.",
+    "B": "Fixture-only current strict schema-2 protocol with unchanged fingerprints and actual PLAN receipt.",
+    "C": "One hypothetical checkpoint variant binding HEAD, allowed content, PLAN, state and external-risk flag; deliberately omits protected/index fingerprints."
+  },
+  "oracleRules": [
+    "HEAD, PLAN-index, protected-state drift, unknown external result, or unknown ownership require BLOCKED before automatic mutation/finalize.",
+    "An authorized coherent batch without those conflicts is safe under the bounded task oracle.",
+    "Dirty Allowed Paths still require BLOCKED at a separate strict prepare; task-oracle falseBlocked labels cost, not a protocol violation."
+  ],
+  "costDefinition": "Counter scope: fixture persistence after identical seed creation; one fileWrites per logical output write (atomic temporary write included once), actual File.Replace count, verification command invocations, explicit action derivation invocations, receipt writes, cleanup deletion and external retry dispatch. Seeding including experiment authority input, drift/authority injection, imported M1 setup, Git read commands and hashing excluded. No model/token/latency measurements.",
+  "limitations": [
+    "Deterministic cut points, not real process kills, power loss, fsync guarantees or Codex compliance.",
+    "A/C are explicit fixture strategies, not shipped runtimes. A reads experiment-supplied task HEAD, original notes/PLAN text and risk/ownership input outside the repository; ordinary STANDARD does not necessarily provide those facts. A performs no execution fingerprint routing; hashes are separately collected by the oracle/reporter. Authority provenance/capture cost is excluded; this is not a generic restart classifier.",
+    "ASCII paths and one app file only; same Git content seeds, commit identities may differ across fresh repositories.",
+    "C only tests this one incomplete variant; findings do not disprove all lightweight designs.",
+    "The unknown-ownership case also injects protected notes drift. B BLOCKED does not prove author identity binding or detection of concurrent ownership inside Allowed Paths; C unsafe progression in this case is not an independent ownership-only result.",
+    "HumanInterventionRequired is a derived requirement, not observed human corrections. VERIFY_THEN_CONFIRM is read-only; unsafeContinuation labels automatic progression permission, not an actual conflicting write.",
+    "No external request dispatched; unknown external risk tests zero retry only.",
+    "Scope counters do not measure real workflow cost or comparative performance."
+  ],
+  "observations": [
+    {
+      "strategy": "A",
+      "case": "initial-prepare",
+      "restartAction": "CONTINUE",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 0,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 0,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "6db7d803e74f1ffa7d8f5adc0bf95b3e15bf4c8373fffadf546227cc6c6742cb",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "initial-prepare",
+      "restartAction": "RETRY_SAFE_UNIT",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 1,
+        "checkpointWrites": 0,
+        "mutationWrites": 0,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "6db7d803e74f1ffa7d8f5adc0bf95b3e15bf4c8373fffadf546227cc6c6742cb",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "initial-prepare",
+      "restartAction": "CONTINUE",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 1,
+        "mutationWrites": 0,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "6db7d803e74f1ffa7d8f5adc0bf95b3e15bf4c8373fffadf546227cc6c6742cb",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "coherent-repeated-edits",
+      "restartAction": "VERIFY_THEN_CONFIRM",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 2,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 2,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "coherent-repeated-edits",
+      "restartAction": "FINALIZE",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 6,
+        "atomicReplacements": 3,
+        "journalWrites": 4,
+        "checkpointWrites": 0,
+        "mutationWrites": 2,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "coherent-repeated-edits",
+      "restartAction": "FINALIZE",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 6,
+        "atomicReplacements": 3,
+        "journalWrites": 0,
+        "checkpointWrites": 4,
+        "mutationWrites": 2,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "separate-next-batch",
+      "restartAction": "VERIFY_THEN_CONFIRM",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "separate-next-batch",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": true,
+        "classification": "SAFE_TASK_BLOCKED_BY_PREPARE_CONSTRAINT"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 6,
+        "atomicReplacements": 4,
+        "journalWrites": 4,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 1,
+        "verificationCommands": 1,
+        "restartDispatches": 3,
+        "cleanupDeletes": 1,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "269ff181132ec01c4ae459dab68317139270f194069f8e65b7fafb5997a25d76",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "separate-next-batch",
+      "restartAction": "VERIFY",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 7,
+        "atomicReplacements": 4,
+        "journalWrites": 0,
+        "checkpointWrites": 6,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 2,
+        "cleanupDeletes": 1,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "mutation-interrupted",
+      "restartAction": "VERIFY_THEN_CONFIRM",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "mutation-interrupted",
+      "restartAction": "VERIFY",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 2,
+        "atomicReplacements": 0,
+        "journalWrites": 1,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "mutation-interrupted",
+      "restartAction": "VERIFY",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 2,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 1,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "verification-interrupted",
+      "restartAction": "VERIFY_THEN_CONFIRM",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "verification-interrupted",
+      "restartAction": "VERIFY",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 4,
+        "atomicReplacements": 2,
+        "journalWrites": 3,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "verification-interrupted",
+      "restartAction": "VERIFY",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 4,
+        "atomicReplacements": 2,
+        "journalWrites": 0,
+        "checkpointWrites": 3,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "finalize-interrupted",
+      "restartAction": "VERIFY_THEN_CONFIRM",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "finalize-interrupted",
+      "restartAction": "FINALIZE",
+      "resumeCompletion": "CONTINUE",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 6,
+        "atomicReplacements": 4,
+        "journalWrites": 4,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 1,
+        "verificationCommands": 1,
+        "restartDispatches": 5,
+        "cleanupDeletes": 1,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "d9d2bdf207a684418d752cc06f2e6e69c45d0803fad9d928001940eb72f4158a",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "finalize-interrupted",
+      "restartAction": "CONTINUE",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 6,
+        "atomicReplacements": 4,
+        "journalWrites": 0,
+        "checkpointWrites": 5,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 2,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "head-drift",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": true,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "head-drift",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 5,
+        "atomicReplacements": 3,
+        "journalWrites": 4,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": true,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "head-drift",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 5,
+        "atomicReplacements": 3,
+        "journalWrites": 0,
+        "checkpointWrites": 4,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": true,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "index-drift",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": true,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "index-drift",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 5,
+        "atomicReplacements": 3,
+        "journalWrites": 4,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": true,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "index-drift",
+      "restartAction": "FINALIZE",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": true,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "UNSAFE_OMITTED_GUARD"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 5,
+        "atomicReplacements": 3,
+        "journalWrites": 0,
+        "checkpointWrites": 4,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": true,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "protected-drift",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": true
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "protected-drift",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 5,
+        "atomicReplacements": 3,
+        "journalWrites": 4,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": true
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "protected-drift",
+      "restartAction": "FINALIZE",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": true,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "UNSAFE_OMITTED_GUARD"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 5,
+        "atomicReplacements": 3,
+        "journalWrites": 0,
+        "checkpointWrites": 4,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": true
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "dirty-unrelated-preserved",
+      "restartAction": "VERIFY_THEN_CONFIRM",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "dirty-unrelated-preserved",
+      "restartAction": "FINALIZE",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 5,
+        "atomicReplacements": 3,
+        "journalWrites": 4,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "dirty-unrelated-preserved",
+      "restartAction": "FINALIZE",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": false,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 5,
+        "atomicReplacements": 3,
+        "journalWrites": 0,
+        "checkpointWrites": 4,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 1,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "unknown-external",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 0,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 0,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "6db7d803e74f1ffa7d8f5adc0bf95b3e15bf4c8373fffadf546227cc6c6742cb",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "unknown-external",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 2,
+        "atomicReplacements": 1,
+        "journalWrites": 2,
+        "checkpointWrites": 0,
+        "mutationWrites": 0,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "6db7d803e74f1ffa7d8f5adc0bf95b3e15bf4c8373fffadf546227cc6c6742cb",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "unknown-external",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 2,
+        "atomicReplacements": 1,
+        "journalWrites": 0,
+        "checkpointWrites": 2,
+        "mutationWrites": 0,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "6db7d803e74f1ffa7d8f5adc0bf95b3e15bf4c8373fffadf546227cc6c6742cb",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": false
+      }
+    },
+    {
+      "strategy": "A",
+      "case": "unknown-ownership",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 1,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": true
+      }
+    },
+    {
+      "strategy": "B",
+      "case": "unknown-ownership",
+      "restartAction": "BLOCKED",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": true,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": false,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "CONSISTENT_WITH_BOUNDED_ORACLE"
+      },
+      "notesPreserved": true,
+      "journalPresent": true,
+      "checkpointPresent": false,
+      "observedCosts": {
+        "fileWrites": 2,
+        "atomicReplacements": 0,
+        "journalWrites": 1,
+        "checkpointWrites": 0,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": true
+      }
+    },
+    {
+      "strategy": "C",
+      "case": "unknown-ownership",
+      "restartAction": "VERIFY",
+      "resumeCompletion": "NOT_DISPATCHED",
+      "humanInterventionRequired": false,
+      "oracle": {
+        "conflictRequiresBlock": true,
+        "unsafeContinuation": true,
+        "falseBlockedUnderTaskOracle": false,
+        "classification": "UNSAFE_OMITTED_GUARD"
+      },
+      "notesPreserved": true,
+      "journalPresent": false,
+      "checkpointPresent": true,
+      "observedCosts": {
+        "fileWrites": 2,
+        "atomicReplacements": 0,
+        "journalWrites": 0,
+        "checkpointWrites": 1,
+        "mutationWrites": 1,
+        "receiptWrites": 0,
+        "verificationCommands": 0,
+        "restartDispatches": 1,
+        "cleanupDeletes": 0,
+        "externalDispatches": 0
+      },
+      "evidence": {
+        "planHash": "b07eef922af0da474c9b7663e3aa157c4573a00426cc1a6ab24e8b2ad1db0eef",
+        "allowedHash": "b88373d9d1dbb2bf28651c4f1953a84e2ddd251c6b3cdca40aa0bbdaf2cbd86d",
+        "headChanged": false,
+        "planIndexChanged": false,
+        "protectedNotesChanged": true
+      }
+    }
+  ]
+}
