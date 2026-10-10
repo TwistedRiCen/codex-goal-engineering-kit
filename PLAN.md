@@ -4,17 +4,17 @@
 
 - Plan Version: 2
 - Task Mode: STANDARD
-- Mode reason: user-approved Phase 2 M1 evaluation integrity, M2 semantic-equivalent simplification, and M3 isolated investigation only.
+- Mode reason: user-approved bounded Phase 4A instrumentation correctness and host isolation; reuse verified workflow architecture without changing the core protocol.
 - Execution context: ordinary
-- Current Phase: PROJECT COMPLETE
-- Last Updated: 2026-10-09
-- Last Verified Commit: 2e0b01f56262c8acb99295ad6529d1e155ea3e0c (M2 checkpoint); M3 completion is the commit containing this ledger.
+- Current Phase: EXECUTION
+- Last Updated: 2026-10-10
+- Last Verified Commit: 74ca37f5ffeb140be3ad060233282dbc4c0eb9ef (Phase 2 complete; Phase 3 external acceptance WITH LIMITATIONS).
 
 ## Project Goal / Scope
 
 Maintain a reusable goal-driven workflow with guided intake, proportionate execution, verifiable recovery, model-neutral roles, and safe optional Codex installation.
-Current scope: M1 versioned, evidence-backed scoring and isolated execution regressions; then M2 instruction/validator simplification only where comparison supports equivalent semantics; finally M3 isolated recovery investigation. Earlier acceptance below remains historical evidence for its recorded baseline.
-No M4 governance/CI work, model router, generic recovery runtime, Goal activation, real installation, global configuration changes, or remote changes. M3 cannot change strict applicability, states/actions, schema, receipt, fingerprints, or durable compatibility.
+Current scope: Phase 4A versioned runtime observation, objective reviewer capability/evidence, safe failure classification, unknown-event compatibility, isolated fixture host execution, dedicated reference loading and complete future STANDARD replay. Earlier acceptance below remains immutable historical evidence for its recorded baseline.
+No M4B governance/CI/publishing, model router, generic recovery runtime, Goal activation, Skill reinstall or remote mutation. Real global AGENTS/model/effort/auth/API/other Skills/personal Agents stay unchanged; any unavoidable config side effect requires exact predeclared fields and verified restoration. M3 remains INCONCLUSIVE; strict applicability, states/actions, schema, receipt, fingerprints, Allowed Paths and legacy semantics are frozen.
 
 ## Decisions and Blockers
 
@@ -25,6 +25,7 @@ No M4 governance/CI work, model router, generic recovery runtime, Goal activatio
 - Historical decisions, criteria, installation and review evidence: [archived PLAN](docs/history/PLAN-through-8b5f025.md). Those records describe their baseline, not current model requirements.
 - FD-05: 2026-10-09 user approved M1 -> validation/review/checkpoint -> M2 -> validation -> M3 investigation. Separate local milestone commits; no real installation or remote mutation.
 - Pending decisions: any M3 formal recovery proposal requires fresh user approval; no such change is approved.
+- FD-06: 2026-10-10 user approved Phase 4A only. New observation schema 2 / execution-regression-v4 / runtime rubric 3.0 preserve all historical scores and reports; no retroactive FAIL/NOT PROVEN promotion. Collector facts and grader semantics are separate. Host-hidden fields remain UNKNOWN.
 
 ## Historical Reliability Acceptance
 
@@ -40,10 +41,10 @@ No M4 governance/CI work, model router, generic recovery runtime, Goal activatio
 
 ## Current Work
 
-- Current batch: Phase 2 approved scope complete; M3 INCONCLUSIVE, formal defaults retained.
-- Status: ACCEPTED
-- Next unmet criterion: none within authorized Phase 2 scope. Real installation, M4 and any protocol change remain unauthorized.
-- Historical completed work remains below and in the archive; only the Phase 2 acceptance ledger governs this iteration.
+- Current batch: Phase 4A instrumentation components, complete public control replay and no-model native host checks delivered; real model acceptance remains blocked.
+- Status: BLOCKED — NOT READY (runtime acceptance, not a native Goal status).
+- Next unmet criterion: P4A-04/P4A-05. Current host native TRACE logging does not prove model-content privacy; initial config changed before native launch with UNKNOWN attribution. Keep E1–E4 gate closed; require supported isolation evidence and precise config disposition before real acceptance.
+- Historical completed work remains below and in the archive; Phase 2 ledger is historical, Phase 4A ledger governs this iteration.
 
 ## Historical Installation and Verification State
 
@@ -84,7 +85,28 @@ No M4 governance/CI work, model router, generic recovery runtime, Goal activatio
 | P2-M3-01 | Ordinary STANDARD, current strict Goal-style execution and hypothetical lightweight recovery are compared only in isolated fixtures. | Failure-mode matrix with observed costs, false BLOCKED/unsafe CONTINUE and reviewer assessment. | VERIFIED | [M3 investigation](examples/behavior-results/phase2-m3.md); both runtimes 36 rows / 126 assertions, real persistence/receipt cleanup; independent review. A requires supplied facts; C findings apply only to this variant. |
 | P2-M3-02 | Formal recovery protocol and real installation/configuration stay untouched; conclusion permits KEEP or INCONCLUSIVE. | Protected-file comparisons, final status and evidence report. | VERIFIED | INCONCLUSIVE; retain formal defaults. Protocol assets unchanged from M2; 14 host hashes unchanged; no native Goal, active journal, real install or remote mutation. |
 
-## Repository and Verification State
+## Phase 4A Acceptance Criteria
+
+| ID | Observable result | Verification | Status | Evidence |
+| --- | --- | --- | --- | --- |
+| P4A-01 | Pipeline root causes mapped before changes; schema preserves OBSERVED/DECLARED/INFERRED/UNKNOWN without collector verdicts. | Schema/malformed/privacy/negative tests. | VERIFIED | [report](examples/runtime-v4/phase4a-report.md); new schema2 facts separate from runtime-3.0 semantics, trusted reads and complete check tuple/order binding. |
+| P4A-02 | Reviewer evidence can be objectively judged to exposed fields or native host limitation explicitly proven. | Current official schema, captured invocation/completion; missing/self-review/wrong baseline negatives. | VERIFIED WITH LIMITATION | Actual binary schema/native source establish prose-only native review payload. Typed separate reviewer gate controls pass; real reviewer model Tests not run, nativeRole UNKNOWN. |
+| P4A-03 | Unknown event preserved without crash; known/unknown failures distinguished; affected criteria fail closed independently. | E5/E6, malformed events and safe error-code controls. | VERIFIED | Actual E5 exit17/category PASS; synthetic E6 compatibility PASS while command criterion/overall semantic result remain NOT PROVEN; unrelated files PASS. |
+| P4A-04 | Fixtures have controlled isolation and protected files end byte-identical with no secrets/private config/raw thoughts retained. | Preflight, hash snapshots, failure paths, independent host review. | PARTIAL / BLOCKED | PS7 preflight and PS5.1 E5 each66 hashes unchanged from runtime boundary; no config write/restore. Initial pre-native config hash differs, attribution UNKNOWN. Native TRACE blocks model privacy; no model calls. |
+| P4A-05 | New E1–E4 and R4-A/B/C/D observations support bounded behavior, positive loads and properly limited negatives. | Actual fresh runtime sessions and tool/FS evidence. | NOT PROVEN / BLOCKED | All paid cases reject before seed/host; no override. Synthetic loading/scorer controls do not replace real model evidence. |
+| P4A-06 | New STANDARD retains complete replay package and deterministic scoring; all prior evidence/protocol stays immutable. | Replay/remove/alter negatives; pre/post manifests. | VERIFIED FOR CONTROL | Complete public root-authored STANDARD replay retained, real Node focused/independent acceptance and deterministic regrade PASS, not model E3. 64 frozen tracked/218 Phase3/9 Skill hashes unchanged. |
+| P4A-07 | Relevant tests, two independent reviews, repair re-reviews and local commit complete; clean repo/no journal/no remote work. | Node, relevant PS7/PS5.1, diagnostics, final diff/state. | VERIFIED AT DELIVERY | 146/146 Node; both PS guard12 and source/diagnostic checks; independent instrumentation v2 and host v4 affected-scope repairs closed. Local commit/clean readback recorded externally in delivery-state.json. |
+
+## Phase 4A Repository and Verification State
+
+- Branch: codex/modernize-evaluation-and-skill; baseline 74ca37f5ffeb140be3ad060233282dbc4c0eb9ef clean before edits, only ignored .idea/. No active journal or native Goal.
+- Current installed Skill matches 74ca37f candidate; five profiles synchronized by Phase3. Phase4A does not reinstall unchanged packages.
+- Write scope: new instrumentation/harness/fixtures/tests/evaluation docs, compact current PLAN and minimal README maintenance. Frozen scripts/rubrics/history/Skill/reference/templates/prompts/installers remain unchanged.
+- Phase3 external report/evidence: C:/Users/98053/.codex/visualizations/2026/10/09/01a11e6f-1348-74f3-a833-f9f2a4d074f1/phase3-20261010/phase3-report.md. ACCEPT WITH LIMITATIONS including preserved v3 FAIL, review NOT PROVEN and original config drift FAIL; exact authorized cleanup restored 57 protected hashes.
+- Initial Phase4A protected/frozen snapshot and public host schemas kept in adjacent external phase4a-20261010 evidence directory. Historical installed/authorization text below describes Phase2, not current Phase4A authority.
+- Phase4A recommendation NOT READY; component delivery does not satisfy real runtime/full-stage config acceptance. No reinstall. Detailed 14-part report: [Phase4A report](examples/runtime-v4/phase4a-report.md). Final local HEAD/status is recorded after commit in external delivery-state.json; no historical results or core protocol changes.
+
+## Historical Phase 2 Repository and Verification State
 
 - Branch: codex/modernize-evaluation-and-skill; clean main@bb921e5 verified before branch creation.
 - Preserved state: ignored .idea files; empty .goal directory with no execution journal; no pre-existing tracked/untracked changes.

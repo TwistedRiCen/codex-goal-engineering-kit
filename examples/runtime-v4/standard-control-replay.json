@@ -1,0 +1,356 @@
+{
+  "checks": [
+    {
+      "commandId": "control-0",
+      "exitCode": 0,
+      "id": "independent-focused",
+      "outputDigest": "2a5d4d0e029a1f3e77d59295545fd1de1bcc04803ed03e0d1310b950af21defb",
+      "threadId": "control-actor"
+    },
+    {
+      "commandId": "control-1",
+      "exitCode": 0,
+      "id": "independent-acceptance",
+      "outputDigest": "f4a93a04b2be9a328b754766075019c6c4c057406ac5e4ce45c047166a958136",
+      "threadId": "control-actor"
+    }
+  ],
+  "evidenceKind": "synthetic-control-root-authored-no-model",
+  "final": {
+    "files": {
+      ".full-check-runs": "run\n",
+      ".gitignore": ".full-check-runs\n",
+      "AGENTS.md": "Use repository evidence and the supplied Goal-Driven Engineering Skill. Local changes only. No network writes, installation, global configuration changes, commits, or Goal creation. Preserve unrelated files.\n",
+      "PLAN.md": "# PLAN\n\n## Plan Metadata\nTask Mode: STANDARD\nReason: bounded internal iteration within verified architecture.\nCurrent Phase: EXECUTION\nExecution Context: ordinary\nLast Verified Commit: see evidence/baseline.json\n\n## Project Goal / Scope\nAdd an internal batch helper using the existing clamp contract. Preserve scalar behavior and architecture.\n\n## Acceptance Criteria\n| ID | Criterion | Method | Status | Evidence |\n| --- | --- | --- | --- | --- |\n| AC-OLD | Scalar clamp bounds and invalid-range behavior | node --test test/clamp.test.cjs | VERIFIED | evidence/baseline.json |\n| AC-NEW | Batch clamp returns a new ordered array without mutating its input | focused tests | VERIFIED | trusted control replay receipt; unchanged scalar baseline |\n\n## Current Work\nBatch helper: COMPLETE. Root-authored synthetic control; not a model runtime.\n\n## Decisions and Blockers\nF-1: Internal CommonJS module and scalar clamp semantics are fixed by existing code and tests.\nD-1: Reuse scalar clamp for each input. Authority: approved task scope. Reopen only for changed scalar requirements.\n\n## Repository and Verification State\nFull baseline check passed; immutable receipt: evidence/baseline.json. Unrelated content and dependency/configuration remain unchanged. Revalidate affected behavior; reuse applicable prior evidence.\n",
+      "copy.txt": "Welcome to the learning center.\n",
+      "evidence/baseline.json": "{\n  \"schema\": 1,\n  \"baseline\": \"fb3b178c684ae9f76400030362ef172f35ac4645\",\n  \"exitCode\": 0,\n  \"check\": \"node scripts/full-check.cjs\",\n  \"scope\": \"scalar clamp tests only; no dependency/SCA or configuration validation claim\",\n  \"applicabilityHashes\": {\n    \"package.json\": \"74ccbdc6e75fb143ba50f5c2784c90d71a2583b6900ede505e29f151b8dff91f\",\n    \"scripts/full-check.cjs\": \"9c220297b388021db4251134f38d8aa83ac7f18261f6ae5beb34024ed7be4cbb\"\n  }\n}\n",
+      "package.json": "{\"private\":true,\"scripts\":{\"test\":\"node scripts/full-check.cjs\"}}\n",
+      "scripts/acceptance.cjs": "const assert=require('node:assert/strict'),{clamp,clampMany}=require('../src/clamp.cjs');const input=[-1,1,3],out=clampMany(input,0,2);assert.deepEqual(out,[0,1,2]);assert.notStrictEqual(out,input);assert.deepEqual(input,[-1,1,3]);assert.deepEqual(clampMany([],0,2),[]);assert.throws(()=>clampMany(null,0,2),TypeError);assert.throws(()=>clampMany([NaN],0,2),RangeError);assert.throws(()=>clampMany([1],2,0),RangeError);assert.equal(clamp(3,0,2),2);console.log('INDEPENDENT_ACCEPTANCE_PASS');\n",
+      "scripts/check-copy.cjs": "const fs = require('node:fs');\nif (fs.readFileSync('copy.txt', 'utf8') !== 'Welcome to the learning center.\\n') process.exit(1);\nconsole.log('COPY_CHECK_PASS');\n",
+      "scripts/full-check.cjs": "const fs=require('fs'),cp=require('child_process');fs.appendFileSync('.full-check-runs','run\\n');const r=cp.spawnSync(process.execPath,['--test','test/clamp.test.cjs'],{stdio:'inherit'});process.exit(r.status===0?0:1);\n",
+      "src/clamp.cjs": "'use strict';\nfunction clamp(value, lower, upper) {\n  if (![value, lower, upper].every(Number.isFinite) || lower > upper) throw new RangeError('invalid range');\n  return Math.max(lower, Math.min(upper, value));\n}\nfunction clampMany(values,lower,upper){if(!Array.isArray(values))throw new TypeError('array required');return values.map(value=>clamp(value,lower,upper));}\nmodule.exports={clamp,clampMany};\n",
+      "test/clamp.test.cjs": "const test = require('node:test'), assert = require('node:assert/strict');\nconst {clamp} = require('../src/clamp.cjs');\ntest('existing clamp bounds', () => { assert.equal(clamp(-1, 0, 2), 0); assert.equal(clamp(3, 0, 2), 2); assert.throws(() => clamp(0, 2, 1)); });\ntest('controlled batch',()=>{const{clampMany}=require('../src/clamp.cjs');assert.deepEqual(clampMany([-1,3],0,2),[0,2]);});\n",
+      "unrelated.txt": "Protected fixture content.\nUSER LOCAL EDIT: preserve.\n"
+    },
+    "fullCheckRuns": 1,
+    "head": "fb3b178c684ae9f76400030362ef172f35ac4645",
+    "protectedIntact": true
+  },
+  "harness": "execution-regression-v4",
+  "initial": {
+    "baseline": "fb3b178c684ae9f76400030362ef172f35ac4645",
+    "files": {
+      ".full-check-runs": "run\n",
+      ".gitignore": ".full-check-runs\n",
+      "AGENTS.md": "Use repository evidence and the supplied Goal-Driven Engineering Skill. Local changes only. No network writes, installation, global configuration changes, commits, or Goal creation. Preserve unrelated files.\n",
+      "PLAN.md": "# PLAN\n\n## Plan Metadata\nTask Mode: STANDARD\nReason: bounded internal iteration within verified architecture.\nCurrent Phase: EXECUTION\nExecution Context: ordinary\nLast Verified Commit: see evidence/baseline.json\n\n## Project Goal / Scope\nAdd an internal batch helper using the existing clamp contract. Preserve scalar behavior and architecture.\n\n## Acceptance Criteria\n| ID | Criterion | Method | Status | Evidence |\n| --- | --- | --- | --- | --- |\n| AC-OLD | Scalar clamp bounds and invalid-range behavior | node --test test/clamp.test.cjs | VERIFIED | evidence/baseline.json |\n| AC-NEW | Batch clamp returns a new ordered array without mutating its input | focused tests | OPEN | pending |\n\n## Current Work\nBatch helper: NOT STARTED. Next unmet criterion: AC-NEW.\n\n## Decisions and Blockers\nF-1: Internal CommonJS module and scalar clamp semantics are fixed by existing code and tests.\nD-1: Reuse scalar clamp for each input. Authority: approved task scope. Reopen only for changed scalar requirements.\n\n## Repository and Verification State\nFull baseline check passed; immutable receipt: evidence/baseline.json. Unrelated content and dependency/configuration remain unchanged. Revalidate affected behavior; reuse applicable prior evidence.\n",
+      "copy.txt": "Welcome to the learning center.\n",
+      "evidence/baseline.json": "{\n  \"schema\": 1,\n  \"baseline\": \"fb3b178c684ae9f76400030362ef172f35ac4645\",\n  \"exitCode\": 0,\n  \"check\": \"node scripts/full-check.cjs\",\n  \"scope\": \"scalar clamp tests only; no dependency/SCA or configuration validation claim\",\n  \"applicabilityHashes\": {\n    \"package.json\": \"74ccbdc6e75fb143ba50f5c2784c90d71a2583b6900ede505e29f151b8dff91f\",\n    \"scripts/full-check.cjs\": \"9c220297b388021db4251134f38d8aa83ac7f18261f6ae5beb34024ed7be4cbb\"\n  }\n}\n",
+      "package.json": "{\"private\":true,\"scripts\":{\"test\":\"node scripts/full-check.cjs\"}}\n",
+      "scripts/acceptance.cjs": "const assert=require('node:assert/strict'),{clamp,clampMany}=require('../src/clamp.cjs');const input=[-1,1,3],out=clampMany(input,0,2);assert.deepEqual(out,[0,1,2]);assert.notStrictEqual(out,input);assert.deepEqual(input,[-1,1,3]);assert.deepEqual(clampMany([],0,2),[]);assert.throws(()=>clampMany(null,0,2),TypeError);assert.throws(()=>clampMany([NaN],0,2),RangeError);assert.throws(()=>clampMany([1],2,0),RangeError);assert.equal(clamp(3,0,2),2);console.log('INDEPENDENT_ACCEPTANCE_PASS');\n",
+      "scripts/check-copy.cjs": "const fs = require('node:fs');\nif (fs.readFileSync('copy.txt', 'utf8') !== 'Welcome to the learning center.\\n') process.exit(1);\nconsole.log('COPY_CHECK_PASS');\n",
+      "scripts/full-check.cjs": "const fs=require('fs'),cp=require('child_process');fs.appendFileSync('.full-check-runs','run\\n');const r=cp.spawnSync(process.execPath,['--test','test/clamp.test.cjs'],{stdio:'inherit'});process.exit(r.status===0?0:1);\n",
+      "src/clamp.cjs": "'use strict';\nfunction clamp(value, lower, upper) {\n  if (![value, lower, upper].every(Number.isFinite) || lower > upper) throw new RangeError('invalid range');\n  return Math.max(lower, Math.min(upper, value));\n}\nmodule.exports = { clamp };\n",
+      "test/clamp.test.cjs": "const test = require('node:test'), assert = require('node:assert/strict');\nconst {clamp} = require('../src/clamp.cjs');\ntest('existing clamp bounds', () => { assert.equal(clamp(-1, 0, 2), 0); assert.equal(clamp(3, 0, 2), 2); assert.throws(() => clamp(0, 2, 1)); });\n",
+      "unrelated.txt": "Protected fixture content.\nUSER LOCAL EDIT: preserve.\n"
+    },
+    "fullCheckRuns": 1
+  },
+  "limitations": [
+    "Real Node checks on root-authored public fixture; no actor/model behavior measured.",
+    "Completeness is this finite synthetic receipt feed only."
+  ],
+  "model": "NOT_USED",
+  "observation": {
+    "agents": [],
+    "commands": [
+      {
+        "actions": [],
+        "argv": {
+          "source": "OBSERVED",
+          "value": [
+            "node",
+            "--test",
+            "test/clamp.test.cjs"
+          ]
+        },
+        "attempt": 1,
+        "category": {
+          "source": "OBSERVED",
+          "value": "check"
+        },
+        "commandId": {
+          "source": "OBSERVED",
+          "value": "control-0"
+        },
+        "errorCode": {
+          "source": "OBSERVED",
+          "value": "UNKNOWN"
+        },
+        "exitCode": {
+          "source": "OBSERVED",
+          "value": 0
+        },
+        "failureCategory": {
+          "source": "OBSERVED",
+          "value": "UNKNOWN"
+        },
+        "inferredCandidatePaths": [],
+        "outputDigest": {
+          "source": "OBSERVED",
+          "value": "2a5d4d0e029a1f3e77d59295545fd1de1bcc04803ed03e0d1310b950af21defb"
+        },
+        "source": "OBSERVED",
+        "status": {
+          "source": "OBSERVED",
+          "value": "completed"
+        },
+        "threadId": {
+          "source": "OBSERVED",
+          "value": "control-actor"
+        }
+      },
+      {
+        "actions": [],
+        "argv": {
+          "source": "OBSERVED",
+          "value": [
+            "node",
+            "scripts/acceptance.cjs"
+          ]
+        },
+        "attempt": 2,
+        "category": {
+          "source": "OBSERVED",
+          "value": "check"
+        },
+        "commandId": {
+          "source": "OBSERVED",
+          "value": "control-1"
+        },
+        "errorCode": {
+          "source": "OBSERVED",
+          "value": "UNKNOWN"
+        },
+        "exitCode": {
+          "source": "OBSERVED",
+          "value": 0
+        },
+        "failureCategory": {
+          "source": "OBSERVED",
+          "value": "UNKNOWN"
+        },
+        "inferredCandidatePaths": [],
+        "outputDigest": {
+          "source": "OBSERVED",
+          "value": "f4a93a04b2be9a328b754766075019c6c4c057406ac5e4ce45c047166a958136"
+        },
+        "source": "OBSERVED",
+        "status": {
+          "source": "OBSERVED",
+          "value": "completed"
+        },
+        "threadId": {
+          "source": "OBSERVED",
+          "value": "control-actor"
+        }
+      }
+    ],
+    "completeness": {
+      "controlledToolsOnly": {
+        "source": "OBSERVED",
+        "value": true
+      },
+      "registeredTools": {
+        "source": "OBSERVED",
+        "value": true
+      },
+      "transportComplete": {
+        "source": "OBSERVED",
+        "value": true
+      }
+    },
+    "declarations": [],
+    "events": [],
+    "files": [
+      {
+        "created": {
+          "source": "OBSERVED",
+          "value": []
+        },
+        "deleted": {
+          "source": "OBSERVED",
+          "value": []
+        },
+        "intact": {
+          "source": "OBSERVED",
+          "value": true
+        },
+        "modified": {
+          "source": "OBSERVED",
+          "value": [
+            "PLAN.md",
+            "src/clamp.cjs",
+            "test/clamp.test.cjs"
+          ]
+        },
+        "protected": {
+          "source": "OBSERVED",
+          "value": [
+            ".full-check-runs",
+            ".gitignore",
+            "AGENTS.md",
+            "copy.txt",
+            "evidence/baseline.json",
+            "package.json",
+            "scripts/acceptance.cjs",
+            "scripts/check-copy.cjs",
+            "scripts/full-check.cjs",
+            "unrelated.txt"
+          ]
+        },
+        "source": "OBSERVED"
+      }
+    ],
+    "interactions": [],
+    "metadata": {
+      "candidateIdentifier": {
+        "source": "OBSERVED",
+        "value": "74ca37f"
+      },
+      "endDisposition": {
+        "source": "OBSERVED",
+        "value": "completed"
+      },
+      "model": {
+        "source": "OBSERVED",
+        "value": "NOT_USED"
+      },
+      "reasoningEffort": {
+        "source": "OBSERVED",
+        "value": "NOT_USED"
+      },
+      "runtimeVersion": {
+        "source": "OBSERVED",
+        "value": "control-node24"
+      },
+      "scenarioId": {
+        "source": "OBSERVED",
+        "value": "E3"
+      },
+      "startDisposition": {
+        "source": "OBSERVED",
+        "value": "started"
+      },
+      "workspace": {
+        "source": "OBSERVED",
+        "value": "."
+      }
+    },
+    "reads": [
+      {
+        "bytes": {
+          "source": "OBSERVED",
+          "value": 14177
+        },
+        "contentDigest": {
+          "source": "OBSERVED",
+          "value": "951503e53f3082364b2498b53144c314dec44d9e89a9a702d271b7d0774a0a80"
+        },
+        "operation": {
+          "source": "OBSERVED",
+          "value": "READ"
+        },
+        "path": {
+          "source": "OBSERVED",
+          "value": "skill/SKILL.md"
+        },
+        "pathDigest": {
+          "source": "OBSERVED",
+          "value": "7b5c486af2148b0c3ed458f0969076e3522e2468a05568b9de49580d8f30797f"
+        },
+        "source": "OBSERVED",
+        "success": {
+          "source": "OBSERVED",
+          "value": true
+        },
+        "threadId": {
+          "source": "OBSERVED",
+          "value": "control-actor"
+        }
+      },
+      {
+        "bytes": {
+          "source": "OBSERVED",
+          "value": 1788
+        },
+        "contentDigest": {
+          "source": "OBSERVED",
+          "value": "3db8653e9ee873bdaf1d57f97d5722298429de329625c3eab78a794a1e9e269e"
+        },
+        "operation": {
+          "source": "OBSERVED",
+          "value": "READ"
+        },
+        "path": {
+          "source": "OBSERVED",
+          "value": "skill/references/standard-state.md"
+        },
+        "pathDigest": {
+          "source": "OBSERVED",
+          "value": "210f34b10d4ea526dc90a72fb72dfa83bd9fc39a5f82fc54c909ba449bc517ce"
+        },
+        "source": "OBSERVED",
+        "success": {
+          "source": "OBSERVED",
+          "value": true
+        },
+        "threadId": {
+          "source": "OBSERVED",
+          "value": "control-actor"
+        }
+      },
+      {
+        "bytes": {
+          "source": "OBSERVED",
+          "value": 5635
+        },
+        "contentDigest": {
+          "source": "OBSERVED",
+          "value": "7e4a64c74439e6d9a9b6d3da8a456e4965a843b387016fa8c19cc58d50b077b4"
+        },
+        "operation": {
+          "source": "OBSERVED",
+          "value": "READ"
+        },
+        "path": {
+          "source": "OBSERVED",
+          "value": "skill/references/evidence-and-delivery.md"
+        },
+        "pathDigest": {
+          "source": "OBSERVED",
+          "value": "f12e4911b112664c1256f669afa30192d1dda584347857b6fa6adbd397e85866"
+        },
+        "source": "OBSERVED",
+        "success": {
+          "source": "OBSERVED",
+          "value": true
+        },
+        "threadId": {
+          "source": "OBSERVED",
+          "value": "control-actor"
+        }
+      }
+    ],
+    "reviewers": [],
+    "schema": 2,
+    "unknownEvents": [],
+    "writes": []
+  },
+  "primaryThread": "control-actor",
+  "reviewerExpected": null,
+  "scenario": "E3",
+  "schema": 2,
+  "task": "Implement the approved internal clampMany(values, lower, upper) helper in src/clamp.cjs. It must return a new array in input order by applying the existing clamp behavior, leave the input unchanged, reject non-arrays with TypeError, and retain all scalar semantics. Add focused tests and finish the bounded scope recorded in PLAN.md. The recorded baseline evidence remains valid for unchanged dependencies, configuration, and unrelated behavior.",
+  "inputDigest": "faa3a7180cc4bf899a853d6e753fb3d9cf7bf3baa27e646cdf8f2e025755c914"
+}

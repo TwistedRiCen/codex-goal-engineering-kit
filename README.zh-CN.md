@@ -196,3 +196,5 @@ FULL 执行、任何 /goal 执行和明确要求的严格恢复按 `Write Before
 
 
 维护者可用[行为评估用例](examples/behavior-evaluation.md)检查问答和恢复边界；这些用例不增加用户必填步骤。
+
+运行时采集使用独立的 [v4 observation/replay 契约](examples/runtime-v4/observation-schema.md)，历史 v3 结果继续由原 rubric 解释。当前模型场景因宿主日志隐私未证成而停止；合成控制不等于真实运行验收。

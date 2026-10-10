@@ -196,3 +196,5 @@ Use native Skill invocation where available; otherwise read SKILL.md and relevan
 
 
 Maintainers can use the [behavior evaluation cases](examples/behavior-evaluation.md) to assess intake and recovery without adding user steps.
+
+Runtime instrumentation uses a separate [v4 observation and replay contract](examples/runtime-v4/observation-schema.md). Frozen v3 results retain their original rubric. Current native model runs are blocked until host logging privacy is proven; synthetic controls are not runtime acceptance.
