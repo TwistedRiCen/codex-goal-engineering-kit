@@ -4,17 +4,17 @@
 
 - Plan Version: 2
 - Task Mode: STANDARD
-- Mode reason: user-approved bounded Phase 4B maintenance and local open-source readiness; core protocol and prior acceptance remain frozen.
+- Mode reason: user-approved Phase 5A local fast-forward finalization and main deterministic baseline; no new functionality or protocol changes.
 - Execution context: ordinary
 - Current Phase: MILESTONE ACCEPTANCE
 - Last Updated: 2026-10-12
-- Last Verified Commit: 5e3388343663cadb46412742570d90e0d074c222 (Phase4A.1 scoped delivery; runtime NOT READY).
+- Last Verified Commit: 8d1e9913d1f19adb3325f3f68d176b3bf54a40d4 (accepted candidate; authoritative Full passed on main in Phase5A).
 
 ## Project Goal / Scope
 
 Maintain a reusable goal-driven workflow with guided intake, proportionate execution, verifiable recovery, model-neutral roles, and safe optional Codex installation.
-Current scope: Phase4B single deterministic maintenance entry, Quick/Full tiers, CI reuse, minimal version/change/compatibility records, concise onboarding/support and contribution guidance. Earlier acceptance below remains immutable historical evidence for its recorded baseline.
-No further host isolation/auth/flush development, model calls, native Goal, real Skill installation, LICENSE selection or remote mutation. Core workflow, templates, journal/recovery, receipt/fingerprints and evidence/review semantics are frozen. Phase4A/4A.1 real acceptance is deferred to external host capability; M3 remains INCONCLUSIVE.
+Current scope: Phase5A safe local fast-forward to main, candidate identity/commit-ledger verification, authoritative Full on main, necessary finalization state and independent integration review. Repository-controlled modernization (evaluation integrity, Skill simplification, installation safety, maintenance/compatibility and deterministic gates) is accepted; earlier ledgers remain immutable evidence for their recorded baselines.
+No new functionality, host isolation/auth/flush development, model calls, native Goal, real installation/profile writes, LICENSE selection, version bump or remote mutation. Core workflow, templates, journal/recovery, receipt/fingerprints and evidence/review semantics stay frozen. External Phase4A/4A.1 acceptance does not block repository-controlled closure; its OPEN criteria and last attempted evidence remain retained. M3 stays INCONCLUSIVE; no overall PROJECT COMPLETE declaration.
 
 ## Decisions and Blockers
 
@@ -29,7 +29,8 @@ No further host isolation/auth/flush development, model calls, native Goal, real
 - FD-07: 2026-10-12 Phase 4A.1 narrows work to supported native isolation, no-model privacy preflight and conditional sequential real acceptance. No credential copying/rebuilding, global writes, reinstall or M4B. Temporary native audit roots are retained. Any unproven critical preflight item keeps the existing model gate closed.
 - FD-08: 2026-10-12 user approves Phase4B local maintenance/CI/docs/governance. Prior runtime blocks are External Host Capability Limitation, not a source blocker for this scope; never promote historical scores. Reopen deferred real acceptance only with fresh authorization and supported auth/persistence/flush evidence.
 - Design decision: Windows-first Full; cheap portable Quick uses the same entry. VERSION starts a pre-1.0 Kit development identity, independently of PLAN/journal/rubric schemas. Installed package identity remains byte-based; no retrofit of installation provenance.
-- Pending finalization decisions: LICENSE before formal public distribution; merge main, push and release/tag require separate user authorization.
+- FD-09: 2026-10-12 user approves Phase5A safe fast-forward only. main bb921e5 is the candidate ancestor/merge-base; six intervening commits all belong to modernization. Conditional old-SHA ref update followed by switching to the identical tree preserves all100 tracked byte hashes; no merge commit, history rewrite or feature-branch deletion.
+- Pending distribution decisions: LICENSE before formal public distribution; push main, remote CI observation and release/tag require separate user authorization. Local main fast-forward is authorized and completed; VERSION0.1.0/Unreleased remain unchanged.
 
 ## Historical Reliability Acceptance
 
@@ -45,11 +46,19 @@ No further host isolation/auth/flush development, model calls, native Goal, real
 
 ## Current Work
 
-- Current batch: Phase4B scoped maintenance acceptance and independent final review passed; delivery commit/status recorded externally after commit.
-- Status: PHASE 4B COMPLETE — AWAITING FINALIZATION AUTHORIZATION; READY WITH LIMITATIONS. Core modernization milestones are accepted; external runtime acceptance is deferred, not erased and not a source blocker.
-- Next action: user finalization decisions (LICENSE, merge main, push, release/tag); no further action authorized. See [Phase4B report](examples/maintenance/phase4b-report.md). Final local clean readback is recorded in external phase4b-20261012/delivery-state.json.
+- Current batch: Phase5A main fast-forward, authoritative Full, necessary state validation and independent final review PASSED. Only this PLAN requires a new local metadata commit; final HEAD/clean readback is recorded externally after that commit.
+- Status: ACCEPTED (repository-controlled scope). External host runtime criteria remain OPEN with external blockers and their existing evidence, not promoted or deleted; overall phase remains MILESTONE ACCEPTANCE.
+- Next action: user LICENSE/push main/remote CI/release-tag decisions; no remote/publish action authorized. External phase5a-20261012/baseline.json records final local delivery state after commit. Evidence retains pre-finalization, complete commit-ledger, post-merge, main-full and independent review records; no sensitive runtime logs are committed.
 - Deferred criterion owner: external Codex host capability. P4A-04/05 and P4A1-03 remain unverified/blocked; P1/P4/P6/P9/P10 NOT PROVEN, P8 FAIL, E1–E4/R4/typed reviewer NOT PROVEN and config drift UNKNOWN. Reopen only after explicit authorization and supported capability evidence; do not modify real config or auth to force completion.
-- Historical ledgers and reports remain frozen; the Phase4B ledger below governs current scoped acceptance. Do not mark the entire modernization goal PROJECT COMPLETE while deferred criteria remain.
+- Historical ledgers and reports remain frozen; the Phase5A ledger governs this local finalization scope. Keep MILESTONE ACCEPTANCE while the retained external criteria remain OPEN; their disposition does not block repository-controlled closure.
+
+## Phase 5A Acceptance Criteria
+
+| ID | Observable result | Verification | Status | Evidence |
+| --- | --- | --- | --- | --- |
+| P5A-01 | main safely contains the complete accepted candidate with feature branch retained. | Commit ledger, ancestor/CAS checks, tree and physical hashes. | VERIFIED | bb921e5 -> 8d1e991 fast-forward; six modernization commits, identical tree8d39380734d6d37ed5d2efaa41ecc6c71d6a6669; all100 tracked byte hashes unchanged. |
+| P5A-02 | Authoritative deterministic Full passes on main without reopening blocked model acceptance. | scripts/test-all.ps1 -Mode Full and recorded exit. | VERIFIED | exit0; Node24.19.0 167/167;10 PS checks per runtime (7.6.5 and5.1.26100.9549), no skipped registered checks. Remote GitHub Actions NOT RUN; models/native Goal not run. |
+| P5A-03 | Necessary state-only disposition and independent review preserve protocol/installation/distribution boundaries. | Affected entry checks, final read-only review and diff/hash/diagnostic readback; final delivery readback retained separately. | VERIFIED | Quick81/81 +3 checks, independent final review PASSED/no material findings. Only PLAN changed; source/install9 andprofiles5 SYNCHRONIZED, VERSION0.1.0/Unreleased/noLICENSE intact. Final commit/clean baseline recorded externally after metadata commit. |
 
 ## Phase 4B Acceptance Criteria
 
