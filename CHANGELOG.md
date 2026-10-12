@@ -6,6 +6,7 @@
 
 ### Maintenance and onboarding
 
+- 加入标准 [Apache-2.0](LICENSE) 许可证及双语说明，不增加自定义许可限制；仍未 tag/release。
 - 一个 Quick/Full deterministic maintenance entry，CI 共用该入口；默认无模型，无真实安装或用户配置写入。
 - Windows Full 覆盖隔离安装、恢复/receipt、诊断和无模型 runtime tests；Ubuntu Quick 为次要 metadata/Node fixture 范围，Windows PowerShell checks 不扩称跨平台覆盖。
 - 仓库版本与安装内容身份分开：诊断新增 canonical KitVersion 和 package fingerprints；已有 InstalledKitVersion 保持 UNKNOWN。
@@ -20,4 +21,4 @@
 
 - Phase4A/4A.1 real model acceptance 不完整，auth isolation blocked，persistence/flush 和 reviewer/R4 证据未证；历史结果不重评分。
 - M3 recovery optimization INCONCLUSIVE。详见[正式限制](docs/support.md)，研究细节继续留在原 evaluation/report。
-- LICENSE decision required before formal public distribution；维护阶段不自动授权 merge/push/release。
+- 许可证已经用户批准为 Apache-2.0；维护验证不自动授权 merge/push/release，当前仍 Unreleased。

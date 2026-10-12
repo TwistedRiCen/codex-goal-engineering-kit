@@ -4,7 +4,7 @@
 
 这是一套可复用的 Skill，把想法或有界功能请求推进为仓库中的决策、实现与验收证据，根据任务选择足够的流程深度，并通过 PLAN.md 跨会话恢复。可选 Codex Agent Profiles 提供有界角色。
 
-它不提供通用编排运行时、后台守护进程、模型路由器或自动外部事务恢复。开发版本见 [VERSION](VERSION)，变化见 [CHANGELOG](CHANGELOG.md)。**LICENSE DECISION REQUIRED BEFORE FORMAL PUBLIC DISTRIBUTION。**
+它不提供通用编排运行时、后台守护进程、模型路由器或自动外部事务恢复。开发版本见 [VERSION](VERSION)，变化见 [CHANGELOG](CHANGELOG.md)。采用 [Apache-2.0](LICENSE)；当前仍为 pre-release repository state。
 
 ## 三步开始
 

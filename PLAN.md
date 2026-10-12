@@ -30,7 +30,8 @@ No new functionality, host isolation/auth/flush development, model calls, native
 - FD-08: 2026-10-12 user approves Phase4B local maintenance/CI/docs/governance. Prior runtime blocks are External Host Capability Limitation, not a source blocker for this scope; never promote historical scores. Reopen deferred real acceptance only with fresh authorization and supported auth/persistence/flush evidence.
 - Design decision: Windows-first Full; cheap portable Quick uses the same entry. VERSION starts a pre-1.0 Kit development identity, independently of PLAN/journal/rubric schemas. Installed package identity remains byte-based; no retrofit of installation provenance.
 - FD-09: 2026-10-12 user approves Phase5A safe fast-forward only. main bb921e5 is the candidate ancestor/merge-base; six intervening commits all belong to modernization. Conditional old-SHA ref update followed by switching to the identical tree preserves all100 tracked byte hashes; no merge commit, history rewrite or feature-branch deletion.
-- Pending distribution decisions: LICENSE before formal public distribution; push main, remote CI observation and release/tag require separate user authorization. Local main fast-forward is authorized and completed; VERSION0.1.0/Unreleased remain unchanged.
+- FD-10: 2026-10-12 Phase5B user selects standard Apache-2.0, authorizes ordinary main push after clean/identity/ancestry checks and actual remote CI validation. No custom license terms or inferred copyright holder; blocked runtime acceptance stays frozen.
+- Pending distribution decisions: tag/release/package/deploy remain unapproved. Local main finalization is complete; Apache-2.0 and conditional ordinary main push are approved; VERSION0.1.0/Unreleased remain unchanged.
 
 ## Historical Reliability Acceptance
 
@@ -48,7 +49,7 @@ No new functionality, host isolation/auth/flush development, model calls, native
 
 - Current batch: Phase5A main fast-forward, authoritative Full, necessary state validation and independent final review PASSED. Only this PLAN requires a new local metadata commit; final HEAD/clean readback is recorded externally after that commit.
 - Status: ACCEPTED (repository-controlled scope). External host runtime criteria remain OPEN with external blockers and their existing evidence, not promoted or deleted; overall phase remains MILESTONE ACCEPTANCE.
-- Next action: user LICENSE/push main/remote CI/release-tag decisions; no remote/publish action authorized. External phase5a-20261012/baseline.json records final local delivery state after commit. Evidence retains pre-finalization, complete commit-ledger, post-merge, main-full and independent review records; no sensitive runtime logs are committed.
+- Next action: Phase5B license/remote main validation is authorized; exact pushed revision/jobs/results are recorded externally in phase5b-20261012. Tag/release requires fresh authorization. External phase5a-20261012/baseline.json retains the local baseline, pre-finalization/commit-ledger/post-merge/main-full/review evidence; no sensitive runtime logs are committed.
 - Deferred criterion owner: external Codex host capability. P4A-04/05 and P4A1-03 remain unverified/blocked; P1/P4/P6/P9/P10 NOT PROVEN, P8 FAIL, E1–E4/R4/typed reviewer NOT PROVEN and config drift UNKNOWN. Reopen only after explicit authorization and supported capability evidence; do not modify real config or auth to force completion.
 - Historical ledgers and reports remain frozen; the Phase5A ledger governs this local finalization scope. Keep MILESTONE ACCEPTANCE while the retained external criteria remain OPEN; their disposition does not block repository-controlled closure.
 

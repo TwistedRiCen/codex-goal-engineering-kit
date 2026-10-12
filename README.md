@@ -4,7 +4,7 @@
 
 A reusable Skill for turning an idea or bounded feature request into repository-backed decisions, implementation and acceptance evidence. It chooses enough workflow for the task and uses PLAN.md to resume across sessions. Optional Codex agent profiles provide bounded roles.
 
-This is a workflow kit, not a generic orchestration runtime, background daemon, model router or automatic external transaction recovery system. Development identity: [VERSION](VERSION); changes: [CHANGELOG](CHANGELOG.md). **LICENSE DECISION REQUIRED BEFORE FORMAL PUBLIC DISTRIBUTION.**
+This is a workflow kit, not a generic orchestration runtime, background daemon, model router or automatic external transaction recovery system. Development identity: [VERSION](VERSION); changes: [CHANGELOG](CHANGELOG.md). Licensed under [Apache-2.0](LICENSE); this remains a pre-release repository state.
 
 ## Start in three steps
 

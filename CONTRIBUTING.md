@@ -15,4 +15,4 @@ Quick 用于小型文档/fixture 工作；Skill、installer、recovery、evaluat
 
 PR 描述说明 scope、contract impact、verification、PLAN/journal compatibility、runtime claims 和 docs/migration。只在实际需要迁移时新增文档，版本规则见[兼容性](docs/compatibility.md)，用户可感知变化记入 [CHANGELOG](CHANGELOG.md)。
 
-LICENSE 尚未由用户选择；正式分发需要独立决定。合并、push、release/tag 不由本地维护 PASS 自动授权。
+本项目采用 [Apache-2.0](LICENSE)，贡献提交遵循该标准许可证的条款。合并、push、release/tag 不由本地维护 PASS 自动授权。

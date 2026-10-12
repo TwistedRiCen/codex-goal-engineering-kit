@@ -8,7 +8,7 @@
 - Minor：兼容的新增能力、评估、可选功能或扩展。
 - Major：PLAN/journal breaking、正式 recovery 语义变化、稳定 prompt/agent contract break；即使在开发期也需要显式兼容性决策与迁移说明。
 
-不要在 README、scripts 或 agent metadata 再维护 Kit version 副本。CHANGELOG 的 Unreleased 记录未正式发布的变化；批准发布时版本标题是历史发布记录，须与当次 VERSION 一致，不是第二个可写版本源。正式分发前仍需 LICENSE 决策。
+不要在 README、scripts 或 agent metadata 再维护 Kit version 副本。CHANGELOG 的 Unreleased 记录未正式发布的变化；批准发布时版本标题是历史发布记录，须与当次 VERSION 一致，不是第二个可写版本源。许可证已采用 [Apache-2.0](../LICENSE)，tag/release 决策仍需独立授权。
 
 ## 当前升级适用性
 
