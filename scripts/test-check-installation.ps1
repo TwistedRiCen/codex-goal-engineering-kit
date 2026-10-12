@@ -12,12 +12,22 @@ function Assert-Check { param([bool]$Ok,[string]$Message) if (-not $Ok) { throw 
 try {
     $report = Read-Report
     Assert-Check ($report.Skill.State -eq 'MISSING') 'missing skill'
+    Assert-Check ($report.KitVersion -ceq ([IO.File]::ReadAllText((Join-Path $repo 'VERSION')).Trim())) 'canonical Kit version'
+    Assert-Check ($report.InstalledKitVersion -ceq 'UNKNOWN' -and $null -eq $report.Skill.InstalledFingerprint) 'missing install provenance must not be invented'
     Assert-Check (-not (Test-Path -LiteralPath $root)) 'diagnosis must not create missing roots'
     [void](New-Item -ItemType Directory -Path $roots.SkillRoot -Force)
     Copy-Item -LiteralPath (Join-Path $repo 'skills/goal-driven-engineering') -Destination $roots.SkillRoot -Recurse
     Copy-Item -LiteralPath (Join-Path $repo 'agents') -Destination $roots.AgentsRoot -Recurse
     $report = Read-Report
     Assert-Check ($report.Skill.State -eq 'SYNCHRONIZED' -and $report.DiscoveredSkills.Count -eq 1) 'synced skill'
+    Assert-Check ($report.Skill.SourceFingerprint -cmatch '^[a-f0-9]{64}$' -and $report.Skill.SourceFingerprint -ceq $report.Skill.InstalledFingerprint) 'matching package identity'
+    $installedReference = Join-Path $roots.SkillRoot 'goal-driven-engineering/references/standard-state.md'
+    $referenceBytes = [IO.File]::ReadAllBytes($installedReference)
+    [IO.File]::AppendAllText($installedReference, '# local edit')
+    $changedReport = Read-Report
+    Assert-Check ($changedReport.Skill.State -eq 'DIFFERENT' -and $changedReport.Skill.SourceFingerprint -cne $changedReport.Skill.InstalledFingerprint) 'different bytes must have different identities'
+    Assert-Check ($changedReport.InstalledKitVersion -ceq 'UNKNOWN') 'byte mismatch must not invent installed version'
+    [IO.File]::WriteAllBytes($installedReference, $referenceBytes)
     Assert-Check (@($report.Agents | Where-Object State -ne 'SYNCHRONIZED').Count -eq 0) 'synced roles'
     [IO.File]::AppendAllText((Join-Path $roots.AgentsRoot 'explorer.toml'), '# local edit')
     Copy-Item -LiteralPath (Join-Path $roots.SkillRoot 'goal-driven-engineering') -Destination (Join-Path $roots.SkillRoot 'old-copy') -Recurse

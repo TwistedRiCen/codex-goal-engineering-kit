@@ -21,16 +21,24 @@ function Get-PackageStatus {
     param([string]$Source, [string]$Target)
     $state = 'MISSING'
     $detail = ''
+    $sourceFingerprint = $null
+    $installedFingerprint = $null
     try {
+        $expected = @(Get-ManifestRows $Source)
+        $sha = [Security.Cryptography.SHA256]::Create()
+        try { $sourceFingerprint = [BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($expected -join "`n"))).Replace('-','').ToLowerInvariant() }
+        finally { $sha.Dispose() }
         Assert-PlainPath $Target
         if (Test-Path -LiteralPath $Target) {
             if (-not (Test-Path -LiteralPath $Target -PathType Container)) { throw 'Target is not a directory' }
-            $expected = @(Get-ManifestRows $Source)
             $actual = @(Get-ManifestRows $Target)
+            $sha = [Security.Cryptography.SHA256]::Create()
+            try { $installedFingerprint = [BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($actual -join "`n"))).Replace('-','').ToLowerInvariant() }
+            finally { $sha.Dispose() }
             $state = if (($expected -join '|') -ceq ($actual -join '|')) {'SYNCHRONIZED'} else {'DIFFERENT'}
         }
     } catch { $state = 'UNSAFE_OR_UNREADABLE'; $detail = $_.Exception.Message }
-    return [pscustomobject]@{ Source=$Source; Target=$Target; State=$state; Detail=$detail }
+    return [pscustomobject]@{ Source=$Source; Target=$Target; State=$state; Detail=$detail; SourceFingerprint=$sourceFingerprint; InstalledFingerprint=$installedFingerprint }
 }
 $source = Join-Path $repo 'skills/goal-driven-engineering'
 $skill = Get-PackageStatus $source (Join-Path $SkillRoot 'goal-driven-engineering')
@@ -87,16 +95,20 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
     $revisionOutput = & git --no-optional-locks -C $repo rev-parse --short HEAD 2>$null
     if ($LASTEXITCODE -eq 0) {
         $revision = [string]$revisionOutput
-        $sourceDirty = (@(& git --no-optional-locks -C $repo status --porcelain -- scripts skills agents).Count -gt 0)
+        $sourceDirty = (@(& git --no-optional-locks -C $repo status --porcelain -- VERSION scripts skills agents).Count -gt 0)
     }
     } catch { $revision = 'unavailable'; $sourceDirty = $null }
 }
+$kitVersion = [IO.File]::ReadAllText((Join-Path $repo 'VERSION')).Trim()
+if ($kitVersion -cnotmatch '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$') { throw 'Invalid authoritative VERSION.' }
 $report = [pscustomobject]@{
+    KitVersion=$kitVersion; InstalledKitVersion='UNKNOWN'
     SourceRevision=$revision; SourceModified=$sourceDirty; Skill=$skill
     DiscoveredSkills=@($discovered.ToArray()); DuplicateCount=[Math]::Max(0,$discovered.Count-1)
     ScanComplete=($scanIssues.Count -eq 0); ScanIssues=@($scanIssues.ToArray()); Agents=$roles
 }
 if ($AsJson) { $report | ConvertTo-Json -Depth 6 } else {
+    Write-Output "Kit version: $kitVersion; installed Kit version: UNKNOWN (package-only installation; no version stamp)."
     Write-Output "Source revision: $revision; modified: $sourceDirty"
     $skill | Format-List
     Write-Output "Discovered copies: $($discovered.Count); scan complete: $($report.ScanComplete)"

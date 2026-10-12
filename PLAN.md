@@ -4,17 +4,17 @@
 
 - Plan Version: 2
 - Task Mode: STANDARD
-- Mode reason: user-approved bounded Phase 4A instrumentation correctness and host isolation; reuse verified workflow architecture without changing the core protocol.
+- Mode reason: user-approved bounded Phase 4B maintenance and local open-source readiness; core protocol and prior acceptance remain frozen.
 - Execution context: ordinary
-- Current Phase: EXECUTION
-- Last Updated: 2026-10-10
-- Last Verified Commit: 74ca37f5ffeb140be3ad060233282dbc4c0eb9ef (Phase 2 complete; Phase 3 external acceptance WITH LIMITATIONS).
+- Current Phase: MILESTONE ACCEPTANCE
+- Last Updated: 2026-10-12
+- Last Verified Commit: 5e3388343663cadb46412742570d90e0d074c222 (Phase4A.1 scoped delivery; runtime NOT READY).
 
 ## Project Goal / Scope
 
 Maintain a reusable goal-driven workflow with guided intake, proportionate execution, verifiable recovery, model-neutral roles, and safe optional Codex installation.
-Current scope: Phase 4A versioned runtime observation, objective reviewer capability/evidence, safe failure classification, unknown-event compatibility, isolated fixture host execution, dedicated reference loading and complete future STANDARD replay. Earlier acceptance below remains immutable historical evidence for its recorded baseline.
-No M4B governance/CI/publishing, model router, generic recovery runtime, Goal activation, Skill reinstall or remote mutation. Real global AGENTS/model/effort/auth/API/other Skills/personal Agents stay unchanged; any unavoidable config side effect requires exact predeclared fields and verified restoration. M3 remains INCONCLUSIVE; strict applicability, states/actions, schema, receipt, fingerprints, Allowed Paths and legacy semantics are frozen.
+Current scope: Phase4B single deterministic maintenance entry, Quick/Full tiers, CI reuse, minimal version/change/compatibility records, concise onboarding/support and contribution guidance. Earlier acceptance below remains immutable historical evidence for its recorded baseline.
+No further host isolation/auth/flush development, model calls, native Goal, real Skill installation, LICENSE selection or remote mutation. Core workflow, templates, journal/recovery, receipt/fingerprints and evidence/review semantics are frozen. Phase4A/4A.1 real acceptance is deferred to external host capability; M3 remains INCONCLUSIVE.
 
 ## Decisions and Blockers
 
@@ -27,6 +27,9 @@ No M4B governance/CI/publishing, model router, generic recovery runtime, Goal ac
 - Pending decisions: any M3 formal recovery proposal requires fresh user approval; no such change is approved.
 - FD-06: 2026-10-10 user approved Phase 4A only. New observation schema 2 / execution-regression-v4 / runtime rubric 3.0 preserve all historical scores and reports; no retroactive FAIL/NOT PROVEN promotion. Collector facts and grader semantics are separate. Host-hidden fields remain UNKNOWN.
 - FD-07: 2026-10-12 Phase 4A.1 narrows work to supported native isolation, no-model privacy preflight and conditional sequential real acceptance. No credential copying/rebuilding, global writes, reinstall or M4B. Temporary native audit roots are retained. Any unproven critical preflight item keeps the existing model gate closed.
+- FD-08: 2026-10-12 user approves Phase4B local maintenance/CI/docs/governance. Prior runtime blocks are External Host Capability Limitation, not a source blocker for this scope; never promote historical scores. Reopen deferred real acceptance only with fresh authorization and supported auth/persistence/flush evidence.
+- Design decision: Windows-first Full; cheap portable Quick uses the same entry. VERSION starts a pre-1.0 Kit development identity, independently of PLAN/journal/rubric schemas. Installed package identity remains byte-based; no retrofit of installation provenance.
+- Pending finalization decisions: LICENSE before formal public distribution; merge main, push and release/tag require separate user authorization.
 
 ## Historical Reliability Acceptance
 
@@ -42,10 +45,21 @@ No M4B governance/CI/publishing, model router, generic recovery runtime, Goal ac
 
 ## Current Work
 
-- Current batch: Phase 4A.1 supported-isolation investigation and scoped helper delivery complete; see [13-part report](examples/runtime-v4/phase4a1-report.md).
-- Status: PHASE 4A.1 COMPLETE — AWAITING NEXT AUTHORIZATION; Phase 4A runtime recommendation remains NOT READY (not a native Goal status).
-- Next unmet criterion: P1/P4/P6/P9/P10 NOT PROVEN, P8 FAIL (AUTH ISOLATION BLOCKED). No-model temporary paths and 66 static hashes observed; no real model turns. Existing gate stays closed; config drift remains UNKNOWN and must not be restored. No M4B.
-- Historical completed work remains below and in the archive; Phase 2 ledger is historical, Phase 4A ledger governs this iteration.
+- Current batch: Phase4B scoped maintenance acceptance and independent final review passed; delivery commit/status recorded externally after commit.
+- Status: PHASE 4B COMPLETE — AWAITING FINALIZATION AUTHORIZATION; READY WITH LIMITATIONS. Core modernization milestones are accepted; external runtime acceptance is deferred, not erased and not a source blocker.
+- Next action: user finalization decisions (LICENSE, merge main, push, release/tag); no further action authorized. See [Phase4B report](examples/maintenance/phase4b-report.md). Final local clean readback is recorded in external phase4b-20261012/delivery-state.json.
+- Deferred criterion owner: external Codex host capability. P4A-04/05 and P4A1-03 remain unverified/blocked; P1/P4/P6/P9/P10 NOT PROVEN, P8 FAIL, E1–E4/R4/typed reviewer NOT PROVEN and config drift UNKNOWN. Reopen only after explicit authorization and supported capability evidence; do not modify real config or auth to force completion.
+- Historical ledgers and reports remain frozen; the Phase4B ledger below governs current scoped acceptance. Do not mark the entire modernization goal PROJECT COMPLETE while deferred criteria remain.
+
+## Phase 4B Acceptance Criteria
+
+| ID | Observable result | Verification | Status | Evidence |
+| --- | --- | --- | --- | --- |
+| P4B-01 | One offline maintenance entry with Quick/Full and fail-closed exit behavior. | Runner negatives and actual local executions. | VERIFIED | PS5.1 Quick81 Node; PS7 Full167 Node; runner9 positive/negative fixtures independently passed. |
+| P4B-02 | CI reuses the local entry, with covered/local-only/capability-blocked scope explicit. | Workflow structure/safety and local equivalent runs. | VERIFIED WITH LIMITATION | Windows Full/Ubuntu Node Quick configured; static contract/manual structure review passed. Actual remote CI/Ubuntu Tests not run. |
+| P4B-03 | Single version source, honest installed identity and compatibility/change records. | Metadata/diagnostic positive/negative fixtures. | VERIFIED | VERSION0.1.0; diagnostic fixtures both runtimes passed; installed KitVersion UNKNOWN with synchronized byte fingerprints. No migration/reinstall. |
+| P4B-04 | Concise onboarding/support/CONTRIBUTING and useful PR scope evidence. | Links/contracts and independent claims review. | VERIFIED | 64 maintained local targets; concise contribution/PR guidance, prior limitations preserved. LICENSE user decision required. |
+| P4B-05 | Full deterministic suite, independent review, frozen protocol/installed hashes and clean local delivery. | Two-runtime local checks, diff/manifests and new local commit. | VERIFIED | Full167 Node and10 PS checks per runtime passed; independent final review PASS, MAJOR fixture finding resolved.68 frozen/source-install9/protected3 hashes unchanged; new local commit and clean readback recorded externally after commit. |
 
 ## Historical Installation and Verification State
 

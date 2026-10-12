@@ -1,0 +1,7 @@
+{
+  "nodeMinimumMajor": 24,
+  "nodeQuick": ["test-behavior-fixtures.cjs", "test-execution-regression.cjs", "test-maintenance.cjs"],
+  "nodeFull": ["test-runtime-host-v4.cjs", "test-runtime-privacy-v4.cjs", "test-runtime-observation-v2.cjs", "test-score-runtime-v4.cjs", "test-run-runtime-v4.cjs"],
+  "powershellQuick": ["validate-skill.ps1", "validate-agent-profiles.ps1", "test-validator-contract.ps1"],
+  "powershellFull": ["test-execution-continuity.ps1", "test-plan-receipt.ps1", "test-recovery-paths.ps1", "test-install-skill.ps1", "test-install-agents.ps1", "test-check-installation.ps1", "test-runtime-config-guard.ps1"]
+}

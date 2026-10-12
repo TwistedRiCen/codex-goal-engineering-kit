@@ -1,0 +1,32 @@
+name: Deterministic maintenance
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  maintenance:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            mode: Full
+          - os: ubuntu-latest
+            mode: Quick
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Run shared maintenance entry
+        run: ./scripts/test-all.ps1 -Mode ${{ matrix.mode }}
