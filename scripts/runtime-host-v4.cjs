@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { spawn, spawnSync } = require('node:child_process');
 const { StringDecoder } = require('node:string_decoder');
+const { isolatedEnvironment } = require('./runtime-privacy-v4.cjs');
 
 function failure(code) { const error = new Error(code); error.code = code; return error; }
 function tomlString(value) {
@@ -20,7 +21,8 @@ function sessionOverrides(workspace, stateDir, options = {}) {
     `projects.${tomlString(root)}.trust_level="trusted"`,
     `model=${tomlString(options.model || 'gpt-6.1-sol')}`,
     `model_reasoning_effort=${tomlString(options.effort || 'high')}`,
-    `sqlite_home=${tomlString(state)}`, 'history.persistence="none"',
+    ...(!options.isolation ? [`sqlite_home=${tomlString(state)}`] : options.isolation.sqliteOverride ? [`sqlite_home=${tomlString(options.isolation.sqliteOverride)}`] : []),
+    ...(options.isolation ? [`log_dir=${tomlString(options.isolation.logDir)}`] : []), 'history.persistence="none"',
     'features.shell_snapshot=false', 'features.shell_tool=false',
     'agents.enabled=true', 'features.js_repl=false'
   ];
@@ -57,13 +59,14 @@ class RuntimeHost {
     for (const value of sessionOverrides(this.options.workspace, this.options.stateDir, this.options)) args.push('-c', value);
     args.push('app-server', '--listen', 'stdio://');
     try {
-      this.child = (this.options.spawn || spawn)(this.options.binary || 'codex', args, { cwd: fs.realpathSync(this.options.workspace), env: { ...process.env, RUST_LOG: 'off' }, shell: false, windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'] });
+      this.child = (this.options.spawn || spawn)(this.options.binary || 'codex', args, { cwd: fs.realpathSync(this.options.workspace), env: this.options.isolation ? isolatedEnvironment(this.options.isolation) : { ...process.env, RUST_LOG: 'off' }, shell: false, windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'] });
     } catch { this.fail('HOST_LAUNCH_FAILED'); throw this.error; }
     this.child.on('error', () => this.fail('HOST_LAUNCH_FAILED'));
     this.processClosed = new Promise(resolve => { this.resolveProcessClosed = resolve; });
-    this.child.on('close', () => {
+    this.child.on('close', code => {
+      this.processExitCode = code;
       this.processCloseObserved = true; this.resolveProcessClosed();
-      if (!this.closed) this.fail('HOST_PROCESS_EXITED');
+      if (!this.closed && !(this.gracefulClosing && code === 0)) this.fail('HOST_PROCESS_EXITED');
     });
     this.child.stdin.on('error', () => this.fail('HOST_WRITE_FAILED'));
     this.child.stdout.on('data', chunk => this.receive(chunk));
@@ -213,6 +216,21 @@ class RuntimeHost {
       return { processClosed: !this.child || this.processCloseObserved === true, requestsDrained: this.requests.size === 0 };
     })();
     return this.shutdownPromise;
+  }
+  async shutdownGracefully() {
+    if (this.closed || this.gracefulClosing || this.pending.size || this.requests.size || [...this.waiters.values()].some(rows => rows.length)) throw failure('HOST_GRACEFUL_NOT_IDLE');
+    this.gracefulClosing = true;
+    // Stdio EOF is the native single-client disconnect path, not a private RPC.
+    let timer;
+    try {
+      if (!this.child || !this.processClosed) throw failure('HOST_SHUTDOWN_UNOBSERVABLE');
+      this.child.stdin.end();
+      await Promise.race([this.processClosed, new Promise((_,reject) => { timer = setTimeout(() => reject(failure('HOST_GRACEFUL_TIMEOUT')),this.shutdownTimeoutMs); })]);
+      if (this.error || this.processExitCode !== 0) throw this.error || failure('HOST_PROCESS_EXITED');
+      const result = await this.shutdown();
+      return { ...result, termination:'STDIN_EOF', exitCode:this.processExitCode, flushGuarantee:'UNKNOWN; verify retained SQLite marker separately' };
+    } catch (error) { this.fail(error.code || 'HOST_GRACEFUL_FAILED'); try { await this.shutdown(); } catch {} throw error; }
+    finally { clearTimeout(timer); }
   }
 }
 module.exports = { RuntimeHost, sessionOverrides };

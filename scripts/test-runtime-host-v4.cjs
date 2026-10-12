@@ -32,6 +32,21 @@ test('unit: process overrides quote trust path and preserve agent availability',
   assert.ok(values.includes('features.shell_tool=false')); assert.ok(values.includes('features.js_repl=false'));
   assert.throws(() => sessionOverrides(s.root, s.options.stateDir, { model: 'x\n-c danger' }), /HOST_INVALID_OPTION/);
 });
+test('unit: graceful EOF waits for zero exit and does not claim SQLite flush', async t => {
+  const s=setup(t);await s.host.start();
+  s.child.stdin.on('finish',()=>queueMicrotask(()=>{s.child.exitCode=0;s.child.emit('close',0);}));
+  const result=await s.host.shutdownGracefully();assert.equal(result.termination,'STDIN_EOF');assert.equal(result.processClosed,true);assert.equal(result.requestsDrained,true);assert.match(result.flushGuarantee,/UNKNOWN/);assert.deepEqual(s.killed,[]);
+});
+test('unit: graceful EOF refuses outstanding RPC and rejects nonzero exit', async t => {
+  const s=setup(t);await s.host.start();const rpc=s.host.call('config/read',{});
+  await assert.rejects(s.host.shutdownGracefully(),/HOST_GRACEFUL_NOT_IDLE/);
+  s.emit({id:s.sent.at(-1).id,result:{}});await rpc;
+  s.child.stdin.on('finish',()=>queueMicrotask(()=>{s.child.exitCode=2;s.child.emit('close',2);}));
+  await assert.rejects(s.host.shutdownGracefully(),/HOST_PROCESS_EXITED/);
+});
+test('unit: graceful timeout forces owned process shutdown and remains failure', async t => {
+  const s=setup(t,{shutdownTimeoutMs:20});await s.host.start();await assert.rejects(s.host.shutdownGracefully(),/HOST_GRACEFUL_TIMEOUT/);assert.deepEqual(s.killed,[424242]);
+});
 test('unit: current host defaults to guarded config loading; legacy ignore flag requires explicit boolean', async t => {
   const current = setup(t); await current.host.start();
   assert.ok(!current.spawnCalls[0].args.includes('--ignore-user-config'));

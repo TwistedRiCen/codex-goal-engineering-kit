@@ -26,6 +26,7 @@ No M4B governance/CI/publishing, model router, generic recovery runtime, Goal ac
 - FD-05: 2026-10-09 user approved M1 -> validation/review/checkpoint -> M2 -> validation -> M3 investigation. Separate local milestone commits; no real installation or remote mutation.
 - Pending decisions: any M3 formal recovery proposal requires fresh user approval; no such change is approved.
 - FD-06: 2026-10-10 user approved Phase 4A only. New observation schema 2 / execution-regression-v4 / runtime rubric 3.0 preserve all historical scores and reports; no retroactive FAIL/NOT PROVEN promotion. Collector facts and grader semantics are separate. Host-hidden fields remain UNKNOWN.
+- FD-07: 2026-10-12 Phase 4A.1 narrows work to supported native isolation, no-model privacy preflight and conditional sequential real acceptance. No credential copying/rebuilding, global writes, reinstall or M4B. Temporary native audit roots are retained. Any unproven critical preflight item keeps the existing model gate closed.
 
 ## Historical Reliability Acceptance
 
@@ -41,9 +42,9 @@ No M4B governance/CI/publishing, model router, generic recovery runtime, Goal ac
 
 ## Current Work
 
-- Current batch: Phase 4A instrumentation components, complete public control replay and no-model native host checks delivered; real model acceptance remains blocked.
-- Status: BLOCKED — NOT READY (runtime acceptance, not a native Goal status).
-- Next unmet criterion: P4A-04/P4A-05. Current host native TRACE logging does not prove model-content privacy; initial config changed before native launch with UNKNOWN attribution. Keep E1–E4 gate closed; require supported isolation evidence and precise config disposition before real acceptance.
+- Current batch: Phase 4A.1 supported-isolation investigation and scoped helper delivery complete; see [13-part report](examples/runtime-v4/phase4a1-report.md).
+- Status: PHASE 4A.1 COMPLETE — AWAITING NEXT AUTHORIZATION; Phase 4A runtime recommendation remains NOT READY (not a native Goal status).
+- Next unmet criterion: P1/P4/P6/P9/P10 NOT PROVEN, P8 FAIL (AUTH ISOLATION BLOCKED). No-model temporary paths and 66 static hashes observed; no real model turns. Existing gate stays closed; config drift remains UNKNOWN and must not be restored. No M4B.
 - Historical completed work remains below and in the archive; Phase 2 ledger is historical, Phase 4A ledger governs this iteration.
 
 ## Historical Installation and Verification State
@@ -105,6 +106,18 @@ No M4B governance/CI/publishing, model router, generic recovery runtime, Goal ac
 - Phase3 external report/evidence: C:/Users/98053/.codex/visualizations/2026/10/09/01a11e6f-1348-74f3-a833-f9f2a4d074f1/phase3-20261010/phase3-report.md. ACCEPT WITH LIMITATIONS including preserved v3 FAIL, review NOT PROVEN and original config drift FAIL; exact authorized cleanup restored 57 protected hashes.
 - Initial Phase4A protected/frozen snapshot and public host schemas kept in adjacent external phase4a-20261010 evidence directory. Historical installed/authorization text below describes Phase2, not current Phase4A authority.
 - Phase4A recommendation NOT READY; component delivery does not satisfy real runtime/full-stage config acceptance. No reinstall. Detailed 14-part report: [Phase4A report](examples/runtime-v4/phase4a-report.md). Final local HEAD/status is recorded after commit in external delivery-state.json; no historical results or core protocol changes.
+
+## Phase 4A.1 Acceptance and Evidence
+
+| ID | Observable result | Status | Evidence |
+| --- | --- | --- | --- |
+| P4A1-01 | Supported configuration/auth/persistence findings verified against current binary and official sources. | VERIFIED WITH LIMITATIONS | alpha17.2; actual log/user layers and temporary rollout/6 DBs observed. Only environment mode completed; precedence/source gaps preserved. |
+| P4A1-02 | Formal no-model privacy preflight cannot authorize model turns; shutdown failures cannot skip lifetime/guard barriers. | VERIFIED FOR CONTROL | Focused transport/privacy negatives; normal native EOF exit0/drain; first failed native attempt preserved, P10 corrected by new digest-bound errata. |
+| P4A1-03 | Complete privacy/auth evidence permits sequential E1–E4/R4. | BLOCKED / NOT PROVEN | AUTH ISOLATION BLOCKED; P1/P4/P6/P9/P10 NOT PROVEN. No real model runs; Phase4A NOT READY. |
+| P4A1-04 | Relevant tests, independent privacy/evidence repair reviews and local checkpoint. | VERIFIED AT DELIVERY | Focused30; full related158 result recorded externally; guard12 each PS7/PS5.1; reviewers report no remaining material findings. Source/installed9 files identical; no reinstall or frozen protocol diff. |
+
+- New local commit only; final hash/clean status recorded in external phase4a1-20261012-repair/delivery-state.json after commit. Historical Phase1–4 evidence/results remain immutable.
+- Both native audit roots retained under dedicated OS sandbox TEMP; external evidence contains metadata/sanitized facts only. No auth material copy/export, real configuration write/restore, native Goal, cleanup, remote mutation or M4B.
 
 ## Historical Phase 2 Repository and Verification State
 
