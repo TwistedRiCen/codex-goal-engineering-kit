@@ -4,17 +4,17 @@
 
 - Plan Version: 2
 - Task Mode: STANDARD
-- Mode reason: user-approved Phase 5A local fast-forward finalization and main deterministic baseline; no new functionality or protocol changes.
+- Mode reason: user-approved Phase 5C release finalization with exact-revision CI before tag/publication; no new functionality or protocol changes.
 - Execution context: ordinary
 - Current Phase: MILESTONE ACCEPTANCE
 - Last Updated: 2026-10-12
-- Last Verified Commit: 8d1e9913d1f19adb3325f3f68d176b3bf54a40d4 (accepted candidate; authoritative Full passed on main in Phase5A).
+- Last Verified Commit: 33446a3981df7ecfcd6844e3cac50797e1460be7 (Phase5B remote CI run38228588062: Windows Full and Ubuntu Quick success; the new release commit requires its own CI).
 
 ## Project Goal / Scope
 
 Maintain a reusable goal-driven workflow with guided intake, proportionate execution, verifiable recovery, model-neutral roles, and safe optional Codex installation.
-Current scope: Phase5A safe local fast-forward to main, candidate identity/commit-ledger verification, authoritative Full on main, necessary finalization state and independent integration review. Repository-controlled modernization (evaluation integrity, Skill simplification, installation safety, maintenance/compatibility and deterministic gates) is accepted; earlier ledgers remain immutable evidence for their recorded baselines.
-No new functionality, host isolation/auth/flush development, model calls, native Goal, real installation/profile writes, LICENSE selection, version bump or remote mutation. Core workflow, templates, journal/recovery, receipt/fingerprints and evidence/review semantics stay frozen. External Phase4A/4A.1 acceptance does not block repository-controlled closure; its OPEN criteria and last attempted evidence remain retained. M3 stays INCONCLUSIVE; no overall PROJECT COMPLETE declaration.
+Current scope: Phase5C minimal release metadata, Quick and independent release review, ordinary main push, exact new-revision Windows Full/Ubuntu Quick CI, annotated v0.1.0 tag and published GitHub Release. Repository-controlled modernization (evaluation integrity, Skill simplification, installation safety, maintenance/compatibility and deterministic gates) is accepted; earlier ledgers remain immutable evidence for their recorded baselines.
+No new functionality, host isolation/auth/flush development, model calls, native Goal, real installation/profile writes, license changes, version bump, extra assets/package publishing or deploy. Core workflow, templates, journal/recovery, receipt/fingerprints and evidence/review semantics stay frozen. External Phase4A/4A.1 acceptance does not block repository-controlled closure; its OPEN criteria and last attempted evidence remain retained. M3 stays INCONCLUSIVE; no overall PROJECT COMPLETE declaration.
 
 ## Decisions and Blockers
 
@@ -31,7 +31,8 @@ No new functionality, host isolation/auth/flush development, model calls, native
 - Design decision: Windows-first Full; cheap portable Quick uses the same entry. VERSION starts a pre-1.0 Kit development identity, independently of PLAN/journal/rubric schemas. Installed package identity remains byte-based; no retrofit of installation provenance.
 - FD-09: 2026-10-12 user approves Phase5A safe fast-forward only. main bb921e5 is the candidate ancestor/merge-base; six intervening commits all belong to modernization. Conditional old-SHA ref update followed by switching to the identical tree preserves all100 tracked byte hashes; no merge commit, history rewrite or feature-branch deletion.
 - FD-10: 2026-10-12 Phase5B user selects standard Apache-2.0, authorizes ordinary main push after clean/identity/ancestry checks and actual remote CI validation. No custom license terms or inferred copyright holder; blocked runtime acceptance stays frozen.
-- Pending distribution decisions: tag/release/package/deploy remain unapproved. Local main finalization is complete; Apache-2.0 and conditional ordinary main push are approved; VERSION0.1.0/Unreleased remain unchanged.
+- FD-11: 2026-10-12 Phase5C user approves v0.1.0 release metadata and ordinary main push; only successful CI for the exact new release commit authorizes the annotated tag, its explicit push and non-draft/non-prerelease GitHub Release. No force/history rewrite, extra assets or feature-branch deletion/push.
+- Pending distribution decisions: future releases, package publishing and deploy require separate authorization. VERSION0.1.0 and standard Apache-2.0 remain unchanged.
 
 ## Historical Reliability Acceptance
 
@@ -47,11 +48,12 @@ No new functionality, host isolation/auth/flush development, model calls, native
 
 ## Current Work
 
-- Current batch: Phase5A main fast-forward, authoritative Full, necessary state validation and independent final review PASSED. Only this PLAN requires a new local metadata commit; final HEAD/clean readback is recorded externally after that commit.
+- Current batch: Phase5A local finalization and Phase5B license/remote CI accepted. Phase5C release metadata and publication are authorized; completion is established by the exact-revision remote readback, not by this pre-publication metadata commit.
 - Status: ACCEPTED (repository-controlled scope). External host runtime criteria remain OPEN with external blockers and their existing evidence, not promoted or deleted; overall phase remains MILESTONE ACCEPTANCE.
-- Next action: Phase5B license/remote main validation is authorized; exact pushed revision/jobs/results are recorded externally in phase5b-20261012. Tag/release requires fresh authorization. External phase5a-20261012/baseline.json retains the local baseline, pre-finalization/commit-ledger/post-merge/main-full/review evidence; no sensitive runtime logs are committed.
+- Next action: Quick and independent release review, then ordinary main push and new-revision CI before tag/Release. The annotated v0.1.0 tag identifies the release commit; actual CI run, tag object and published Release readback are retained in external phase5c-20261012/baseline-final.json and the final report alongside the earlier phase5a/phase5b evidence. No sensitive runtime logs are committed.
+- Release disposition: approved repository-controlled modernization delivery as v0.1.0; effective release evidence requires a published GitHub Release whose tag target equals successful CI/main. Publication is not claimed by this metadata commit alone and does not close external criteria.
 - Deferred criterion owner: external Codex host capability. P4A-04/05 and P4A1-03 remain unverified/blocked; P1/P4/P6/P9/P10 NOT PROVEN, P8 FAIL, E1–E4/R4/typed reviewer NOT PROVEN and config drift UNKNOWN. Reopen only after explicit authorization and supported capability evidence; do not modify real config or auth to force completion.
-- Historical ledgers and reports remain frozen; the Phase5A ledger governs this local finalization scope. Keep MILESTONE ACCEPTANCE while the retained external criteria remain OPEN; their disposition does not block repository-controlled closure.
+- Historical ledgers and reports remain frozen for their baselines. Keep MILESTONE ACCEPTANCE while the retained external criteria remain OPEN; their disposition does not block repository-controlled release.
 
 ## Phase 5A Acceptance Criteria
 

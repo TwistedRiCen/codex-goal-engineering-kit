@@ -21,4 +21,4 @@
 
 证据入口：[Phase4A](../examples/runtime-v4/phase4a-report.md)、[Phase4A.1](../examples/runtime-v4/phase4a1-report.md)、[M3](../examples/behavior-results/phase2-m3.md)。历史报告含本机证据路径；它们是特定 baseline 的记录，不承诺其他机器可读取或复现所有宿主行为。
 
-本项目采用 [Apache-2.0](../LICENSE)，当前仍为 pre-release repository state。仓库维护 readiness 不授予合并、push、tag、release 或 deploy 权限。
+本项目采用 [Apache-2.0](../LICENSE)，版本与发布记录见 [CHANGELOG](../CHANGELOG.md)。仓库维护 readiness 不授予合并、push、tag、release 或 deploy 权限。

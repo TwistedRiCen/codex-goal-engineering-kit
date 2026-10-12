@@ -1,6 +1,6 @@
 # 版本、身份与兼容性
 
-[VERSION](../VERSION) 是唯一 Kit version source，使用三段数字。目前是 pre-1.0 开发身份，未创建 release 或 tag，也不表示真实模型验收完成。PLAN、journal、rubric 和 observation 各有自己的 schema/version，不能用 Kit version 替代。
+[VERSION](../VERSION) 是唯一 Kit version source，使用三段数字。0.x 表示协议仍可能演进；正式发布不表示真实模型验收完成，也不等同于 SemVer 的 -alpha/-beta/-rc prerelease。PLAN、journal、rubric 和 observation 各有自己的 schema/version，不能用 Kit version 替代。
 
 本 Kit 的版本规则：
 
